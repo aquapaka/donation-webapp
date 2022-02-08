@@ -11,12 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DonationEventService {
 
-    private DonationEventRepository donationEventRepository;
-    
     @Autowired
-    public DonationEventService(DonationEventRepository donationEventRepository) {
-        this.donationEventRepository = donationEventRepository;
-    }
+    private DonationEventRepository donationEventRepository;
 
     public List<DonationEvent> getDonationEvents() {
         return donationEventRepository.findAll();
