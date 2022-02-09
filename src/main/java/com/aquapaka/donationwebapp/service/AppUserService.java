@@ -17,4 +17,16 @@ public class AppUserService {
     public List<AppUser> getAppUsers() {
         return appUserRepository.findAll();
     }
+
+    public AppUser validateAppUser(String email, String password) {
+        List<AppUser> appUsers = getAppUsers();
+
+        for(AppUser appUser : appUsers) {
+            if(appUser.getEmail().equals(email) && appUser.getPassword().equals(password)) {
+                return appUser;
+            }
+        }
+
+        return null;
+    }
 }

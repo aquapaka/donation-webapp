@@ -22,14 +22,16 @@
                         <img id="brand-logo" class="img-fluid" src="img/brand-icon.png" alt="logo">
                         <strong class="ps-1">DONATION</strong>
                     </a>
+                    <!-- Mobile nav toggle button -->
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+                    <!-- Nav items -->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <c:if test="${isSignedIn}">
                                 <li class="nav-item">
-                                    <i class="d-md-none nav-link">Xin chào <b>Tam Long</b>!</i>
+                                    <i class="d-md-none nav-link">Xin chào <b>${appUser.username}</b>!</i>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" aria-current="page" href="${donationEventsUrl}"><b>Quyên góp</b></a>
@@ -37,6 +39,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="${contactUrl}"><b>Liên hệ</b></a>
                                 </li>
+                                <c:if test="${appUser.role == 'ADMIN'}">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="${adminUrl}"><b>Quản trị</b></a>
+                                    </li>
+                                </c:if>
                                 <li class="nav-item">
                                     <a class="nav-link d-md-none" href="${profileUrl}"><b>Hồ sơ</b></a>
                                 </li>
@@ -52,10 +59,10 @@
                             </c:if>
                             <c:if test="${!isSignedIn}">
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="${signInUrl}"><b>Đăng nhập</b></a>
+                                    <a class="nav-link d-md-none" href="" data-bs-toggle="modal" data-bs-target="#loginModal"><b>Đăng nhập</b></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="${registerUrl}"><b>Đăng kí</b></a>
+                                    <a class="nav-link d-md-none" href="" data-bs-toggle="modal" data-bs-target="#registerModal"><b>Đăng kí</b></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" aria-current="page" href="${donationEventsUrl}"><b>Quyên góp</b></a>
@@ -65,17 +72,19 @@
                                 </li>
                             </c:if>
                         </ul>
+
+                        <!-- User button -->
                         <div class="dropdown d-none d-md-block">
                             <a href="" class="dropdown-toggle nav-link" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="img/user-icon-white.png" alt="user icon"/>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="dropdownMenuButton1">
                                 <c:if test="${!isSignedIn}">
-                                    <li><a class="dropdown-item" href="${signInUrl}">Đăng nhập</a></li>
-                                    <li><a class="dropdown-item" href="${registerUrl}">Đăng kí</a></li>
+                                    <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a></li>
+                                    <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng kí</a></li>
                                 </c:if>
                                 <c:if test="${isSignedIn}">
-                                    <li><p class="ms-2 mt-2"><i>Xin chào <b>Tam Long</b>!</i></p></li>
+                                    <li><p class="ms-2 mt-2"><i>Xin chào <b>${appUser.username}</b>!</i></p></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="${profileUrl}">Hồ sơ</a></li>
                                     <li><a class="dropdown-item" href="${myDonationsUrl}">Lịch sử quyên góp</a></li>
@@ -88,6 +97,69 @@
                     </div>
                 </div>
             </nav>
+        </div>
+    </div>
+
+    <!-- login modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-show="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Đăng nhập</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                          </div>
+                          <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                          </div>
+                          <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberCheck" name="rememberCheck">
+                            <label class="form-check-label" for="rememberCheck">Nhớ thông tin</label>
+                          </div>
+                          <div id="loginError" class="form-text text-danger" hidden>Email hoặc mật khẩu không khớp</div>
+                          <hr>
+                          <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span>
+                          <button type="button" class="btn btn-primary float-end" onclick="doLogin()">Đăng nhập</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- register modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" data-bs-backdrop="static" data-show="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Đăng kí</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="resEmail" name="email">
+                          </div>
+                          <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="resPassword" name="password">
+                          </div>
+                          <div class="mb-3">
+                            <label for="password" class="form-label">Re-Password</label>
+                            <input type="password" class="form-control" id="resRePassword" name="rePassword">
+                          </div>
+                          <div id="error" class="form-text text-danger" <c:if test="${!isError}">hidden</c:if>>Pass...</div>
+                          <hr>
+                          <span class="float-start">Bạn đã có tài khoản? <a href="" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng nhập</a></span>
+                          <button type="text" class="btn btn-primary float-end">Đăng kí</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </header>

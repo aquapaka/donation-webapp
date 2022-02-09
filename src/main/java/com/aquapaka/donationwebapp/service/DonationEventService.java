@@ -1,5 +1,6 @@
 package com.aquapaka.donationwebapp.service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import com.aquapaka.donationwebapp.model.DonationEvent;
@@ -15,7 +16,21 @@ public class DonationEventService {
     private DonationEventRepository donationEventRepository;
 
     public List<DonationEvent> getDonationEvents() {
-        return donationEventRepository.findAll();
+        List<DonationEvent> donationEvents = donationEventRepository.findAll();
+        
+        // Sort event list by progress percent
+        donationEvents.sort(new Comparator<DonationEvent>() {
+            @Override
+            public int compare(DonationEvent d1, DonationEvent d2) {
+                if(d1.getProgressPercent() < d2.getProgressPercent()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+
+        return donationEvents;
     }
 
     public void addNewDonationEvent(DonationEvent donationEvent) {
