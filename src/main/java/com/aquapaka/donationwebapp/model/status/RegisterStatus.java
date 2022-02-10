@@ -6,8 +6,7 @@ public class RegisterStatus {
     private boolean resEmailExistError;
     private boolean resEmailError;
     private boolean resPasswordError;
-    private boolean registerSuccess;
-    
+
     public RegisterStatus() {
     }
 
@@ -17,7 +16,6 @@ public class RegisterStatus {
 
     public void setResUsernameExistError(boolean resUsernameExistError) {
         this.resUsernameExistError = resUsernameExistError;
-        updateRegisterSuccess();
     }
 
     public boolean isResUsernameError() {
@@ -26,7 +24,6 @@ public class RegisterStatus {
 
     public void setResUsernameError(boolean resUsernameError) {
         this.resUsernameError = resUsernameError;
-        updateRegisterSuccess();
     }
 
     public boolean isResEmailExistError() {
@@ -35,7 +32,6 @@ public class RegisterStatus {
 
     public void setResEmailExistError(boolean resEmailExistError) {
         this.resEmailExistError = resEmailExistError;
-        updateRegisterSuccess();
     }
 
     public boolean isResEmailError() {
@@ -44,7 +40,6 @@ public class RegisterStatus {
 
     public void setResEmailError(boolean resEmailError) {
         this.resEmailError = resEmailError;
-        updateRegisterSuccess();
     }
 
     public boolean isResPasswordError() {
@@ -53,14 +48,9 @@ public class RegisterStatus {
 
     public void setResPasswordError(boolean resPasswordError) {
         this.resPasswordError = resPasswordError;
-        updateRegisterSuccess();
     }
 
     public boolean isRegisterSuccess() {
         return !isResUsernameError() && !isResUsernameExistError() && !isResPasswordError() && !isResEmailError() && !isResEmailExistError();
-    }
-
-    public void updateRegisterSuccess() {
-        this.registerSuccess = isRegisterSuccess();
     }        
 }
