@@ -21,14 +21,16 @@
     <jsp:include page="header.jsp"/>
     <main class="container-fluid p-0">
 
+        <!-- Big banner -->
         <img class="img-fluid" src="img/momo.jpg" alt="main-image">
         
         <!-- Introduction to the app -->
-        <section id="introduction" class="container py-5">
+        <section id="introduction" class="container py-2 my-3 py-md-5 my-md-5">
             <div class="row">
                 <div class="col-md-6">
                     <h1><b>Hệ thống quyên góp tiền từ thiện DONATION</b></h1>
                     <p>DONATION là hệ thống quyên góp trực tuyến nhằm mục đích giúp mọi người có thể dễ dàng quyên góp và ủng hộ cho những người có hoàn cảnh khó khăn ở mọi nơi.</p>
+                    <a href="#donationEvents"><button class="btn btn-primary">Quyên góp ngay</button></a>
                 </div>
                 <div class="col-md-6">
                     <img class="img-fluid w-100" src="img/images.png" alt="">
@@ -37,94 +39,27 @@
         </section>
 
         <!-- Donation Event -->
-        <section id="donationEvents" class="container-fluid py-5">
-            <div class="container">
-                <h2 class="text-center pb-3"><b>Các sự kiện quyên góp</b></h2>
-                <div class="row g-2 g-md-3 d-flex justify-content-center">
-                    <c:forEach var="donationEvent" items="${donationEvents}">
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="donationEventCard overflow-hidden p-0 h-100 d-flex flex-column justify-content-between">
-                                <img class="" src="${donationEvent.images}" alt="${donationEvent.title}">
-                                <h3 class="px-3 pt-3">${donationEvent.title}</h3>
-                                <div class="p-2 p-md-3">  
-                                    <div class="d-flex flex-column">
-                                        <!-- Time left -->
-                                        <p class="text-end">
-                                            <i>
-                                                <c:choose>
-                                                    <c:when test="${donationEvent.isCompleted}">
-                                                        Đã hoàn thành
-                                                    </c:when>
-                                                    <c:when test="${donationEvent.isEnded}">
-                                                        Đã kết thúc
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        Còn ${donationEvent.daysLeft} ngày
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </i>
-                                        </p>
-                                        <!-- Progress bar -->
-                                        <div class="w-100">
-                                            <b>${donationEvent.currentDonationAmount}</b> / ${donationEvent.totalDonationAmount}
-                                            <div class="progress">
-                                                <div class="progress-bar progress-bar-striped progress-bar-animated <c:if test="${donationEvent.isCompleted}">bg-success</c:if>" role="progressbar" style="width: ${donationEvent.progressPercent}%"></div>
-                                            </div>
-                                        </div>
-                                        <!-- Small info and button -->
-                                        <div class="d-flex justify-content-between align-items-end mt-2">
-                                            <div>
-                                                Tổng số lượt<br>
-                                                <b>123.502</b>
-                                            </div>
-                                            <div>
-                                                Tiến độ<br>
-                                                <b>${donationEvent.progressPercent}%</b>
-                                            </div> 
-                                            <div>
-                                                <a href="${pageContext.request.contextPath}/donationEvent?id=${donationEvent.donationEventId}"><button type="button" class="btn 
-                                                    <c:choose>
-                                                        <c:when test="${donationEvent.isCompleted}">
-                                                            btn-outline-success
-                                                        </c:when>
-                                                        <c:when test="${donationEvent.isEnded}">
-                                                            btn-outline-secondary
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            btn-outline-primary     
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                "
-                                                    <c:choose>
-                                                        <c:when test="${donationEvent.isCompleted}">
-                                                            disabled
-                                                        </c:when>
-                                                        <c:when test="${donationEvent.isEnded}">
-                                                            disabled
-                                                        </c:when>
-                                                        <c:otherwise>      
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                >
-                                                    <c:choose>
-                                                        <c:when test="${donationEvent.isCompleted}">
-                                                            Đã hoàn thành
-                                                        </c:when>
-                                                        <c:when test="${donationEvent.isEnded}">
-                                                            Đã kết thúc
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            Quyên góp
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </button></a>
-                                            </div>  
-                                        </div>
-                                    </div>                                        
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
+        <jsp:include page="donationEvents.jsp"/>
+
+        <!-- Contact -->
+        <section id="contact" class="container-fluid">
+            <div class="container p-5">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <h4><strong class="ps-1">Tổ chức hỗ trợ quyên góp từ thiện trực tuyến DONATION</strong></h4>
+                        <span>70/21A13 Tân Hoà Đông, Phường 14, Quận 6, TP. Hồ Chí Minh</span>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h4><strong class="ps-1">LIÊN HỆ HỖ TRỢ</strong></h4>
+                        <span>Hotline: <b>1900 1009</b> <i>(1000đ/phút)</i></span><br>
+                        <span>Email: <b>hotro@donation.vn</b></span><br>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <h4><strong class="ps-1">AQUAPAKA</strong></h4>
+                        <span>Phone: <b>+8488 633 2278</b></span><br>
+                        <span>Email: <b>aqua.tamlong@gmail.com</b></span><br>
+                        <span>Website: <b><a href="https://aquapaka.github.io/">https://aquapaka.github.io/</a></b></span><br>
+                    </div>
                 </div>
             </div>
         </section>

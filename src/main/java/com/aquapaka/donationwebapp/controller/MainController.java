@@ -8,8 +8,10 @@ import javax.servlet.http.HttpSession;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.DonationEvent;
+import com.aquapaka.donationwebapp.model.status.RegisterStatus;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,6 +66,32 @@ public class MainController {
         session.setAttribute("password", password);
         
         return "true";
+    }
+
+    @PostMapping("/doRegister")
+    public @ResponseBody String doRegister(HttpServletRequest request, HttpServletResponse response) {
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        RegisterStatus registerStatus = appUserService.registerAppUser(username, email, password);
+
+        // Map register status object into json string
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            json = mapper.writeValueAsString(registerStatus);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        if(registerStatus.isRegisterSuccess()) {
+            HttpSession session = request.getSession();
+            session.setAttribute("email", email);
+            session.setAttribute("password", password);
+        }
+        
+        return json;
     }
 
     @GetMapping("/signOut")

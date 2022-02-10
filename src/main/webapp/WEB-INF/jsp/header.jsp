@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
-<c:set var="donationEventsUrl" value="${pageContext.request.contextPath}/donationEvents" />
-<c:set var="contactUrl" value="${pageContext.request.contextPath}/contact" />
+<c:set var="donationEventsUrl" value="#donationEvents" />
+<c:set var="contactUrl" value="#contact" />
 <c:set var="signInUrl" value="${pageContext.request.contextPath}/signIn" />
 <c:set var="registerUrl" value="${pageContext.request.contextPath}/register" />
 <c:set var="profileUrl" value="${pageContext.request.contextPath}/profile" />
@@ -104,61 +104,67 @@
     <div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-show="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h5 class="modal-title">Đăng nhập</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title">Đăng nhập</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email">
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email">
-                          </div>
-                          <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                          </div>
-                          <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="rememberCheck" name="rememberCheck">
-                            <label class="form-check-label" for="rememberCheck">Nhớ thông tin</label>
-                          </div>
-                          <div id="loginError" class="form-text text-danger" hidden>Email hoặc mật khẩu không khớp</div>
-                          <hr>
-                          <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span>
-                          <button type="button" class="btn btn-primary float-end" onclick="doLogin()">Đăng nhập</button>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password">
                     </div>
-                </form>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberCheck" name="rememberCheck">
+                        <label class="form-check-label" for="rememberCheck">Nhớ thông tin</label>
+                    </div>
+                    <span id="loginError" class="form-text text-danger" hidden>Email hoặc mật khẩu không khớp</span>
+                    <hr>
+                    <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span>
+                    <button type="button" class="btn btn-primary float-end" onclick="doLogin()">Đăng nhập</button>
+                </div>
             </div>
         </div>
     </div>
+
     <!-- register modal -->
     <div class="modal fade" id="registerModal" tabindex="-1" data-bs-backdrop="static" data-show="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h5 class="modal-title">Đăng kí</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title">Đăng kí</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="resUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="resUsername" name="resUsername">
+                        <span id="resUsernameExistError" class="form-text text-danger" hidden>Username đã tồn tại<br></span>
+                        <span id="resUsernameError" class="form-text text-danger" hidden>Username không chứa ký tự đặc biệt (độ dài từ 5-20)</span>
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="resEmail" name="email">
-                          </div>
-                          <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="resPassword" name="password">
-                          </div>
-                          <div class="mb-3">
-                            <label for="password" class="form-label">Re-Password</label>
-                            <input type="password" class="form-control" id="resRePassword" name="rePassword">
-                          </div>
-                          <div id="error" class="form-text text-danger" <c:if test="${!isError}">hidden</c:if>>Pass...</div>
-                          <hr>
-                          <span class="float-start">Bạn đã có tài khoản? <a href="" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng nhập</a></span>
-                          <button type="text" class="btn btn-primary float-end">Đăng kí</button>
+                    <div class="mb-3">
+                        <label for="resEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="resEmail" name="resEmail">
+                        <span id="resEmailExistError" class="form-text text-danger" hidden>Email đã tồn tại<br></span>
+                        <span id="resEmailError" class="form-text text-danger" hidden>Email không hợp lệ</span>
                     </div>
-                </form>
+                    <div class="mb-3">
+                        <label for="resPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="resPassword" name="resPassword">
+                        <span id="resPasswordError" class="form-text text-danger" hidden>Mật khẩu phải từ 8 - 20 ký tự, có chứa một ký tự số, một ký tự in hoa và một ký tự đặc biệt</span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="resRePassword" class="form-label">Re-Password</label>
+                        <input type="password" class="form-control" id="resRePassword" name="rePassword">
+                        <span id="resRePasswordError" class="form-text text-danger" hidden>Mật khẩu nhập lại không khớp</span>
+                    </div>
+                    <hr>
+                    <span class="float-start">Bạn đã có tài khoản? <a href="" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng nhập</a></span>
+                    <button type="text" class="btn btn-primary float-end" onclick="doRegister()">Đăng kí</button>
+                </div>
             </div>
         </div>
     </div>
