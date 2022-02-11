@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="vi_VN" scope="session"/>
 
 <section id="donationEvents" class="container-fluid py-5">
     <div class="container">
@@ -30,7 +33,7 @@
                                 </p>
                                 <!-- Progress bar -->
                                 <div class="w-100">
-                                    <b>${donationEvent.currentDonationAmount}</b> / ${donationEvent.totalDonationAmount}
+                                    <b><fmt:formatNumber value="${donationEvent.currentDonationAmount}" type="number"/></b> / <fmt:formatNumber value="${donationEvent.totalDonationAmount}" type="number"/>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated <c:if test="${donationEvent.isCompleted}">bg-success</c:if>" role="progressbar" style="width: ${donationEvent.progressPercent}%"></div>
                                     </div>
@@ -39,7 +42,7 @@
                                 <div class="d-flex justify-content-between align-items-end mt-2">
                                     <div>
                                         Tổng số lượt<br>
-                                        <b>123.502</b>
+                                        <b><fmt:formatNumber value="${donationEvent.totalDonation}" type="number"/></b>
                                     </div>
                                     <div>
                                         Tiến độ<br>

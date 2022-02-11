@@ -1,8 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
-<c:set var="donationEventsUrl" value="#donationEvents" />
-<c:set var="contactUrl" value="#contact" />
+<c:set var="donationEventsUrl" value="${pageContext.request.contextPath}/#donationEvents" />
+<c:set var="contactUrl" value="${pageContext.request.contextPath}/#contact" />
+<c:set var="userManagementUrl" value="${pageContext.request.contextPath}/userManagement" />
+<c:set var="donationEventManagementUrl" value="${pageContext.request.contextPath}/donationEventManagement" />
+<c:set var="donationManagementUrl" value="${pageContext.request.contextPath}/donationManagement" />
 <c:set var="signInUrl" value="${pageContext.request.contextPath}/signIn" />
 <c:set var="registerUrl" value="${pageContext.request.contextPath}/register" />
 <c:set var="profileUrl" value="${pageContext.request.contextPath}/profile" />
@@ -41,7 +44,13 @@
                                 </li>
                                 <c:if test="${appUser.role == 'ADMIN'}">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="${adminUrl}"><b>Quản trị</b></a>
+                                        <a class="nav-link" href="${userManagementUrl}"><b>QL Người dùng</b></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="${donationEventManagementUrl}"><b>QL Sự kiện</b></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="${donationManagementUrl}"><b>QL quyên góp</b></a>
                                     </li>
                                 </c:if>
                                 <li class="nav-item">

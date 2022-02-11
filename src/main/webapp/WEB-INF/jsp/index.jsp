@@ -18,6 +18,7 @@
 <body>
     <fmt:setLocale value="vi_VN" scope="session"/>
 
+    <!-- Header -->
     <jsp:include page="header.jsp"/>
     <main class="container-fluid p-0">
 
@@ -33,7 +34,7 @@
                     <a href="#donationEvents"><button class="btn btn-primary">Quyên góp ngay</button></a>
                 </div>
                 <div class="col-md-6">
-                    <img class="img-fluid w-100" src="img/images.png" alt="">
+                    <img class="img-fluid w-100" src="img/donation-art.png" alt="donation-art">
                 </div>
             </div>
         </section>
@@ -41,28 +42,9 @@
         <!-- Donation Event -->
         <jsp:include page="donationEvents.jsp"/>
 
-        <!-- Contact -->
-        <section id="contact" class="container-fluid">
-            <div class="container p-5">
-                <div class="row">
-                    <div class="col-12 col-md-4">
-                        <h4><strong class="ps-1">Tổ chức hỗ trợ quyên góp từ thiện trực tuyến DONATION</strong></h4>
-                        <span>70/21A13 Tân Hoà Đông, Phường 14, Quận 6, TP. Hồ Chí Minh</span>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <h4><strong class="ps-1">LIÊN HỆ HỖ TRỢ</strong></h4>
-                        <span>Hotline: <b>1900 1009</b> <i>(1000đ/phút)</i></span><br>
-                        <span>Email: <b>hotro@donation.vn</b></span><br>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <h4><strong class="ps-1">AQUAPAKA</strong></h4>
-                        <span>Phone: <b>+8488 633 2278</b></span><br>
-                        <span>Email: <b>aqua.tamlong@gmail.com</b></span><br>
-                        <span>Website: <b><a href="https://aquapaka.github.io/">https://aquapaka.github.io/</a></b></span><br>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
+
+    <!-- Footer -->
+    <jsp:include page="footer.jsp"/>
 </body>
 </html>

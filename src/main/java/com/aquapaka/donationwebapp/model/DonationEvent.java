@@ -24,6 +24,7 @@ public class DonationEvent {
     private String detail;
     private String images;
     private long totalDonationAmount;
+    @Transient
     private long currentDonationAmount;
     private LocalDate startTime;
     private LocalDate endTime;
@@ -35,6 +36,8 @@ public class DonationEvent {
     private boolean isCompleted;
     @Transient
     private boolean isEnded;
+    @Transient
+    private int totalDonation;
 
     public DonationEvent() {
         
@@ -139,5 +142,14 @@ public class DonationEvent {
                 + ", startTime=" + startTime + ", title=" + title + ", totalDonationAmount=" + totalDonationAmount + ", daysLeft=" + daysLeft
                 + "]";
     }
+
+    public int getTotalDonation() {
+        return totalDonation;
+    }
+
+    public void setTotalDonation(int totalDonation) {
+        this.totalDonation = totalDonation;
+    }
+    
     
 }

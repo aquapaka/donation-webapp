@@ -18,6 +18,7 @@ function doLogin() {
             console.log(response);
             if(response == true) {
                 window.location.replace("/");
+                alert("Login success!");
             } else {
                 $("#loginError").attr("hidden", false);
             }
@@ -56,6 +57,7 @@ function doRegister() {
 
             if(response.registerSuccess) {
                 window.location.replace("/");
+                alert("Register success!");
                 return;
             }
 
@@ -75,5 +77,46 @@ function doRegister() {
             console.log("ERROR: ", e);
         }
     });
+}
 
+function deleteAppUser(id) {
+    var deleteDonationEventModal = new bootstrap.Modal(document.getElementById('deleteDonationEventModal'), true);
+
+    $.ajax({
+        type: "GET",
+        url: "/AppUser/" + id,
+        dataType: "json",
+        success: function (response) {
+            $("#appUserDeleteName").html(response.username + " (" + response.fullname + ")");
+            $("#appUserDeleteId").html(id);
+        },
+        error: function () {
+            return;
+        }
+    });
+
+    deleteDonationEventModal.show();
+}
+
+function deleteAppUserConfirm() {
+    var deleteDonationEventModal = new bootstrap.Modal(document.getElementById('deleteDonationEventModal'), true);
+    var id = $("#appUserDeleteId").html();
+
+    $.ajax({
+        type: "DELETE",
+        url: "/AppUser/" + id,
+        dataType: "json",
+        success: function (response) {
+            if(response == true) {
+                alert("Deleted user id " + id);
+                window.location.replace("/userManagement");
+            } else {
+                alert("Error, can't delete app user " + id);
+            }
+        },
+        error: function (error) {
+            console.log("ERROR" + error);
+            return;
+        }
+    });
 }

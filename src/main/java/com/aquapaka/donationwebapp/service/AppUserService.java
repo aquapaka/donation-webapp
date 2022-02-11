@@ -24,6 +24,11 @@ public class AppUserService {
         return appUserRepository.findAll();
     }
 
+    public Optional<AppUser> getAppUserById(long id) {
+        
+        return appUserRepository.findById(id);
+    }
+
     public AppUser validateAppUser(String email, String password) {
         List<AppUser> appUsers = getAppUsers();
 
@@ -74,5 +79,9 @@ public class AppUserService {
         }
 
         return registerStatus;
+    }
+
+    public void deleteAppUserById(long id) {
+        appUserRepository.deleteById(id);
     }
 }
