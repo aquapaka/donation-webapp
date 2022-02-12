@@ -84,4 +84,21 @@ public class AppUserService {
     public void deleteAppUserById(long id) {
         appUserRepository.deleteById(id);
     }
+
+    public void updateAppUserInfoById(long id, String fullname, String dateOfBirth, boolean gender, String phoneNumber, String role) {
+        // Get app user
+        AppUser appUser = appUserRepository.getById(id);
+
+        // Update app user info
+        appUser.setFullname(fullname);
+        String[] dateOfBirthList = dateOfBirth.split("-");
+        LocalDate dob = LocalDate.of(Integer.parseInt(dateOfBirthList[0]), Integer.parseInt(dateOfBirthList[1]), Integer.parseInt(dateOfBirthList[2]));
+        appUser.setDateOfBirth(dob);
+        appUser.setGender(gender);
+        appUser.setPhoneNumber(Integer.parseInt(phoneNumber));
+        appUser.setRole(role);
+
+        // Save app user
+        appUserRepository.save(appUser);
+    }
 }

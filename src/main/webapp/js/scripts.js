@@ -79,44 +79,5 @@ function doRegister() {
     });
 }
 
-function deleteAppUser(id) {
-    var deleteDonationEventModal = new bootstrap.Modal(document.getElementById('deleteDonationEventModal'), true);
 
-    $.ajax({
-        type: "GET",
-        url: "/AppUser/" + id,
-        dataType: "json",
-        success: function (response) {
-            $("#appUserDeleteName").html(response.username + " (" + response.fullname + ")");
-            $("#appUserDeleteId").html(id);
-        },
-        error: function () {
-            return;
-        }
-    });
 
-    deleteDonationEventModal.show();
-}
-
-function deleteAppUserConfirm() {
-    var deleteDonationEventModal = new bootstrap.Modal(document.getElementById('deleteDonationEventModal'), true);
-    var id = $("#appUserDeleteId").html();
-
-    $.ajax({
-        type: "DELETE",
-        url: "/AppUser/" + id,
-        dataType: "json",
-        success: function (response) {
-            if(response == true) {
-                alert("Deleted user id " + id);
-                window.location.replace("/userManagement");
-            } else {
-                alert("Error, can't delete app user " + id);
-            }
-        },
-        error: function (error) {
-            console.log("ERROR" + error);
-            return;
-        }
-    });
-}

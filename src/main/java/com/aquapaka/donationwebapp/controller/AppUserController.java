@@ -1,5 +1,6 @@
 package com.aquapaka.donationwebapp.controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -102,6 +105,19 @@ public class AppUserController {
     public @ResponseBody String deleteAppUser(@PathVariable long id) {
 
         appUserService.deleteAppUserById(id);
+
+        return "true";
+    }
+
+    @PutMapping("/AppUser/{id}")
+    public @ResponseBody String updateAppUser(@PathVariable long id,
+    @RequestParam String fullname,
+    @RequestParam String dateOfBirth,
+    @RequestParam Boolean gender,
+    @RequestParam String phoneNumber,
+    @RequestParam String role
+    ) {
+        appUserService.updateAppUserInfoById(id, fullname, dateOfBirth, gender, phoneNumber, role);
         
         return "true";
     }

@@ -21,7 +21,7 @@
 
     <!-- Header -->
     <jsp:include page="header.jsp"/>
-    <main class="container-fluid py-3 py-md-4">
+    <main class="container-fluid py-3 py-md-4 min-vh-100">
 
         <!-- Donation event -->
         <section id="donationEventManagement" class="container-fluid round-border py-3 mb-2">
