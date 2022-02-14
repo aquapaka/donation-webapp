@@ -15,9 +15,7 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (response) {
-                // TODO: remove later
-                console.log(response);
-
+                
                 if(response == true) {
                     window.location.replace("/");
                     alert("Login success!");
@@ -31,7 +29,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#registerForm").submit(function doRegister() {
+    $("#registerForm").submit(function doRegister(e) {
         e.preventDefault();
         
         var username = $("#resUsername").val();
