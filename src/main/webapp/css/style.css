@@ -35,6 +35,10 @@ nav img {
     height: auto;
 }
 
+textarea {
+    height: 200px;
+}
+
 .small-image {
     width: 100px;
 }

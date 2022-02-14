@@ -118,22 +118,24 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="rememberCheck" name="rememberCheck">
-                        <label class="form-check-label" for="rememberCheck">Nhớ thông tin</label>
-                    </div>
-                    <span id="loginError" class="form-text text-danger" hidden>Email hoặc mật khẩu không khớp</span>
-                    <hr>
-                    <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span>
-                    <button type="button" class="btn btn-primary float-end" onclick="doLogin()">Đăng nhập</button>
+                    <form id="loginForm" action="" method="POST">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberCheck" name="rememberCheck">
+                            <label class="form-check-label" for="rememberCheck">Nhớ thông tin</label>
+                        </div>
+                        <span id="loginError" class="form-text text-danger " hidden>Email hoặc mật khẩu không khớp</span>
+                        <hr>
+                        <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span>
+                        <button type="submit" class="btn btn-primary float-end" >Đăng nhập</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -148,31 +150,33 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="resUsername" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="resUsername" name="resUsername">
-                        <span id="resUsernameExistError" class="form-text text-danger" hidden>Username đã tồn tại<br></span>
-                        <span id="resUsernameError" class="form-text text-danger" hidden>Username không chứa ký tự đặc biệt (độ dài từ 5-20)</span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="resEmail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="resEmail" name="resEmail">
-                        <span id="resEmailExistError" class="form-text text-danger" hidden>Email đã tồn tại<br></span>
-                        <span id="resEmailError" class="form-text text-danger" hidden>Email không hợp lệ</span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="resPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="resPassword" name="resPassword">
-                        <span id="resPasswordError" class="form-text text-danger" hidden>Mật khẩu phải từ 8 - 20 ký tự, có chứa một ký tự số, một ký tự in hoa và một ký tự đặc biệt</span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="resRePassword" class="form-label">Re-Password</label>
-                        <input type="password" class="form-control" id="resRePassword" name="rePassword">
-                        <span id="resRePasswordError" class="form-text text-danger" hidden>Mật khẩu nhập lại không khớp</span>
-                    </div>
-                    <hr>
-                    <span class="float-start">Bạn đã có tài khoản? <a href="" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng nhập</a></span>
-                    <button type="text" class="btn btn-primary float-end" onclick="doRegister()">Đăng kí</button>
+                    <form id="registerForm" action="" method="POST">
+                        <div class="mb-3">
+                            <label for="resUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="resUsername" name="resUsername">
+                            <span id="resUsernameExistError" class="form-text text-danger" hidden>Username đã tồn tại<br></span>
+                            <span id="resUsernameError" class="form-text text-danger" hidden>Username không chứa ký tự đặc biệt (độ dài từ 5-20)</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="resEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="resEmail" name="resEmail">
+                            <span id="resEmailExistError" class="form-text text-danger" hidden>Email đã tồn tại<br></span>
+                            <span id="resEmailError" class="form-text text-danger" hidden>Email không hợp lệ</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="resPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="resPassword" name="resPassword">
+                            <span id="resPasswordError" class="form-text text-danger" hidden>Mật khẩu phải từ 8 - 20 ký tự, có chứa một ký tự số, một ký tự in hoa và một ký tự đặc biệt</span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="resRePassword" class="form-label">Re-Password</label>
+                            <input type="password" class="form-control" id="resRePassword" name="rePassword">
+                            <span id="resRePasswordError" class="form-text text-danger" hidden>Mật khẩu nhập lại không khớp</span>
+                        </div>
+                        <hr>
+                        <span class="float-start">Bạn đã có tài khoản? <a href="" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng nhập</a></span>
+                        <button type="submit" class="btn btn-primary float-end" >Đăng kí</button>
+                    </form>
                 </div>
             </div>
         </div>

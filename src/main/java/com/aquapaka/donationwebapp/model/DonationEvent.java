@@ -43,13 +43,11 @@ public class DonationEvent {
         
     }
 
-    public DonationEvent(String title, String detail, String images, long totalDonationAmount,
-            long currentDonationAmount, LocalDate startTime, LocalDate endTime) {
+    public DonationEvent(String title, String detail, String images, long totalDonationAmount, LocalDate startTime, LocalDate endTime) {
         this.title = title;
         this.detail = detail;
         this.images = images;
         this.totalDonationAmount = totalDonationAmount;
-        this.currentDonationAmount = currentDonationAmount;
         this.startTime = startTime;
         this.endTime = endTime;
     }

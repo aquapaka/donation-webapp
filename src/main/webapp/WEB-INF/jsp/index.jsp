@@ -12,6 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
     <title>Donation</title>
 </head>
@@ -23,7 +24,7 @@
     <main class="container-fluid p-0">
 
         <!-- Big banner -->
-        <img class="img-fluid" src="img/momo.jpg" alt="main-image">
+        <img class="img-fluid" src="img/banner.jpg" alt="main-image">
         
         <!-- Introduction to the app -->
         <section id="introduction" class="container py-2 my-3 py-md-5 my-md-5">

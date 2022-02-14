@@ -1,6 +1,5 @@
 package com.aquapaka.donationwebapp.controller;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +28,12 @@ public class AppUserController {
     private AppUserService appUserService;
 
     @PostMapping("/doLogin")
-    public @ResponseBody String doLogin(HttpServletRequest request, HttpServletResponse response) {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+    public @ResponseBody String doLogin(HttpServletRequest request,
+    @RequestParam String email,
+    @RequestParam String password) {
 
         AppUser appUser = appUserService.validateAppUser(email, password);
+        
         if(appUser == null) {
             return "false";
         }
@@ -46,10 +46,10 @@ public class AppUserController {
     }
 
     @PostMapping("/doRegister")
-    public @ResponseBody String doRegister(HttpServletRequest request, HttpServletResponse response) {
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+    public @ResponseBody String doRegister(HttpServletRequest request,
+    @RequestParam String username,
+    @RequestParam String email,
+    @RequestParam String password) {
 
         RegisterStatus registerStatus = appUserService.registerAppUser(username, email, password);
 
@@ -61,7 +61,8 @@ public class AppUserController {
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        
+        // Save user email and password into session if register success
         if(registerStatus.isRegisterSuccess()) {
             HttpSession session = request.getSession();
             session.setAttribute("email", email);

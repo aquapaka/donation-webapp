@@ -78,7 +78,7 @@
                     <p>Bạn có chắc chắn muốn xoá người dùng <b id="appUserDeleteName">...</b> (id: <b id="appUserDeleteId">id</b>)</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
                     <button type="button" class="btn btn-danger" onclick="deleteAppUserConfirm()">Xoá</button>
                 </div>
             </div>
@@ -142,6 +142,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
                     <button type="text" class="btn btn-primary float-end" onclick="editAppUserConfirm()">Cập nhật</button>
                 </div>
             </div>
