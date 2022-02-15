@@ -45,8 +45,8 @@ textarea {
 
 /* Donation Event Card */
 .donationEventCard, .round-border {
-    background-color: white;
-    border: 1px solid #bde7ff;
+    background-color: #f4fbff;
+    border: 1px solid #2eb9ff;
     border-radius: 10px;
 }
 
@@ -66,5 +66,5 @@ main, footer {
 }
 
 #donationEvents, #donationEvent {
-    background-color: #e4f6ff;
+    background-color: #97dcff;
 }

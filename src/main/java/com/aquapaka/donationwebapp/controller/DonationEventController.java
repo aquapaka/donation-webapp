@@ -1,5 +1,6 @@
 package com.aquapaka.donationwebapp.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,11 +8,13 @@ import javax.servlet.http.HttpSession;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.DonationEvent;
+import com.aquapaka.donationwebapp.model.status.ValidateDonationEventStatus;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,61 +60,72 @@ public class DonationEventController {
         
         return "donationEvent";
     }
+    
+    /**
+     * RestAPI
+     * v
+     */
 
     @GetMapping("/DonationEvent/{id}")
-    public @ResponseBody String getDonationEvent(@PathVariable long id) {
+    public @ResponseBody DonationEvent getDonationEvent(@PathVariable long id) {
         Optional<DonationEvent> donationEventOptional = donationEventService.getDonationEventById(id);
 
         if(donationEventOptional.isPresent()) {
-            String jsonResponse = "";
-            ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
-
-            try {
-                jsonResponse = mapper.writeValueAsString(donationEventOptional.get());
-            } catch (Exception e) {
-                System.out.println(e);
-                return "false";
-            }
-
-            return jsonResponse;
+            return donationEventOptional.get();
         } else {
-            return "false";
+            return null;
         }
     }
 
     @DeleteMapping("/DonationEvent/{id}")
-    public @ResponseBody String deleteDonationEvent(@PathVariable long id) {
+    public ResponseEntity<Long> deleteDonationEvent(@PathVariable Long id) {
 
-        donationEventService.deleteDonationEventById(id);
+        boolean isDeleted = donationEventService.deleteDonationEventById(id);
 
-        return "true";
+        if (!isDeleted) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(id, HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/DonationEvent")
+    public ResponseEntity<Long> deleteDonationEvents(@RequestParam List<Long> ids) {
+        boolean deleteSuccess = donationEventService.deleteDonationEventsByIds(ids);
+
+        if (!deleteSuccess) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(0L, HttpStatus.OK);
     }
 
     @PutMapping("/DonationEvent/{id}")
-    public @ResponseBody String updateDonationEvent(@PathVariable long id,
+    public @ResponseBody ValidateDonationEventStatus updateDonationEvent(@PathVariable long id,
     @RequestParam String title,
     @RequestParam String detail,
     @RequestParam String image,
-    @RequestParam long total,
+    @RequestParam String total,
     @RequestParam String endTime
     ) {
-        donationEventService.updateDonationEventInfoById(id, title, detail, image, total, endTime);
+        ValidateDonationEventStatus status = donationEventService.updateDonationEventInfoById(id, title, detail, image, total, endTime);
         
-        return "true";
+        return status;
     }
 
     @PostMapping("/DonationEvent")
-    public @ResponseBody String updateDonationEvent(
+    public @ResponseBody ValidateDonationEventStatus addDonationEvent(
     @RequestParam String title,
     @RequestParam String detail,
     @RequestParam String image,
-    @RequestParam long total,
+    @RequestParam String total,
     @RequestParam String startTime,
     @RequestParam String endTime
     ) {
-        donationEventService.addDonationEvent(title, detail, image, total, startTime, endTime);
+        ValidateDonationEventStatus status = donationEventService.addDonationEvent(title, detail, image, total, startTime, endTime);
         
-        return "true";
+        return status;
     }
 
 }

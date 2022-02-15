@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -77,7 +78,9 @@ public class MainController {
     }
     
     @GetMapping("donationEventManagement")
-    public String donationEventManagement(Model model, HttpServletRequest request) {
+    public String donationEventManagement(Model model, HttpServletRequest request,
+    @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText,
+    @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType) {
         // Get account data from session
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
@@ -95,7 +98,13 @@ public class MainController {
         model.addAttribute("isSignedIn", true);
 
         // Get donation event datas
-        List<DonationEvent> donationEvents = donationEventService.getDonationEvents();
+        List<DonationEvent> donationEvents;
+        if(searchText.trim().isEmpty()) {
+            donationEvents = donationEventService.getDonationEvents();
+        } else {
+            donationEvents = donationEventService.getDonationEventsSearchBy(searchText, searchType);
+        }
+        
         model.addAttribute("donationEvents", donationEvents);
 
         return "donationEventManagement";
