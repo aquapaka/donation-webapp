@@ -62,8 +62,7 @@ public class DonationEventController {
     }
     
     /**
-     * RestAPI
-     * v
+     * RestAPI below
      */
 
     @GetMapping("/DonationEvent/{id}")
@@ -75,6 +74,29 @@ public class DonationEventController {
         } else {
             return null;
         }
+    }
+
+    @PostMapping("/DonationEvent")
+    public @ResponseBody ValidateDonationEventStatus addDonationEvent(
+    @RequestParam String title,
+    @RequestParam String detail,
+    @RequestParam String image,
+    @RequestParam String total,
+    @RequestParam String startTime,
+    @RequestParam String endTime
+    ) {        
+        return donationEventService.addDonationEvent(title, detail, image, total, startTime, endTime);
+    }
+
+    @PutMapping("/DonationEvent/{id}")
+    public @ResponseBody ValidateDonationEventStatus updateDonationEvent(@PathVariable long id,
+    @RequestParam String title,
+    @RequestParam String detail,
+    @RequestParam String image,
+    @RequestParam String total,
+    @RequestParam String endTime
+    ) {
+        return donationEventService.updateDonationEventInfoById(id, title, detail, image, total, endTime);
     }
 
     @DeleteMapping("/DonationEvent/{id}")
@@ -100,32 +122,4 @@ public class DonationEventController {
 
         return new ResponseEntity<>(0L, HttpStatus.OK);
     }
-
-    @PutMapping("/DonationEvent/{id}")
-    public @ResponseBody ValidateDonationEventStatus updateDonationEvent(@PathVariable long id,
-    @RequestParam String title,
-    @RequestParam String detail,
-    @RequestParam String image,
-    @RequestParam String total,
-    @RequestParam String endTime
-    ) {
-        ValidateDonationEventStatus status = donationEventService.updateDonationEventInfoById(id, title, detail, image, total, endTime);
-        
-        return status;
-    }
-
-    @PostMapping("/DonationEvent")
-    public @ResponseBody ValidateDonationEventStatus addDonationEvent(
-    @RequestParam String title,
-    @RequestParam String detail,
-    @RequestParam String image,
-    @RequestParam String total,
-    @RequestParam String startTime,
-    @RequestParam String endTime
-    ) {
-        ValidateDonationEventStatus status = donationEventService.addDonationEvent(title, detail, image, total, startTime, endTime);
-        
-        return status;
-    }
-
 }

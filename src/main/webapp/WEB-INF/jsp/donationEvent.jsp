@@ -60,7 +60,7 @@
                         <div class="d-flex justify-content-between align-items-end mt-2">
                             <div>
                                 Tổng số lượt<br>
-                                <b><fmt:formatNumber value="${donationEvent.totalDonation}" type="number"/></b>
+                                <b><fmt:formatNumber value="${donationEvent.totalDonationCount}" type="number"/></b>
                             </div>
                             <div>
                                 Tiến độ<br>

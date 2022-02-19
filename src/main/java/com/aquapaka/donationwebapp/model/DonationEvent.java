@@ -1,6 +1,6 @@
 package com.aquapaka.donationwebapp.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Column;
@@ -8,48 +8,62 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.aquapaka.donationwebapp.model.state.EventState;
 
 @Entity
 @Table
 public class DonationEvent {
     @Id
-    @GeneratedValue(
-        strategy = GenerationType.AUTO
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "donation_event_id")
     private Long donationEventId;
     private String title;
+    private String description;
     private String detail;
     private String images;
     private long totalDonationAmount;
     @Transient
     private long currentDonationAmount;
-    private LocalDate startTime;
-    private LocalDate endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    @OneToOne
+    @JoinColumn(name = "app_user_id", referencedColumnName = "app_user_id")
+    private AppUser createAppUser;
+    private LocalDateTime createTime;
+    private EventState eventState;
     @Transient
     private long daysLeft;
     @Transient
-    private long progressPercent;
+    private float progressPercent;
     @Transient
     private boolean isCompleted;
     @Transient
     private boolean isEnded;
     @Transient
-    private int totalDonation;
+    private int totalDonationCount;
 
     public DonationEvent() {
-        
+
     }
 
-    public DonationEvent(String title, String detail, String images, long totalDonationAmount, LocalDate startTime, LocalDate endTime) {
+    public DonationEvent(String title, String description, String detail, String images, long totalDonationAmount,
+            LocalDateTime startTime, LocalDateTime endTime, AppUser createAppUser, LocalDateTime createTime,
+            EventState eventState) {
         this.title = title;
+        this.description = description;
         this.detail = detail;
         this.images = images;
         this.totalDonationAmount = totalDonationAmount;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.createAppUser = createAppUser;
+        this.createTime = createTime;
+        this.eventState = eventState;
     }
 
     public Long getDonationEventId() {
@@ -62,6 +76,14 @@ public class DonationEvent {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDetail() {
@@ -96,25 +118,49 @@ public class DonationEvent {
         this.currentDonationAmount = currentDonationAmount;
     }
 
-    public LocalDate getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDate startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDate getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDate endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public AppUser getCreateAppUser() {
+        return createAppUser;
+    }
+
+    public void setCreateAppUser(AppUser createAppUser) {
+        this.createAppUser = createAppUser;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public EventState getEventState() {
+        return eventState;
+    }
+
+    public void setEventState(EventState eventState) {
+        this.eventState = eventState;
     }
 
     public long getDaysLeft() {
         daysLeft = ChronoUnit.DAYS.between(startTime, endTime);
-        if(daysLeft <= 0) {
+        if (daysLeft <= 0) {
             daysLeft = 0;
         }
 
@@ -122,7 +168,7 @@ public class DonationEvent {
     }
 
     public long getProgressPercent() {
-        return (long)((double)currentDonationAmount / totalDonationAmount * 100);
+        return (long) ((double) currentDonationAmount / totalDonationAmount * 100);
     }
 
     public boolean getIsCompleted() {
@@ -133,21 +179,11 @@ public class DonationEvent {
         return getDaysLeft() <= 0;
     }
 
-    @Override
-    public String toString() {
-        return "DonationEvent [currentDonationAmount=" + currentDonationAmount + ", detail=" + detail
-                + ", donationEventId=" + donationEventId + ", endTime=" + endTime + ", images=" + images
-                + ", startTime=" + startTime + ", title=" + title + ", totalDonationAmount=" + totalDonationAmount + ", daysLeft=" + daysLeft
-                + "]";
+    public int getTotalDonationCount() {
+        return totalDonationCount;
     }
 
-    public int getTotalDonation() {
-        return totalDonation;
+    public void setTotalDonationCount(int totalDonationCount) {
+        this.totalDonationCount = totalDonationCount;
     }
-
-    public void setTotalDonation(int totalDonation) {
-        this.totalDonation = totalDonation;
-    }
-    
-    
 }

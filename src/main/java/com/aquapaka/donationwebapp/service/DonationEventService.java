@@ -2,7 +2,7 @@ package com.aquapaka.donationwebapp.service;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -32,7 +32,7 @@ public class DonationEventService {
 
         // Count total donation for each event
         for (DonationEvent donationEvent : donationEvents) {
-            donationEvent.setTotalDonation(donationRepository.countByDonationEvent(donationEvent));
+            donationEvent.setTotalDonationCount(donationRepository.countByDonationEvent(donationEvent));
         }
 
         // Count current donation amount for each event
@@ -83,7 +83,7 @@ public class DonationEventService {
 
         // Count total donation for each event
         for (DonationEvent donationEvent : donationEvents) {
-            donationEvent.setTotalDonation(donationRepository.countByDonationEvent(donationEvent));
+            donationEvent.setTotalDonationCount(donationRepository.countByDonationEvent(donationEvent));
         }
 
         // Count current donation amount for each event
@@ -111,7 +111,7 @@ public class DonationEventService {
         Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
 
         if(donationEventOptional.isPresent()) {
-            donationEventOptional.get().setTotalDonation(donationRepository.countByDonationEvent(donationEventOptional.get()));
+            donationEventOptional.get().setTotalDonationCount(donationRepository.countByDonationEvent(donationEventOptional.get()));
         }
 
         return donationEventOptional;
@@ -141,93 +141,95 @@ public class DonationEventService {
     }
 
     public ValidateDonationEventStatus updateDonationEventInfoById(long id, String title, String detail, String image, String total, String endTimeString) {
-        // Get donation event
-        Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
-        if(!donationEventOptional.isPresent()) return null;
-        DonationEvent donationEvent = donationEventOptional.get();
+        // // Get donation event
+        // Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
+        // if(!donationEventOptional.isPresent()) return null;
+        // DonationEvent donationEvent = donationEventOptional.get();
 
-        // Validate all fields
-        ValidateDonationEventStatus status = new ValidateDonationEventStatus();
+        // // Validate all fields
+        // ValidateDonationEventStatus status = new ValidateDonationEventStatus();
 
-        if(title.trim().isEmpty()) status.setTitleEmpty(true);
-        if(detail.trim().isEmpty()) status.setDetailEmpty(true);
-        if(image.trim().isEmpty()) status.setImageEmpty(true);
-        long totalAmount = 0;
-        if(total.trim().isEmpty()) {
-            status.setTotalDonationAmountEmpty(true);
-        } else {
-            try {
-                totalAmount = Long.parseLong(total);
-            } catch (Exception e) {
-                status.setTotalDonationAmountError(true);
-            }
-        }
-        if(totalAmount <= 0) status.setTotalDonationAmountError(true);
-        // Convert date string into localdate object
-        LocalDate endTime = LocalDate.now();
-        try {
-            String[] endTimeList = endTimeString.split("-");
-            endTime = LocalDate.of(Integer.parseInt(endTimeList[0]), Integer.parseInt(endTimeList[1]), Integer.parseInt(endTimeList[2]));
-            if(!endTime.isAfter(donationEvent.getStartTime())) status.setEndDateSmallerThanStartDate(true);
-        } catch (Exception e) {
-            status.setDateNotValid(true);
-        }
+        // if(title.trim().isEmpty()) status.setTitleEmpty(true);
+        // if(detail.trim().isEmpty()) status.setDetailEmpty(true);
+        // if(image.trim().isEmpty()) status.setImageEmpty(true);
+        // long totalAmount = 0;
+        // if(total.trim().isEmpty()) {
+        //     status.setTotalDonationAmountEmpty(true);
+        // } else {
+        //     try {
+        //         totalAmount = Long.parseLong(total);
+        //     } catch (Exception e) {
+        //         status.setTotalDonationAmountError(true);
+        //     }
+        // }
+        // if(totalAmount <= 0) status.setTotalDonationAmountError(true);
+        // // Convert date string into LocalDateTime object
+        // LocalDateTime endTime = LocalDateTime.now();
+        // try {
+        //     String[] endTimeList = endTimeString.split("-");
+        //     endTime = LocalDateTime.of(Integer.parseInt(endTimeList[0]), Integer.parseInt(endTimeList[1]), Integer.parseInt(endTimeList[2]));
+        //     if(!endTime.isAfter(donationEvent.getStartTime())) status.setEndDateSmallerThanStartDate(true);
+        // } catch (Exception e) {
+        //     status.setDateNotValid(true);
+        // }
 
-        if(!status.isValidDonationEvent()) return status;
+        // if(!status.isValidDonationEvent()) return status;
 
-        // Update donation event info
-        donationEvent.setTitle(title);
-        donationEvent.setDetail(detail);
-        donationEvent.setImages(image);
-        donationEvent.setTotalDonationAmount(totalAmount);
-        donationEvent.setEndTime(endTime);
+        // // Update donation event info
+        // donationEvent.setTitle(title);
+        // donationEvent.setDetail(detail);
+        // donationEvent.setImages(image);
+        // donationEvent.setTotalDonationAmount(totalAmount);
+        // donationEvent.setEndTime(endTime);
 
-        // Save donation event
-        donationEventRepository.save(donationEvent);
+        // // Save donation event
+        // donationEventRepository.save(donationEvent);
 
-        return status;
+        // return status;
+        return null;
     }
 
     public ValidateDonationEventStatus addDonationEvent(String title, String detail, String image, String total, String startTimeString, String endTimeString) {
 
-        // Validate all fields
-        ValidateDonationEventStatus status = new ValidateDonationEventStatus();
+        // // Validate all fields
+        // ValidateDonationEventStatus status = new ValidateDonationEventStatus();
 
-        if(title.trim().isEmpty()) status.setTitleEmpty(true);
-        if(detail.trim().isEmpty()) status.setDetailEmpty(true);
-        if(image.trim().isEmpty()) status.setImageEmpty(true);
-        long totalAmount = 0;
-        if(total.trim().isEmpty()) {
-            status.setTotalDonationAmountEmpty(true);
-        } else {
-            try {
-                totalAmount = Long.parseLong(total);
-            } catch (Exception e) {
-                status.setTotalDonationAmountError(true);
-            }
-        }
-        if(totalAmount <= 0) status.setTotalDonationAmountError(true);
-        LocalDate startTime = LocalDate.now();
-        LocalDate endTime = LocalDate.now();
-        try {
-            // Parse time string into localDate
-            String[] timeList = startTimeString.split("-");
-            startTime = LocalDate.of(Integer.parseInt(timeList[0]), Integer.parseInt(timeList[1]), Integer.parseInt(timeList[2]));
-            timeList = endTimeString.split("-");
-            endTime = LocalDate.of(Integer.parseInt(timeList[0]), Integer.parseInt(timeList[1]), Integer.parseInt(timeList[2]));
-            if(!endTime.isAfter(startTime)) status.setEndDateSmallerThanStartDate(true);
-        } catch (Exception e) {
-            status.setDateNotValid(true);
-        }
-        // Return without add if there is an error
-        if(!status.isValidDonationEvent()) return status;
+        // if(title.trim().isEmpty()) status.setTitleEmpty(true);
+        // if(detail.trim().isEmpty()) status.setDetailEmpty(true);
+        // if(image.trim().isEmpty()) status.setImageEmpty(true);
+        // long totalAmount = 0;
+        // if(total.trim().isEmpty()) {
+        //     status.setTotalDonationAmountEmpty(true);
+        // } else {
+        //     try {
+        //         totalAmount = Long.parseLong(total);
+        //     } catch (Exception e) {
+        //         status.setTotalDonationAmountError(true);
+        //     }
+        // }
+        // if(totalAmount <= 0) status.setTotalDonationAmountError(true);
+        // LocalDateTime startTime = LocalDateTime.now();
+        // LocalDateTime endTime = LocalDateTime.now();
+        // try {
+        //     // Parse time string into LocalDateTime
+        //     String[] timeList = startTimeString.split("-");
+        //     startTime = LocalDateTime.of(Integer.parseInt(timeList[0]), Integer.parseInt(timeList[1]), Integer.parseInt(timeList[2]));
+        //     timeList = endTimeString.split("-");
+        //     endTime = LocalDateTime.of(Integer.parseInt(timeList[0]), Integer.parseInt(timeList[1]), Integer.parseInt(timeList[2]));
+        //     if(!endTime.isAfter(startTime)) status.setEndDateSmallerThanStartDate(true);
+        // } catch (Exception e) {
+        //     status.setDateNotValid(true);
+        // }
+        // // Return without add if there is an error
+        // if(!status.isValidDonationEvent()) return status;
 
-        // Create donation event
-        DonationEvent donationEvent = new DonationEvent(title, detail, image, totalAmount, startTime, endTime);
+        // // Create donation event
+        // DonationEvent donationEvent = new DonationEvent(title, detail, image, totalAmount, startTime, endTime);
 
-        // Save donation event into database
-        donationEventRepository.save(donationEvent);
+        // // Save donation event into database
+        // donationEventRepository.save(donationEvent);
 
-        return status;
+        // return status;
+        return null;
     }
 }
