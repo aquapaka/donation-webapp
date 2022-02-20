@@ -188,72 +188,95 @@ function editDonationEventConfirm() {
     });
 }
 
+let editor;
+
 function addDonationEvent() {
     var addDonationEventModal = new bootstrap.Modal(document.getElementById('addDonationEventModal'), true);
-
-    $("#addDonationEventStartTime").val(getFormatedTodayTime());
 
     addDonationEventModal.show();
 }
 
 function addDonationEventConfirm() {
     var title = $("#addDonationEventTitle").val();
-    var detail = $("#addDonationEventDetail").val();
-    var image = $("#addDonationEventImage").val();
+    var description = $("#addDonationEventDescription").val();
+    var detail = editor.getData();
+    var imageFiles = $('#addDonationEventImage').prop("files");
     var total = $("#addDonationEventTotal").val();
     var startTime = $("#addDonationEventStartTime").val();
     var endTime = $("#addDonationEventEndTime").val();
+    var eventState = $("input:radio[name=eventState]:checked").val();
 
-    $.ajax({
-        type: "POST",
-        url: "/DonationEvent/",
-        data: {
-            title : title,
-            detail : detail,
-            image : image,
-            total : total,
-            startTime : startTime,
-            endTime : endTime
-        },
-        dataType: "json",
-        success: function (response) {
-            if(response.titleEmpty) $("#addTitleEmpty").attr("hidden", false);
-            else $("#addTitleEmpty").attr("hidden", true);
-            if(response.detailEmpty) $("#addDetailEmpty").attr("hidden", false);
-            else $("#addDetailEmpty").attr("hidden", true);
-            if(response.imageEmpty) $("#addImageEmpty").attr("hidden", false);
-            else $("#addImageEmpty").attr("hidden", true);
-            if(response.totalDonationAmountEmpty) $("#addTotalDonationAmountEmpty").attr("hidden", false);
-            else $("#addTotalDonationAmountEmpty").attr("hidden", true);
-            if(response.totalDonationAmountError) $("#addTotalDonationAmountError").attr("hidden", false);
-            else $("#addTotalDonationAmountError").attr("hidden", true);
-            if(response.dateNotValid) $("#addDateNotValid").attr("hidden", false);
-            else $("#addDateNotValid").attr("hidden", true);
-            if(response.endDateSmallerThanStartDate) $("#addEndDateSmallerThanStartDate").attr("hidden", false);
-            else $("#addEndDateSmallerThanStartDate").attr("hidden", true);
+    if(imageFiles.length == 0) $("#addImageEmpty").attr("hidden", false);
+    
+    // Convert image data
+    var image = "";
+    getBase64(imageFiles[0])
+    .then(data => image = data)
+    .finally( () => {
+        $.ajax({
+            type: "POST",
+            url: "/DonationEvent/",
+            data: {
+                title : title,
+                description : description,
+                detail : detail,
+                image : image,
+                total : total,
+                startTime : startTime,
+                endTime : endTime,
+                eventState : eventState
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.titleEmpty) $("#addTitleEmpty").attr("hidden", false);
+                else $("#addTitleEmpty").attr("hidden", true);
+                if(response.detailEmpty) $("#addDetailEmpty").attr("hidden", false);
+                else $("#addDetailEmpty").attr("hidden", true);
+                if(response.descriptionEmpty) $("#addDescriptionEmpty").attr("hidden", false);
+                else $("#addDescriptionEmpty").attr("hidden", true);
+                if(response.imageEmpty) $("#addImageEmpty").attr("hidden", false);
+                else $("#addImageEmpty").attr("hidden", true);
+                if(response.totalDonationAmountEmpty) $("#addTotalDonationAmountEmpty").attr("hidden", false);
+                else $("#addTotalDonationAmountEmpty").attr("hidden", true);
+                if(response.totalDonationAmountError) $("#addTotalDonationAmountError").attr("hidden", false);
+                else $("#addTotalDonationAmountError").attr("hidden", true);
+                if(response.dateNotValid) $("#addDateNotValid").attr("hidden", false);
+                else $("#addDateNotValid").attr("hidden", true);
+                if(response.endDateSmallerThanStartDate) $("#addEndDateSmallerThanStartDate").attr("hidden", false);
+                else $("#addEndDateSmallerThanStartDate").attr("hidden", true);
 
-            if(response.validDonationEvent) {
-                window.location.replace("/donationEventManagement");
-                    alert("Added new donation event " + title);
-                    return;
+                if(response.validDonationEvent) {
+                    window.location.replace("/donationEventManagement");
+                        alert("Added new donation event " + title);
+                        return;
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                return;
             }
-        },
-        error: function (error) {
-            console.log("ERROR" + error);
-            return;
-        }
+        });
     });
 }
 
-function getFormatedTodayTime() {
-    // Get and set start time to today
-    var date = new Date();
-    var day, month, year;
-    if(date.getDate() < 10) day = "0" + date.getDate();
-    else day = date.getDate();
-    if(date.getMonth() + 1 < 10) month = "0" + (date.getMonth() + 1);
-    else month = date.getMonth() + 1;
-    year = date.getFullYear();
-
-    return year+"-"+month+"-"+day;
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);  
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 }
+
+// function getFormatedTodayTime() {
+//     // Get and set start time to today
+//     var date = new Date();
+//     var day, month, year;
+//     if(date.getDate() < 10) day = "0" + date.getDate();
+//     else day = date.getDate();
+//     if(date.getMonth() + 1 < 10) month = "0" + (date.getMonth() + 1);
+//     else month = date.getMonth() + 1;
+//     year = date.getFullYear();
+
+//     return year+"-"+month+"-"+day;
+// }

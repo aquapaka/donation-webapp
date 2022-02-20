@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -24,8 +25,10 @@ public class DonationEvent {
     private Long donationEventId;
     private String title;
     private String description;
+    @Lob
     private String detail;
-    private String images;
+    @Lob
+    private String image;
     private long totalDonationAmount;
     @Transient
     private long currentDonationAmount;
@@ -51,13 +54,13 @@ public class DonationEvent {
 
     }
 
-    public DonationEvent(String title, String description, String detail, String images, long totalDonationAmount,
+    public DonationEvent(String title, String description, String detail, String image, long totalDonationAmount,
             LocalDateTime startTime, LocalDateTime endTime, AppUser createAppUser, LocalDateTime createTime,
             EventState eventState) {
         this.title = title;
         this.description = description;
         this.detail = detail;
-        this.images = images;
+        this.image = image;
         this.totalDonationAmount = totalDonationAmount;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -94,12 +97,12 @@ public class DonationEvent {
         this.detail = detail;
     }
 
-    public String getImages() {
-        return images;
+    public String getImage() {
+        return image;
     }
 
-    public void setImages(String images) {
-        this.images = images;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getTotalDonationAmount() {

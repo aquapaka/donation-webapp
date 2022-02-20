@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.DonationEvent;
+import com.aquapaka.donationwebapp.model.state.EventState;
 import com.aquapaka.donationwebapp.model.status.ValidateDonationEventStatus;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
@@ -79,13 +80,30 @@ public class DonationEventController {
     @PostMapping("/DonationEvent")
     public @ResponseBody ValidateDonationEventStatus addDonationEvent(
     @RequestParam String title,
+    @RequestParam String description,
     @RequestParam String detail,
     @RequestParam String image,
     @RequestParam String total,
     @RequestParam String startTime,
-    @RequestParam String endTime
-    ) {        
-        return donationEventService.addDonationEvent(title, detail, image, total, startTime, endTime);
+    @RequestParam String endTime,
+    @RequestParam String eventState,
+    HttpServletRequest request
+    ) {
+        // Get account data from session
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        String password = (String) session.getAttribute("password");
+        AppUser appUser = appUserService.validateAppUser(email, password);
+
+        // Parse event state
+        EventState state;
+        if(eventState.equals(EventState.ACTIVE.name())) 
+            state = EventState.ACTIVE;
+        else if (eventState.equals(EventState.INACTIVE.name())) 
+            state = EventState.INACTIVE;
+        else throw new IllegalStateException("Event state not valid!");
+
+        return donationEventService.addDonationEvent(title, description, detail, image, total, startTime, endTime, appUser, state);
     }
 
     @PutMapping("/DonationEvent/{id}")

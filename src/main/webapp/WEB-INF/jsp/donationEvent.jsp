@@ -23,19 +23,19 @@
     <jsp:include page="header.jsp"/>
     <main id="donationEvent" class="container-fluid py-3 py-md-4">
         <section class="container donationEventCard py-3">
-            <h2><b>${donationEvent.title}</b></h2>
+            <h2><strong>${donationEvent.title}</strong></h2>
             <div class="row">
                 <div class="col-12 col-md-8">
-                    <img class="img-fluid round-border" src="${donationEvent.images}" alt="${donationEvent.title}">
-                    <h3 class="mt-3"><b>Thông tin chi tiết</b></h3>
+                    <img class="img-fluid round-border" src="${donationEvent.image}" alt="${donationEvent.title}">
+                    <h3 class="mt-3"><strong>Thông tin chi tiết</strong></h3>
                     <p>${donationEvent.detail}</p>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="donationEventCard overflow-hidden p-3">
-                        <h3 class=""><b>Thông tin quyên góp</b></h3>
+                        <h3 class=""><strong>Thông tin quyên góp</strong></h3>
                         <!-- Time left -->
                         <p class="text-end">
-                            <i>
+                            <em>
                                 <c:choose>
                                     <c:when test="${donationEvent.isCompleted}">
                                         Đã hoàn thành
@@ -47,11 +47,11 @@
                                         Còn ${donationEvent.daysLeft} ngày
                                     </c:otherwise>
                                 </c:choose>
-                            </i>
+                            </em>
                         </p>
                         <!-- Progress bar -->
                         <div class="w-100">
-                            <b><fmt:formatNumber value="${donationEvent.currentDonationAmount}" type="number"/></b> / <fmt:formatNumber value="${donationEvent.totalDonationAmount}" type="number"/>
+                            <strong><fmt:formatNumber value="${donationEvent.currentDonationAmount}" type="number"/></strong> / <fmt:formatNumber value="${donationEvent.totalDonationAmount}" type="number"/>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated <c:if test="${donationEvent.isCompleted}">bg-success</c:if>" role="progressbar" style="width: ${donationEvent.progressPercent}%"></div>
                             </div>
@@ -60,11 +60,11 @@
                         <div class="d-flex justify-content-between align-items-end mt-2">
                             <div>
                                 Tổng số lượt<br>
-                                <b><fmt:formatNumber value="${donationEvent.totalDonationCount}" type="number"/></b>
+                                <strong><fmt:formatNumber value="${donationEvent.totalDonationCount}" type="number"/></strong>
                             </div>
                             <div>
                                 Tiến độ<br>
-                                <b>${donationEvent.progressPercent}%</b>
+                                <strong>${donationEvent.progressPercent}%</strong>
                             </div> 
                             <div>
                                 <a href="${pageContext.request.contextPath}/donationEvent?id=${donationEvent.donationEventId}"><button type="button" class="btn 

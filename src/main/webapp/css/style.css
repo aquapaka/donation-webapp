@@ -1,3 +1,11 @@
+/*
+	We need to add this CSS custom property to the body instead of :root,
+	because of CSS specificity.
+*/
+body {
+	--ck-z-default: 100;
+	--ck-z-modal: calc( var(--ck-z-default) + 999 );
+}
 
 * {
     font-family: Nunito, Arial, Helvetica, sans-serif;

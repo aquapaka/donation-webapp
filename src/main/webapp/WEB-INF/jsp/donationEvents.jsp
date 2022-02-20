@@ -11,7 +11,7 @@
             <c:forEach var="donationEvent" items="${donationEvents}">
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="donationEventCard overflow-hidden p-0 h-100 d-flex flex-column justify-content-between">
-                        <img class="" src="${donationEvent.images}" alt="${donationEvent.title}">
+                        <img class="" src="${donationEvent.image}" alt="${donationEvent.title}">
                         <h3 class="px-3 pt-3"><b>${donationEvent.title}</b></h3>
                         <div class="p-2 p-md-3">  
                             <div class="d-flex flex-column">

@@ -2,14 +2,24 @@ package com.aquapaka.donationwebapp.model.status;
 
 public class ValidateDonationEventStatus {
     private boolean titleEmpty;
-    private boolean totalDonationAmountEmpty;
-    private boolean totalDonationAmountError;
+    private boolean descriptionEmpty;
     private boolean detailEmpty;
     private boolean imageEmpty;
+    private boolean totalDonationAmountEmpty;
+    private boolean totalDonationAmountError;
     private boolean dateNotValid;
     private boolean endDateSmallerThanStartDate;
 
+    public boolean isDescriptionEmpty() {
+        return descriptionEmpty;
+    }
+
+    public void setDescriptionEmpty(boolean descriptionEmpty) {
+        this.descriptionEmpty = descriptionEmpty;
+    }
+
     public ValidateDonationEventStatus() {
+        // Empty Constructor, all field already have default value
     }
 
     public boolean isTotalDonationAmountError() {
@@ -69,6 +79,6 @@ public class ValidateDonationEventStatus {
     }
 
     public boolean isValidDonationEvent() {
-        return !isDetailEmpty() && !isEndDateSmallerThanStartDate() && !isImageEmpty() && !isTitleEmpty() && !isTotalDonationAmountEmpty() && !isTotalDonationAmountError() && !isDateNotValid();
+        return !isDetailEmpty() && !isDescriptionEmpty() && !isEndDateSmallerThanStartDate() && !isImageEmpty() && !isTitleEmpty() && !isTotalDonationAmountEmpty() && !isTotalDonationAmountError() && !isDateNotValid();
     }
 }
