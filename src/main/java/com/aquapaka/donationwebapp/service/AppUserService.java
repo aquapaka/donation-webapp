@@ -75,7 +75,7 @@ public class AppUserService {
 
         // Register new appUser if all requirements are met
         if(registerStatus.isRegisterSuccess()) {
-            AppUser appUser = new AppUser(email, password, username, "noname", LocalDate.of(2000, 1, 1), false, 0, Role.USER);
+            AppUser appUser = new AppUser(email, password, username, "noname", LocalDate.of(2000, 1, 1), false, "Not set", Role.USER);
             appUserRepository.save(appUser);
         }
 
@@ -96,7 +96,7 @@ public class AppUserService {
         LocalDate dob = LocalDate.of(Integer.parseInt(dateOfBirthList[0]), Integer.parseInt(dateOfBirthList[1]), Integer.parseInt(dateOfBirthList[2]));
         appUser.setDateOfBirth(dob);
         appUser.setGender(gender);
-        appUser.setPhoneNumber(Integer.parseInt(phoneNumber));
+        appUser.setPhoneNumber(phoneNumber);
         appUser.setRole(role);
 
         // Save app user

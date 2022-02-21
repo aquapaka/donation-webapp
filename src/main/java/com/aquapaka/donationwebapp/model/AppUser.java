@@ -24,7 +24,7 @@ public class AppUser {
     private String fullname;
     private LocalDate dateOfBirth;
     private boolean gender;
-    private int phoneNumber;
+    private String phoneNumber;
     private Role role;
 
     public AppUser() {
@@ -32,7 +32,7 @@ public class AppUser {
     }
     
     public AppUser(String email, String password, String username, String fullname, LocalDate dateOfBirth, boolean gender,
-            int phoneNumber, Role role) {
+            String phoneNumber, Role role) {
         this.email = email;
         this.password = password;
         this.username = username;
@@ -95,11 +95,11 @@ public class AppUser {
         this.gender = gender;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
