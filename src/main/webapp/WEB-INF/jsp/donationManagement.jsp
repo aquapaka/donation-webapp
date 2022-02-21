@@ -41,7 +41,7 @@
                             <td>${donation.donationId}</td>
                             <td>${donation.donationEvent.title} (Id: ${donation.donationEvent.donationEventId})</td>
                             <td>${donation.appUser.fullname} (${donation.appUser.username})(Id: ${donation.appUser.appUserId})</td>
-                            <td>${donation.date}</td>
+                            <td>${donation.donationTime}</td>
                             <td><fmt:formatNumber value="${donation.donationAmount}" type="number"/></td>
                         </tr>
                     </c:forEach>

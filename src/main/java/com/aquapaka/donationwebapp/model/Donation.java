@@ -1,6 +1,6 @@
 package com.aquapaka.donationwebapp.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,17 +24,17 @@ public class Donation {
     @OneToOne
     @JoinColumn(name = "donation_event_id", referencedColumnName = "donation_event_id")
     private DonationEvent donationEvent;
-    private LocalDate date;
+    private LocalDateTime donationTime;
     private Long donationAmount;
 
     public Donation() {
         
     }
     
-    public Donation(AppUser appUser, DonationEvent donationEvent, LocalDate date, Long donationAmount) {
+    public Donation(AppUser appUser, DonationEvent donationEvent, LocalDateTime donationTime, Long donationAmount) {
         this.appUser = appUser;
         this.donationEvent = donationEvent;
-        this.date = date;
+        this.donationTime = donationTime;
         this.donationAmount = donationAmount;
     }
 
@@ -58,12 +58,12 @@ public class Donation {
         this.donationEvent = donationEvent;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getDonationTime() {
+        return donationTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDonationTime(LocalDateTime donationTime) {
+        this.donationTime = donationTime;
     }
 
     public Long getDonationAmount() {
