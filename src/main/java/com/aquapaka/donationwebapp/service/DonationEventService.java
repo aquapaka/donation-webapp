@@ -3,6 +3,7 @@ package com.aquapaka.donationwebapp.service;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -164,7 +165,7 @@ public class DonationEventService {
         if (!endTime.isAfter(startTime))
             status.setEndDateSmallerThanStartDate(true);
         
-        LocalDateTime createTime = LocalDateTime.now();
+        LocalDateTime createTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
 
         // Return without add if there is an error
         if (!status.isValidDonationEvent())

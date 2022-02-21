@@ -41,7 +41,8 @@ function deleteDonationEvent(id) {
         url: "/DonationEvent/" + id,
         dataType: "json",
         success: function (response) {
-            $("#donationEventDeleteInfo").html(response.title + "(id: " + id + ")");
+            $("#donationEventDeleteInfo").html(response.title);
+            $("#donationEventDeleteId").html(id);
         },
         error: function () {
             return;
@@ -59,12 +60,11 @@ function deleteDonationEventConfirm() {
         url: "/DonationEvent/" + id,
         dataType: "json",
         success: function (response) {
-            alert("Deleted user id " + id);
+            alert("Deleted donation event id " + id);
             window.location.replace("/donationEventManagement");
         },
         error: function (error) {
             alert("Error, can't delete donation event " + id);
-            return;
         }
     });
 }
@@ -108,7 +108,6 @@ function deleteDonationEventsConfirm() {
         },
         error: function (error) {
             alert("Error, can't delete donation events");
-            return;
         }
     });
 }
@@ -133,7 +132,6 @@ function editDonationEvent(id) {
         },
         error: function (error, response) {
             alert("Not found donation event id " + id); 
-               return;
         }
     });
 
@@ -178,12 +176,10 @@ function editDonationEventConfirm() {
             if(response.validDonationEvent) {
                 window.location.replace("/donationEventManagement");
                     alert("Edited donation event id " + donationEventId);
-                    return;
             }
         },
         error: function (error) {
             console.log("ERROR" + error);
-            return;
         }
     });
 }
@@ -248,12 +244,10 @@ function addDonationEventConfirm() {
                 if(response.validDonationEvent) {
                     window.location.replace("/donationEventManagement");
                         alert("Added new donation event " + title);
-                        return;
                 }
             },
             error: function (error) {
                 console.log(error);
-                return;
             }
         });
     });
@@ -267,16 +261,3 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
-
-// function getFormatedTodayTime() {
-//     // Get and set start time to today
-//     var date = new Date();
-//     var day, month, year;
-//     if(date.getDate() < 10) day = "0" + date.getDate();
-//     else day = date.getDate();
-//     if(date.getMonth() + 1 < 10) month = "0" + (date.getMonth() + 1);
-//     else month = date.getMonth() + 1;
-//     year = date.getFullYear();
-
-//     return year+"-"+month+"-"+day;
-// }

@@ -95,10 +95,11 @@
                                             <td>
                                                 <fmt:formatNumber value="${donationEvent.totalDonationAmount}" type="number" />
                                             </td>
-                                            <td><fmt:formatDate pattern="HH-mm dd-MM-yyyy" value="${donationEvent.startTime}" /></td>
-                                            <td><fmt:formatDate pattern="HH-mm dd-MM-yyyy" value="${donationEvent.endTime}" /></td>
+                                            
+                                            <td>${donationEvent.startTime}</td>
+                                            <td>${donationEvent.endTime}</td>
                                             <td>${donationEvent.createAppUser.username}</td>
-                                            <td><fmt:formatDate type="both" pattern="HH-mm dd-MM-yyyy" value="${donationEvent.createTime}" /></td>
+                                            <td>${donationEvent.createTime} </td>
                                             <td>
                                                 <c:if test="${donationEvent.eventState == 'INACTIVE'}"><span class="text-secondary">Chưa kích hoạt</span></c:if>
                                                 <c:if test="${donationEvent.eventState == 'ACTIVE'}"><span class="text-success">Kích hoạt</span></c:if>
@@ -129,7 +130,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Bạn có chắc chắn muốn xoá sự kiện <strong id="donationEventDeleteInfo">...</strong></p>
+                                <p>Bạn có chắc chắn muốn xoá sự kiện <strong id="donationEventDeleteInfo">...</strong> (id: <strong id="donationEventDeleteId">id</strong>)</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
