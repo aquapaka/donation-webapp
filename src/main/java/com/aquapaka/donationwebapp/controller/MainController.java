@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.Donation;
 import com.aquapaka.donationwebapp.model.DonationEvent;
+import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
 import com.aquapaka.donationwebapp.service.DonationService;
@@ -63,7 +64,7 @@ public class MainController {
         if(appUser == null) {
             return "redirect:/";
         } else {
-            if(!appUser.getRole().equals("ADMIN")) {
+            if(appUser.getRole() != Role.ADMIN) {
                 return "redirect:/";
             }
         }
@@ -90,7 +91,7 @@ public class MainController {
         if(appUser == null) {
             return "redirect:/";
         } else {
-            if(!appUser.getRole().equals("ADMIN")) {
+            if(appUser.getRole() != Role.ADMIN) {
                 return "redirect:/";
             }
         }
@@ -121,7 +122,7 @@ public class MainController {
         if(appUser == null) {
             return "redirect:/";
         } else {
-            if(!appUser.getRole().equals("ADMIN")) {
+            if(appUser.getRole() != Role.ADMIN) {
                 return "redirect:/";
             }
         }
