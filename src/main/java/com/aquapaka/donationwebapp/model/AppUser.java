@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.aquapaka.donationwebapp.model.state.Role;
+
 @Entity
 @Table
 public class AppUser {
@@ -23,14 +25,14 @@ public class AppUser {
     private LocalDate dateOfBirth;
     private boolean gender;
     private int phoneNumber;
-    private String role;
+    private Role role;
 
     public AppUser() {
         
     }
     
     public AppUser(String email, String password, String username, String fullname, LocalDate dateOfBirth, boolean gender,
-            int phoneNumber, String role) {
+            int phoneNumber, Role role) {
         this.email = email;
         this.password = password;
         this.username = username;
@@ -101,11 +103,11 @@ public class AppUser {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.aquapaka.donationwebapp.model.AppUser;
+import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.model.status.RegisterStatus;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -118,7 +119,16 @@ public class AppUserController {
     @RequestParam String phoneNumber,
     @RequestParam String role
     ) {
-        appUserService.updateAppUserInfoById(id, fullname, dateOfBirth, gender, phoneNumber, role);
+        Role userRole;
+        if (role.equals(Role.USER.name())) {
+            userRole = Role.USER;
+        } else if (role.equals(Role.ADMIN.name())) {
+            userRole = Role.ADMIN;
+        } else {
+            throw new IllegalStateException("Event state not valid!");
+        }
+
+        appUserService.updateAppUserInfoById(id, fullname, dateOfBirth, gender, phoneNumber, userRole);
         
         return "true";
     }

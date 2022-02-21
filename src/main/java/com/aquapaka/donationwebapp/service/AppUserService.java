@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.aquapaka.donationwebapp.model.AppUser;
+import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.model.status.RegisterStatus;
 import com.aquapaka.donationwebapp.repository.AppUserRepository;
 import com.aquapaka.donationwebapp.validator.AppUserValidator;
@@ -74,7 +75,7 @@ public class AppUserService {
 
         // Register new appUser if all requirements are met
         if(registerStatus.isRegisterSuccess()) {
-            AppUser appUser = new AppUser(email, password, username, "noname", LocalDate.of(2000, 1, 1), false, 0, "USER");
+            AppUser appUser = new AppUser(email, password, username, "noname", LocalDate.of(2000, 1, 1), false, 0, Role.USER);
             appUserRepository.save(appUser);
         }
 
@@ -85,7 +86,7 @@ public class AppUserService {
         appUserRepository.deleteById(id);
     }
 
-    public void updateAppUserInfoById(long id, String fullname, String dateOfBirth, boolean gender, String phoneNumber, String role) {
+    public void updateAppUserInfoById(long id, String fullname, String dateOfBirth, boolean gender, String phoneNumber, Role role) {
         // Get app user
         AppUser appUser = appUserRepository.getById(id);
 
