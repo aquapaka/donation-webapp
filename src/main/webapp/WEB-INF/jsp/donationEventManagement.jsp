@@ -84,10 +84,9 @@
                                         <tr>
                                             <td><input type="checkbox" name="checkBoxItem" value="${donationEvent.donationEventId}"></td>
                                             <td>${donationEvent.donationEventId}</td>
-                                            <td name="title">${donationEvent.title}</td>
-                                            <td>${donationEvent.description}</td>
-                                            <td><a href="${donationEvent.image}"><img class="small-image" src="${donationEvent.image}" alt=""></a>
-                                            </td>
+                                            <td name="title" class="fixedCol">${donationEvent.title}</td>
+                                            <td class="fixedCol">${donationEvent.description}</td>
+                                            <td><img class="small-image" src="${donationEvent.image}" alt="" onclick="openBase64('${donationEvent.image}')"></td>
                                             <td>
                                                 <fmt:formatNumber value="${donationEvent.currentDonationAmount}" type="number" />
                                                 (<fmt:formatNumber value="${donationEvent.progressPercent/100}" type="percent" />)
@@ -164,7 +163,7 @@
 
                 <!-- Edit donation event modal -->
                 <div class="modal fade" id="editDonationEventModal" tabindex="-1" data-bs-backdrop="static">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Chỉnh sửa thông tin sự kiện</h5>
@@ -172,7 +171,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body row">
-                                <div class="mb-3 col-4">
+                                <div class="mb-3 col-1">
                                     <label for="appUserId" class="form-label">Id</label>
                                     <input type="text" class="form-control" value="" id="donationEventId" readonly>
                                 </div>
@@ -182,38 +181,64 @@
                                     <span id="titleEmpty" class="form-text text-danger" hidden>Tiêu đề không được để
                                         trống</span>
                                 </div>
-                                <div class="mb-3 col-12">
-                                    <label for="donationEventDetail" class="form-label">Thông tin chi tiết</label>
-                                    <textarea class="form-control" id="donationEventDetail"></textarea>
-                                    <span id="detailEmpty" class="form-text text-danger" hidden>Thông tin chi tiết không
-                                        được để trống</span>
-                                </div>
-                                <div class="mb-3 col-8">
-                                    <label for="donationEventImage" class="form-label">Url hình ảnh</label>
-                                    <input type="text" class="form-control" value="" id="donationEventImage">
-                                    <span id="imageEmpty" class="form-text text-danger" hidden>Url hình ảnh không được
-                                        để trống</span>
-                                </div>
-                                <div class="mb-3 col-4">
-                                    <label for="donationEventTotal" class="form-label">Tổng số tiền</label>
+                                <div class="mb-3 col-3">
+                                    <label for="donationEventTotal" class="form-label">Số tiền mục tiêu</label>
                                     <input type="number" class="form-control" value="" id="donationEventTotal">
                                     <span id="totalDonationAmountEmpty" class="form-text text-danger" hidden>Số tiền
                                         không được để trống</span>
                                     <span id="totalDonationAmountError" class="form-text text-danger" hidden>Số tiền
                                         không hợp lệ</span>
                                 </div>
-                                <div class="mb-3 col-6">
-                                    <label for="donationEventStartTime" class="form-label">Thời gian bắt đầu</label>
-                                    <input type="date" class="form-control" value="" id="donationEventStartTime"
-                                        readonly>
+                                <div class="mb-3 col-12">
+                                    <label for="donationEventDescription" class="form-label">Mô tả ngắn</label>
+                                    <input type="text" class="form-control" value="" id="donationEventDescription">
+                                    <span id="descriptionEmpty" class="form-text text-danger" hidden>Mô tả ngắn không
+                                        được để trống</span>
                                 </div>
-                                <div class="mb-3 col-6">
-                                    <label for="donationEventEndTime" class="form-label">Thời gian kết thúc</label>
-                                    <input type="date" class="form-control" value="" id="donationEventEndTime">
+                                <div class="mb-3 col-12">
+                                    <label for="donationEventDetail" class="form-label">Thông tin chi tiết</label>
+                                    <div class="form-control border" id="donationEventDetail" style="min-height: 350px;"></div>
+                                    <script>
+                                        InlineEditor
+                                            .create(document.querySelector('#donationEventDetail'))
+                                            .then(newEditor => {
+                                                editor = newEditor;
+                                            })
+                                            .catch(error => {
+                                                console.error(error);
+                                            });
+                                    </script>
+                                    <span id="detailEmpty" class="form-text text-danger" hidden>Thông tin chi tiết
+                                        không được để trống</span>
+                                </div>
+                                <div class="mb-3 col-4">
+                                    <label for="donationEventImage" class="form-label">Hình ảnh đại diện</label>
+                                    <input type="file" class="form-control" id="donationEventImage" accept="image/*">
+                                    <span id="imageEmpty" class="form-text text-danger" hidden>Cần tải lên một hình ảnh</span>
+                                    <input id="imageData" type="text" hidden>
+                                </div>
+                                <div class="mb-3 col-3">
+                                    <label for="donationEventStartTime" class="form-label">Thời gian bắt đầu</label>
+                                    <input type="datetime-local" class="form-control" value="" id="donationEventStartTime">
                                     <span id="dateNotValid" class="form-text text-danger" hidden>Thời gian không hợp
                                         lệ</span>
-                                    <span id="endDateSmallerThanStartDate" class="form-text text-danger" hidden>Thời
-                                        gian kết thúc phải nằm sau thời gian bắt đầu</span>
+                                </div>
+                                <div class="mb-3 col-3">
+                                    <label for="donationEventEndTime" class="form-label">Thời gian kết thúc</label>
+                                    <input type="datetime-local" class="form-control" value="" id="donationEventEndTime">
+                                    <span id="endDateSmallerThanStartDate" class="form-text text-danger" hidden>Thời gian
+                                        kết thúc phải nằm sau thời gian bắt đầu</span>
+                                </div>
+                                <div class="mb-3 col-2">
+                                    <label for="eventState" class="form-label">Trạng thái</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="eventState" id="inactive" value="INACTIVE">
+                                        <label class="form-check-label" for="inactive">Chưa kích hoạt</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="eventState" id="active" value="ACTIVE">
+                                        <label class="form-check-label" for="active">Kích hoạt</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -261,8 +286,8 @@
                                     <script>
                                         InlineEditor
                                         .create( document.querySelector( '#addDonationEventDetail' ) )
-                                        .then(newEditor => {
-                                                editor = newEditor;
+                                        .then(newAddEditor => {
+                                                addEditor = newAddEditor;
                                             })
                                         .catch( error => {
                                             console.error( error );
@@ -289,14 +314,14 @@
                                         kết thúc phải nằm sau thời gian bắt đầu</span>
                                 </div>
                                 <div class="mb-3 col-2">
-                                    <label for="eventState" class="form-label">Trạng thái</label><br>
+                                    <label for="addEventState" class="form-label">Trạng thái</label><br>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="eventState" id="addDeactive"
+                                        <input class="form-check-input" type="radio" name="addEventState" id="addInactive"
                                             value="INACTIVE" checked>
-                                        <label class="form-check-label" for="addDeactive">Chưa kích hoạt</label>
+                                        <label class="form-check-label" for="addInactive">Chưa kích hoạt</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="eventState" id="addActive"
+                                        <input class="form-check-input" type="radio" name="addEventState" id="addActive"
                                             value="ACTIVE">
                                         <label class="form-check-label" for="addActive">Kích hoạt</label>
                                     </div>

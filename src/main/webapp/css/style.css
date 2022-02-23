@@ -68,6 +68,10 @@ textarea {
     height: 10px;
 }
 
+.fixedCol {
+    width: 15vw;
+}
+
 /* Sections */
 main, footer {
     background-color: #bde7ff;

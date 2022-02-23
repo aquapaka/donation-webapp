@@ -1,6 +1,10 @@
 package com.aquapaka.donationwebapp.validator;
 
 public class AppUserValidator {
+    private AppUserValidator() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
         ^[a-zA-Z0-9]      # start with an alphanumeric character
         (                 # start of (group 1)

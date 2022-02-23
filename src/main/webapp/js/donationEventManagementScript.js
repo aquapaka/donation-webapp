@@ -112,6 +112,8 @@ function deleteDonationEventsConfirm() {
     });
 }
 
+let editor;
+
 function editDonationEvent(id) {
     var editDonationEventModal = new bootstrap.Modal(document.getElementById('editDonationEventModal'), true);
 
@@ -123,12 +125,14 @@ function editDonationEvent(id) {
         dataType: "json",
         success: function (response) {
             $("#donationEventId").val(response.donationEventId);
+            $("#donationEventDescription").val(response.description);
             $("#donationEventTitle").val(response.title);
-            $("#donationEventDetail").val(response.detail);
-            $("#donationEventImage").val(response.images);
+            editor.setData(response.detail);
+            $("#imageData").val(response.image);
             $("#donationEventTotal").val(response.totalDonationAmount);
             $("#donationEventStartTime").val(response.startTime);
             $("#donationEventEndTime").val(response.endTime);
+            $("input:radio[value="+response.eventState+"]").prop("checked", true);
         },
         error: function (error, response) {
             alert("Not found donation event id " + id); 
@@ -141,50 +145,65 @@ function editDonationEvent(id) {
 function editDonationEventConfirm() {
     var donationEventId = $("#donationEventId").val();
     var title = $("#donationEventTitle").val();
-    var detail = $("#donationEventDetail").val();
-    var image = $("#donationEventImage").val();
+    var description = $("#donationEventDescription").val();
+    var detail = editor.getData();
+    var imageFiles = $('#donationEventImage').prop("files");
     var total = $("#donationEventTotal").val();
+    var startTime = $("#donationEventStartTime").val();
     var endTime = $("#donationEventEndTime").val();
+    var eventState = $("input:radio[name=eventState]:checked").val();
 
-    $.ajax({
-        type: "PUT",
-        url: "/DonationEvent/" + donationEventId,
-        data: {
-            title : title,
-            detail : detail,
-            image : image,
-            total : total,
-            endTime : endTime
-        },
-        dataType: "json",
-        success: function (response) {
-            if(response.titleEmpty) $("#titleEmpty").attr("hidden", false);
-            else $("#titleEmpty").attr("hidden", true);
-            if(response.detailEmpty) $("#detailEmpty").attr("hidden", false);
-            else $("#detailEmpty").attr("hidden", true);
-            if(response.imageEmpty) $("#imageEmpty").attr("hidden", false);
-            else $("#imageEmpty").attr("hidden", true);
-            if(response.totalDonationAmountEmpty) $("#totalDonationAmountEmpty").attr("hidden", false);
-            else $("#totalDonationAmountEmpty").attr("hidden", true);
-            if(response.totalDonationAmountError) $("#totalDonationAmountError").attr("hidden", false);
-            else $("#totalDonationAmountError").attr("hidden", true);
-            if(response.dateNotValid) $("#dateNotValid").attr("hidden", false);
-            else $("#dateNotValid").attr("hidden", true);
-            if(response.endDateSmallerThanStartDate) $("#endDateSmallerThanStartDate").attr("hidden", false);
-            else $("#endDateSmallerThanStartDate").attr("hidden", true);
+    var image = "";
+    getBase64(imageFiles[0])
+    .then(data => image = data)
+    .finally(() => {
+        if(imageFiles.length == 0) image = $("#imageData").val();
 
-            if(response.validDonationEvent) {
-                window.location.replace("/donationEventManagement");
-                    alert("Edited donation event id " + donationEventId);
+        $.ajax({
+            type: "PUT",
+            url: "/DonationEvent/" + donationEventId,
+            data: {
+                title : title,
+                description : description,
+                detail : detail,
+                image : image,
+                total : total,
+                startTime : startTime,
+                endTime : endTime,
+                eventState : eventState
+            },
+            dataType: "json",
+            success: function (response) {
+                if(response.titleEmpty) $("#titleEmpty").attr("hidden", false);
+                else $("#titleEmpty").attr("hidden", true);
+                if(response.descriptionEmpty) $("#descriptionEmpty").attr("hidden", false);
+                else $("#descriptionEmpty").attr("hidden", true);
+                if(response.detailEmpty) $("#detailEmpty").attr("hidden", false);
+                else $("#detailEmpty").attr("hidden", true);
+                if(response.imageEmpty) $("#imageEmpty").attr("hidden", false);
+                else $("#imageEmpty").attr("hidden", true);
+                if(response.totalDonationAmountEmpty) $("#totalDonationAmountEmpty").attr("hidden", false);
+                else $("#totalDonationAmountEmpty").attr("hidden", true);
+                if(response.totalDonationAmountError) $("#totalDonationAmountError").attr("hidden", false);
+                else $("#totalDonationAmountError").attr("hidden", true);
+                if(response.dateNotValid) $("#dateNotValid").attr("hidden", false);
+                else $("#dateNotValid").attr("hidden", true);
+                if(response.endDateSmallerThanStartDate) $("#endDateSmallerThanStartDate").attr("hidden", false);
+                else $("#endDateSmallerThanStartDate").attr("hidden", true);
+
+                if(response.validDonationEvent) {
+                    window.location.replace("/donationEventManagement");
+                        alert("Edited donation event id " + donationEventId);
+                }
+            },
+            error: function (error) {
+                console.log("ERROR" + error);
             }
-        },
-        error: function (error) {
-            console.log("ERROR" + error);
-        }
+        });
     });
 }
 
-let editor;
+let addEditor;
 
 function addDonationEvent() {
     var addDonationEventModal = new bootstrap.Modal(document.getElementById('addDonationEventModal'), true);
@@ -200,7 +219,7 @@ function addDonationEventConfirm() {
     var total = $("#addDonationEventTotal").val();
     var startTime = $("#addDonationEventStartTime").val();
     var endTime = $("#addDonationEventEndTime").val();
-    var eventState = $("input:radio[name=eventState]:checked").val();
+    var eventState = $("input:radio[name=addEventState]:checked").val();
 
     if(imageFiles.length == 0) $("#addImageEmpty").attr("hidden", false);
     
@@ -260,4 +279,9 @@ function getBase64(file) {
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
+}
+
+function openBase64(base64URL){
+    var win = window.open();
+    win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
 }

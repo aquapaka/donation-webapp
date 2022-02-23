@@ -1,5 +1,6 @@
 package com.aquapaka.donationwebapp.service;
 
+import java.io.Console;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import com.aquapaka.donationwebapp.model.state.EventState;
 import com.aquapaka.donationwebapp.model.status.ValidateDonationEventStatus;
 import com.aquapaka.donationwebapp.repository.DonationEventRepository;
 import com.aquapaka.donationwebapp.repository.DonationRepository;
+import com.aquapaka.donationwebapp.validator.DonationEventValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -73,7 +75,7 @@ public class DonationEventService {
                     donationEvents.add(donationEvent);
                 }
             }
-            System.out.println("----------------------");
+            
         } else if (searchType.equals("id")) {
             for (DonationEvent donationEvent : allDonationEvents) {
                 if (String.valueOf(donationEvent.getDonationEventId()).contains(searchText.trim())) {
@@ -81,7 +83,6 @@ public class DonationEventService {
                 }
             }
         } else {
-            System.out.println("Search Type not valid!");
             throw new IllegalStateException("Search Type not valid!");
         }
 
@@ -127,55 +128,56 @@ public class DonationEventService {
             String total,
             String startTimeString, String endTimeString, AppUser createAppUser, EventState eventState) {
 
-        // Validate all fields
-        ValidateDonationEventStatus status = new ValidateDonationEventStatus();
-
-        if (title.trim().isEmpty())
-            status.setTitleEmpty(true);
-        if (description.trim().isEmpty())
-            status.setDescriptionEmpty(true);
-        if (detail.trim().isEmpty())
-            status.setDetailEmpty(true);
-        if (image.trim().isEmpty())
-            status.setImageEmpty(true);
-
-        // Validate total amount
-        long totalAmount = 0;
-        if (total.trim().isEmpty()) {
-            status.setTotalDonationAmountEmpty(true);
-        } else {
-            try {
-                totalAmount = Long.parseLong(total);
-            } catch (Exception e) {
-                status.setTotalDonationAmountError(true);
-            }
-        }
-        if (totalAmount <= 0)
-            status.setTotalDonationAmountError(true);
-        
-        // Validate start time and end time
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = LocalDateTime.now();
-        try {
-            startTime = LocalDateTime.parse(startTimeString);
-            endTime = LocalDateTime.parse(endTimeString);
-        } catch (Exception e) {
-            status.setDateNotValid(true);
-        }
-        if (!endTime.isAfter(startTime))
-            status.setEndDateSmallerThanStartDate(true);
-        
-        LocalDateTime createTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        // Validate all datas
+        ValidateDonationEventStatus status = DonationEventValidator.validateDonationEvent(title, description, detail, image, total, startTimeString, endTimeString);
 
         // Return without add if there is an error
-        if (!status.isValidDonationEvent())
-            return status;
+        if (!status.isValidDonationEvent()) return status;
+        
+        // Create donation event if there is no error
+        long totalAmount = Long.parseLong(total);
+        LocalDateTime startTime = LocalDateTime.parse(startTimeString);
+        LocalDateTime endTime = LocalDateTime.parse(endTimeString);
+        LocalDateTime createTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
 
-        // Create donation event
         DonationEvent donationEvent = new DonationEvent(title, description, detail, image, totalAmount, startTime,
                 endTime, createAppUser, createTime, eventState);
 
         // Save donation event into database
+        donationEventRepository.save(donationEvent);
+
+        return status;
+    }
+
+    public ValidateDonationEventStatus updateDonationEventInfoById(long id, String description, String title,
+            String detail, String image,
+            String total, String startTimeString, String endTimeString, EventState eventState) {
+        // Get donation event
+        Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
+        if (!donationEventOptional.isPresent()) throw new IllegalStateException("Update donation event id not found!");
+        DonationEvent donationEvent = donationEventOptional.get();
+
+        // Validate all fields
+        ValidateDonationEventStatus status = DonationEventValidator.validateDonationEvent(title, description, detail, image, total, startTimeString, endTimeString);
+        
+        // Return without add if there is an error
+        if (!status.isValidDonationEvent()) return status;
+
+        // Update donation event info
+        long totalAmount = Long.parseLong(total);
+        LocalDateTime startTime = LocalDateTime.parse(startTimeString);
+        LocalDateTime endTime = LocalDateTime.parse(endTimeString);
+        
+        donationEvent.setTitle(title);
+        donationEvent.setDescription(description);
+        donationEvent.setDetail(detail);
+        donationEvent.setImage(image);
+        donationEvent.setTotalDonationAmount(totalAmount);
+        donationEvent.setStartTime(startTime);
+        donationEvent.setEndTime(endTime);
+        donationEvent.setEventState(eventState);
+
+        // Save donation event
         donationEventRepository.save(donationEvent);
 
         return status;
@@ -202,59 +204,6 @@ public class DonationEventService {
         }
 
         return true;
-    }
-
-    public ValidateDonationEventStatus updateDonationEventInfoById(long id, String title, String detail, String image,
-            String total, String endTimeString) {
-        // // Get donation event
-        // Optional<DonationEvent> donationEventOptional =
-        // donationEventRepository.findById(id);
-        // if(!donationEventOptional.isPresent()) return null;
-        // DonationEvent donationEvent = donationEventOptional.get();
-
-        // // Validate all fields
-        // ValidateDonationEventStatus status = new ValidateDonationEventStatus();
-
-        // if(title.trim().isEmpty()) status.setTitleEmpty(true);
-        // if(detail.trim().isEmpty()) status.setDetailEmpty(true);
-        // if(image.trim().isEmpty()) status.setImageEmpty(true);
-        // long totalAmount = 0;
-        // if(total.trim().isEmpty()) {
-        // status.setTotalDonationAmountEmpty(true);
-        // } else {
-        // try {
-        // totalAmount = Long.parseLong(total);
-        // } catch (Exception e) {
-        // status.setTotalDonationAmountError(true);
-        // }
-        // }
-        // if(totalAmount <= 0) status.setTotalDonationAmountError(true);
-        // // Convert date string into LocalDateTime object
-        // LocalDateTime endTime = LocalDateTime.now();
-        // try {
-        // String[] endTimeList = endTimeString.split("-");
-        // endTime = LocalDateTime.of(Integer.parseInt(endTimeList[0]),
-        // Integer.parseInt(endTimeList[1]), Integer.parseInt(endTimeList[2]));
-        // if(!endTime.isAfter(donationEvent.getStartTime()))
-        // status.setEndDateSmallerThanStartDate(true);
-        // } catch (Exception e) {
-        // status.setDateNotValid(true);
-        // }
-
-        // if(!status.isValidDonationEvent()) return status;
-
-        // // Update donation event info
-        // donationEvent.setTitle(title);
-        // donationEvent.setDetail(detail);
-        // donationEvent.setImages(image);
-        // donationEvent.setTotalDonationAmount(totalAmount);
-        // donationEvent.setEndTime(endTime);
-
-        // // Save donation event
-        // donationEventRepository.save(donationEvent);
-
-        // return status;
-        return null;
     }
 
 }

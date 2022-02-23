@@ -39,7 +39,10 @@ public class DonationEventController {
         // Get donation event data
         DonationEvent donationEvent;
         try {
-            donationEvent = donationEventService.getDonationEventById(Long.parseLong(id)).get();
+            Optional<DonationEvent> donationEventOptional = donationEventService.getDonationEventById(Long.parseLong(id));
+            if(donationEventOptional.isPresent()) donationEvent = donationEventOptional.get();
+            else return "redirect:/";
+            
         } catch (Exception e) {
             return "redirect:/";
         }
@@ -109,12 +112,24 @@ public class DonationEventController {
     @PutMapping("/DonationEvent/{id}")
     public @ResponseBody ValidateDonationEventStatus updateDonationEvent(@PathVariable long id,
     @RequestParam String title,
+    @RequestParam String description,
     @RequestParam String detail,
     @RequestParam String image,
     @RequestParam String total,
-    @RequestParam String endTime
+    @RequestParam String startTime,
+    @RequestParam String endTime,
+    @RequestParam String eventState
     ) {
-        return donationEventService.updateDonationEventInfoById(id, title, detail, image, total, endTime);
+        // Parse event state
+        EventState state;
+        if (eventState.equals(EventState.ACTIVE.name()))
+            state = EventState.ACTIVE;
+        else if (eventState.equals(EventState.INACTIVE.name()))
+            state = EventState.INACTIVE;
+        else
+            throw new IllegalStateException("Event state not valid!");
+
+        return donationEventService.updateDonationEventInfoById(id, description, title, detail, image, total, startTime, endTime, state);
     }
 
     @DeleteMapping("/DonationEvent/{id}")

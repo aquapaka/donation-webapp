@@ -24,10 +24,11 @@
     <main id="donationEvent" class="container-fluid py-3 py-md-4">
         <section class="container donationEventCard py-3">
             <h2><strong>${donationEvent.title}</strong></h2>
+            <h3>${donationEvent.description}</h2>
             <div class="row">
                 <div class="col-12 col-md-8">
                     <img class="img-fluid round-border" src="${donationEvent.image}" alt="${donationEvent.title}">
-                    <h3 class="mt-3"><strong>Thông tin chi tiết</strong></h3>
+                    <h3 class="mt-4"><strong>Thông tin chi tiết</strong></h3>
                     <p>${donationEvent.detail}</p>
                 </div>
                 <div class="col-12 col-md-4">
