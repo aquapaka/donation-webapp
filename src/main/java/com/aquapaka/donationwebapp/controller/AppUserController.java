@@ -16,7 +16,6 @@ import com.aquapaka.donationwebapp.util.PasswordEncrypt;
 import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
