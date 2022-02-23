@@ -2,7 +2,7 @@ package com.aquapaka.donationwebapp.validator;
 
 import java.time.LocalDateTime;
 
-import com.aquapaka.donationwebapp.model.status.ValidateDonationEventStatus;
+import com.aquapaka.donationwebapp.validator.status.ValidateDonationEventStatus;
 
 public class DonationEventValidator {
 

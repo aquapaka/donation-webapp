@@ -64,7 +64,7 @@ function deleteDonationEventConfirm() {
             window.location.replace("/donationEventManagement");
         },
         error: function (error) {
-            alert("Error, can't delete donation event " + id);
+            alert("Error, can't delete donation event " + id + ". Maybe the event is already have donation.");
         }
     });
 }
@@ -107,7 +107,7 @@ function deleteDonationEventsConfirm() {
             window.location.replace("/donationEventManagement");
         },
         error: function (error) {
-            alert("Error, can't delete donation events");
+            alert("Error, can't delete donation events. Maybe there is event already have donation.");
         }
     });
 }
@@ -214,7 +214,7 @@ function addDonationEvent() {
 function addDonationEventConfirm() {
     var title = $("#addDonationEventTitle").val();
     var description = $("#addDonationEventDescription").val();
-    var detail = editor.getData();
+    var detail = addEditor.getData();
     var imageFiles = $('#addDonationEventImage').prop("files");
     var total = $("#addDonationEventTotal").val();
     var startTime = $("#addDonationEventStartTime").val();

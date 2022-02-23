@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.aquapaka.donationwebapp.model.state.AppUserState;
 import com.aquapaka.donationwebapp.model.state.Role;
 
 @Entity
@@ -18,21 +19,25 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "app_user_id")
     private Long appUserId;
+    @Column(unique = true)
     private String email;
     private String password;
+    @Column(unique = true)
     private String username;
     private String fullname;
     private LocalDate dateOfBirth;
     private boolean gender;
     private String phoneNumber;
     private Role role;
+    private AppUserState state;
+    private int activeCode;
 
     public AppUser() {
         
     }
     
     public AppUser(String email, String password, String username, String fullname, LocalDate dateOfBirth, boolean gender,
-            String phoneNumber, Role role) {
+            String phoneNumber, Role role, AppUserState state, int activeCode) {
         this.email = email;
         this.password = password;
         this.username = username;
@@ -41,6 +46,8 @@ public class AppUser {
         this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.role = role;
+        this.state = state;
+        this.activeCode = activeCode;
     }
 
     public Long getAppUserId() {
@@ -109,6 +116,22 @@ public class AppUser {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public AppUserState getState() {
+        return state;
+    }
+
+    public void setState(AppUserState state) {
+        this.state = state;
+    }
+
+    public int getActiveCode() {
+        return activeCode;
+    }
+
+    public void setActiveCode(int activeCode) {
+        this.activeCode = activeCode;
     }
 
 }

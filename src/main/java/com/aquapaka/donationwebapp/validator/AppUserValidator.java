@@ -1,9 +1,16 @@
 package com.aquapaka.donationwebapp.validator;
 
+import java.util.Optional;
+
+import com.aquapaka.donationwebapp.model.AppUser;
+import com.aquapaka.donationwebapp.repository.AppUserRepository;
+import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class AppUserValidator {
-    private AppUserValidator() {
-        throw new IllegalStateException("Utility class");
-    }
 
     /**
         ^[a-zA-Z0-9]      # start with an alphanumeric character
@@ -53,6 +60,13 @@ public class AppUserValidator {
      */
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 
+    private static AppUserRepository appUserRepository;
+
+    @Autowired
+    public AppUserValidator(AppUserRepository appUserRepository) {
+        AppUserValidator.appUserRepository = appUserRepository;
+    }
+
     public static boolean isValidUsername(String username) {
         return username.matches(USERNAME_PATTERN);
     }
@@ -63,5 +77,38 @@ public class AppUserValidator {
 
     public static boolean isValidPassword(String password) {
         return password.matches(PASSWORD_PATTERN);
+    }
+
+    public static RegisterStatus validateRegister(String username, String email, String password) {
+        RegisterStatus status = new RegisterStatus();
+
+        // Check username
+        if (isValidUsername(username)) {
+            Optional<AppUser> appUserOptional = appUserRepository.findAppUserByUsername(username);
+
+            if (appUserOptional.isPresent()) {
+                status.setResUsernameExistError(true);
+            }
+        } else {
+            status.setResUsernameError(true);
+        }
+
+        // Check email
+        if (isValidEmail(email)) {
+            Optional<AppUser> appUserOptional = appUserRepository.findAppUserByEmail(email);
+
+            if (appUserOptional.isPresent()) {
+                status.setResEmailExistError(true);
+            }
+        } else {
+            status.setResEmailError(true);
+        }
+
+        // Check password
+        if (!isValidPassword(password)) {
+            status.setResPasswordError(true);
+        }
+
+        return status;
     }
 }

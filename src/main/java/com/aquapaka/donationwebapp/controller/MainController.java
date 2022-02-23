@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.Donation;
 import com.aquapaka.donationwebapp.model.DonationEvent;
+import com.aquapaka.donationwebapp.model.state.AppUserState;
 import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
@@ -41,12 +42,15 @@ public class MainController {
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
         String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateAppUser(email, password);
+        AppUser appUser = appUserService.validateLogin(email, password);
         boolean isSignedIn = false;
 
         if(appUser != null) {
             isSignedIn = true;
+            if (appUser.getState() == AppUserState.INACTIVE)
+                return "redirect:/validateEmail";
         }
+
         model.addAttribute("appUser", appUser);
         model.addAttribute("isSignedIn", isSignedIn);
         
@@ -59,11 +63,14 @@ public class MainController {
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
         String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateAppUser(email, password);
+        AppUser appUser = appUserService.validateLogin(email, password);
 
         if(appUser == null) {
             return "redirect:/";
         } else {
+            if (appUser.getState() == AppUserState.INACTIVE)
+                return "redirect:/validateEmail";
+
             if(appUser.getRole() != Role.ADMIN) {
                 return "redirect:/";
             }
@@ -86,11 +93,14 @@ public class MainController {
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
         String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateAppUser(email, password);
+        AppUser appUser = appUserService.validateLogin(email, password);
 
         if(appUser == null) {
             return "redirect:/";
         } else {
+            if (appUser.getState() == AppUserState.INACTIVE)
+                return "redirect:/validateEmail";
+
             if(appUser.getRole() != Role.ADMIN) {
                 return "redirect:/";
             }
@@ -117,11 +127,14 @@ public class MainController {
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
         String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateAppUser(email, password);
+        AppUser appUser = appUserService.validateLogin(email, password);
 
         if(appUser == null) {
             return "redirect:/";
         } else {
+            if (appUser.getState() == AppUserState.INACTIVE)
+                return "redirect:/validateEmail";
+                
             if(appUser.getRole() != Role.ADMIN) {
                 return "redirect:/";
             }

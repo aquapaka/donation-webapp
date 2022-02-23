@@ -9,9 +9,9 @@ import javax.servlet.http.HttpSession;
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.DonationEvent;
 import com.aquapaka.donationwebapp.model.state.EventState;
-import com.aquapaka.donationwebapp.model.status.ValidateDonationEventStatus;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
+import com.aquapaka.donationwebapp.validator.status.ValidateDonationEventStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,7 +53,7 @@ public class DonationEventController {
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
         String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateAppUser(email, password);
+        AppUser appUser = appUserService.validateLogin(email, password);
         boolean isSignedIn = false;
 
         if(appUser != null) {
@@ -96,7 +96,7 @@ public class DonationEventController {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         String password = (String) session.getAttribute("password");
-        AppUser appUser = appUserService.validateAppUser(email, password);
+        AppUser appUser = appUserService.validateLogin(email, password);
 
         // Parse event state
         EventState state;

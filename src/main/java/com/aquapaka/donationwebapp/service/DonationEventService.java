@@ -1,6 +1,5 @@
 package com.aquapaka.donationwebapp.service;
 
-import java.io.Console;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
@@ -15,10 +14,10 @@ import javax.transaction.Transactional;
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.DonationEvent;
 import com.aquapaka.donationwebapp.model.state.EventState;
-import com.aquapaka.donationwebapp.model.status.ValidateDonationEventStatus;
 import com.aquapaka.donationwebapp.repository.DonationEventRepository;
 import com.aquapaka.donationwebapp.repository.DonationRepository;
 import com.aquapaka.donationwebapp.validator.DonationEventValidator;
+import com.aquapaka.donationwebapp.validator.status.ValidateDonationEventStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -184,7 +183,14 @@ public class DonationEventService {
     }
 
     public boolean deleteDonationEventById(long id) {
-        if (donationEventRepository.findById(id).isPresent()) {
+        Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
+
+        if (donationEventOptional.isPresent()) {
+            // Not delete if there is already donation in event
+            if(donationRepository.countByDonationEvent(donationEventOptional.get()) > 0) {
+                return false;
+            }
+
             donationEventRepository.deleteById(id);
             return true;
         } else {
@@ -196,7 +202,15 @@ public class DonationEventService {
     public boolean deleteDonationEventsByIds(List<Long> ids) {
 
         for (long id : ids) {
-            if (donationEventRepository.findById(id).isPresent()) {
+            Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
+            System.out.println(id);
+
+            if (donationEventOptional.isPresent()) {
+                // Not delete if there is already donation in event
+                if (donationRepository.countByDonationEvent(donationEventOptional.get()) > 0) {
+                    throw new DataIntegrityViolationException("Throwing exception for Rollback!!!");
+                }
+
                 donationEventRepository.deleteById(id);
             } else {
                 throw new DataIntegrityViolationException("Throwing exception for Rollback!!!");

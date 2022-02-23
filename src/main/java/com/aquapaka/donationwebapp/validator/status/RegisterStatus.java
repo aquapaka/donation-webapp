@@ -1,4 +1,4 @@
-package com.aquapaka.donationwebapp.model.status;
+package com.aquapaka.donationwebapp.validator.status;
 
 public class RegisterStatus {
     private boolean resUsernameExistError;

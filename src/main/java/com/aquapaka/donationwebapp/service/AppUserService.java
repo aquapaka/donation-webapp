@@ -1,5 +1,6 @@
 package com.aquapaka.donationwebapp.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -7,10 +8,12 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.aquapaka.donationwebapp.model.AppUser;
+import com.aquapaka.donationwebapp.model.state.AppUserState;
 import com.aquapaka.donationwebapp.model.state.Role;
-import com.aquapaka.donationwebapp.model.status.RegisterStatus;
 import com.aquapaka.donationwebapp.repository.AppUserRepository;
+import com.aquapaka.donationwebapp.util.PasswordEncrypt;
 import com.aquapaka.donationwebapp.validator.AppUserValidator;
+import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +33,7 @@ public class AppUserService {
         return appUserRepository.findById(id);
     }
 
-    public AppUser validateAppUser(String email, String password) {
+    public AppUser validateLogin(String email, String password) {
         List<AppUser> appUsers = getAppUsers();
 
         for(AppUser appUser : appUsers) {
@@ -44,38 +47,20 @@ public class AppUserService {
 
     @Transactional
     public RegisterStatus registerAppUser(String username, String email, String password) {
-        RegisterStatus registerStatus = new RegisterStatus();
-
-        // Check username
-        if(AppUserValidator.isValidUsername(username)) {
-            Optional<AppUser> appUserOptional = appUserRepository.findAppUserByUsername(username);
-
-            if(appUserOptional.isPresent()) {
-                registerStatus.setResUsernameExistError(true);
-            }
-        } else {
-            registerStatus.setResUsernameError(true);
-        }
-
-        // Check email
-        if(AppUserValidator.isValidEmail(email)) {
-            Optional<AppUser> appUserOptional = appUserRepository.findAppUserByEmail(email);
-
-            if(appUserOptional.isPresent()) {
-                registerStatus.setResEmailExistError(true);
-            }
-        } else {
-            registerStatus.setResEmailError(true);
-        }
-
-        // Check password
-        if(!AppUserValidator.isValidPassword(password)) {
-            registerStatus.setResPasswordError(true);
-        }
+        RegisterStatus registerStatus = AppUserValidator.validateRegister(username, email, password);
 
         // Register new appUser if all requirements are met
         if(registerStatus.isRegisterSuccess()) {
-            AppUser appUser = new AppUser(email, password, username, "noname", LocalDate.of(2000, 1, 1), false, "Not set", Role.USER);
+
+            // Encrypt password
+            String encryptedPassword;
+            try {
+                encryptedPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(password));
+            } catch (NoSuchAlgorithmException e) {
+                throw new IllegalStateException(e);
+            }
+            
+            AppUser appUser = new AppUser(email, encryptedPassword, username, "noname", LocalDate.of(2000, 1, 1), false, "Not set", Role.USER, AppUserState.INACTIVE, 0);
             appUserRepository.save(appUser);
         }
 
@@ -101,5 +86,27 @@ public class AppUserService {
 
         // Save app user
         appUserRepository.save(appUser);
+    }
+
+    public void updateAppUserCodeById(long id, int code) {
+        // Get app user
+        AppUser appUser = appUserRepository.getById(id);
+
+        appUser.setActiveCode(code);
+
+        appUserRepository.save(appUser);
+    }
+
+    public boolean validateActiveCode(long id, int code) {
+        // Get app user
+        AppUser appUser = appUserRepository.getById(id);
+
+        if(appUser.getActiveCode() == code) {
+            appUser.setState(AppUserState.ACTIVE);
+            appUserRepository.save(appUser);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
