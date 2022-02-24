@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.aquapaka.donationwebapp.model.state.AppUserState;
+import com.aquapaka.donationwebapp.model.state.Gender;
 import com.aquapaka.donationwebapp.model.state.Role;
 
 @Entity
@@ -26,7 +27,7 @@ public class AppUser {
     private String username;
     private String fullname;
     private LocalDate dateOfBirth;
-    private boolean gender;
+    private Gender gender;
     private String phoneNumber;
     private Role role;
     private AppUserState state;
@@ -36,7 +37,7 @@ public class AppUser {
         
     }
     
-    public AppUser(String email, String password, String username, String fullname, LocalDate dateOfBirth, boolean gender,
+    public AppUser(String email, String password, String username, String fullname, LocalDate dateOfBirth, Gender gender,
             String phoneNumber, Role role, AppUserState state, int activeCode) {
         this.email = email;
         this.password = password;
@@ -94,11 +95,11 @@ public class AppUser {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public boolean isGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

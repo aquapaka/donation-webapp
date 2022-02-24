@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.state.AppUserState;
+import com.aquapaka.donationwebapp.model.state.Gender;
 import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.repository.AppUserRepository;
 import com.aquapaka.donationwebapp.util.PasswordEncrypt;
@@ -60,7 +61,7 @@ public class AppUserService {
                 throw new IllegalStateException(e);
             }
             
-            AppUser appUser = new AppUser(email, encryptedPassword, username, "noname", LocalDate.of(2000, 1, 1), false, "Not set", Role.USER, AppUserState.INACTIVE, 0);
+            AppUser appUser = new AppUser(email, encryptedPassword, username, "noname", LocalDate.of(2000, 1, 1), Gender.NOT_SET, "Not set", Role.USER, AppUserState.INACTIVE, 0);
             appUserRepository.save(appUser);
         }
 
@@ -71,16 +72,19 @@ public class AppUserService {
         appUserRepository.deleteById(id);
     }
 
-    public void updateAppUserInfoById(long id, String fullname, String dateOfBirth, boolean gender, String phoneNumber, Role role) {
+    public void updateAppUserInfoById(long id, String fullname, String dateOfBirth, String gender, String phoneNumber, Role role) {
         // Get app user
-        AppUser appUser = appUserRepository.getById(id);
+        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+        if(!appUserOptional.isPresent()) throw new IllegalStateException("Update app user id not found!");
+
+        AppUser appUser = appUserOptional.get();
 
         // Update app user info
         appUser.setFullname(fullname);
         String[] dateOfBirthList = dateOfBirth.split("-");
         LocalDate dob = LocalDate.of(Integer.parseInt(dateOfBirthList[0]), Integer.parseInt(dateOfBirthList[1]), Integer.parseInt(dateOfBirthList[2]));
         appUser.setDateOfBirth(dob);
-        appUser.setGender(gender);
+        appUser.setGender(null);
         appUser.setPhoneNumber(phoneNumber);
         appUser.setRole(role);
 

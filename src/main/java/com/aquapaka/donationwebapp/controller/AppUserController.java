@@ -173,7 +173,7 @@ public class AppUserController {
     public @ResponseBody String updateAppUser(@PathVariable long id,
     @RequestParam String fullname,
     @RequestParam String dateOfBirth,
-    @RequestParam Boolean gender,
+    @RequestParam String gender,
     @RequestParam String phoneNumber,
     @RequestParam String role
     ) {

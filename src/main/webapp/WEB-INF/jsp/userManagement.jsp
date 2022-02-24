@@ -37,6 +37,7 @@
                         <th>Giới tính</th>
                         <th>Số điện thoại</th>
                         <th>Quyền hạn</th>
+                        <th>Trạng thái</th>
                         <th>Chức năng</th>
                     </tr>
                 </thead>
@@ -49,11 +50,13 @@
                             <td>${appUser.fullname}</td>
                             <td>${appUser.dateOfBirth}</td>
                             <td>
-                                <c:if test="${!appUser.gender}">Nam</c:if>
-                                <c:if test="${appUser.gender}">Nữ</c:if>
+                                <c:if test="${appUser.gender == 'NOT_SET'}">Chưa đặt</c:if>
+                                <c:if test="${appUser.gender == 'MALE'}">Nam</c:if>
+                                <c:if test="${appUser.gender == 'FEMALE'}">Nữ</c:if>
                             </td>
                             <td>${appUser.phoneNumber}</td>
                             <td>${appUser.role}</td>
+                            <td>${appUser.state}</td>
                             <td>
                                 <button class="btn btn-warning mb-1" onclick="editAppUser(${appUser.appUserId})">Edit</button>
                                 <button class="btn btn-danger mb-1" onclick="deleteAppUser(${appUser.appUserId})">Delete</button>
