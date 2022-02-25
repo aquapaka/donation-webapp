@@ -15,6 +15,7 @@ import com.aquapaka.donationwebapp.repository.AppUserRepository;
 import com.aquapaka.donationwebapp.util.PasswordEncrypt;
 import com.aquapaka.donationwebapp.validator.AppUserValidator;
 import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
+import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,28 +69,31 @@ public class AppUserService {
         return registerStatus;
     }
 
-    public void deleteAppUserById(long id) {
-        appUserRepository.deleteById(id);
-    }
-
-    public void updateAppUserInfoById(long id, String fullname, String dateOfBirth, String gender, String phoneNumber, Role role) {
+    public ValidateAppUserStatus updateAppUserInfoById(long id, String fullname, String dateOfBirth, Gender gender, String phoneNumber, Role role) {
         // Get app user
         Optional<AppUser> appUserOptional = appUserRepository.findById(id);
         if(!appUserOptional.isPresent()) throw new IllegalStateException("Update app user id not found!");
 
         AppUser appUser = appUserOptional.get();
 
+        // Validate fields
+        ValidateAppUserStatus status = AppUserValidator.validateAppUser(fullname, dateOfBirth, phoneNumber);
+
+        if(!status.isValidAppUser()) {
+            return status;
+        }
+
         // Update app user info
         appUser.setFullname(fullname);
-        String[] dateOfBirthList = dateOfBirth.split("-");
-        LocalDate dob = LocalDate.of(Integer.parseInt(dateOfBirthList[0]), Integer.parseInt(dateOfBirthList[1]), Integer.parseInt(dateOfBirthList[2]));
-        appUser.setDateOfBirth(dob);
-        appUser.setGender(null);
+        appUser.setDateOfBirth(LocalDate.parse(dateOfBirth));
+        appUser.setGender(gender);
         appUser.setPhoneNumber(phoneNumber);
         appUser.setRole(role);
 
         // Save app user
         appUserRepository.save(appUser);
+
+        return status;
     }
 
     public void updateAppUserCodeById(long id, int code) {
@@ -99,6 +103,20 @@ public class AppUserService {
         appUser.setActiveCode(code);
 
         appUserRepository.save(appUser);
+    }
+
+    public boolean deleteAppUserById(long id) {
+        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+        if(appUserOptional.isPresent()) {
+            if(appUserOptional.get().getRole() == Role.ADMIN) {
+                return false;
+            }
+            appUserRepository.deleteById(id);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean validateActiveCode(long id, int code) {

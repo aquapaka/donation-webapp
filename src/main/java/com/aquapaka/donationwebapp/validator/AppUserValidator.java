@@ -1,10 +1,13 @@
 package com.aquapaka.donationwebapp.validator;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.repository.AppUserRepository;
 import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
+import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,10 +63,12 @@ public class AppUserValidator {
      */
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 
+    private static final String PHONE_NUMBER_PATTERN = "0[1-9]{9}";
+
     private static AppUserRepository appUserRepository;
 
     @Autowired
-    public AppUserValidator(AppUserRepository appUserRepository) {
+    private AppUserValidator(AppUserRepository appUserRepository) {
         AppUserValidator.appUserRepository = appUserRepository;
     }
 
@@ -107,6 +112,29 @@ public class AppUserValidator {
         // Check password
         if (!isValidPassword(password)) {
             status.setResPasswordError(true);
+        }
+
+        return status;
+    }
+
+    public static ValidateAppUserStatus validateAppUser(String fullname, String dateOfBirth, String phoneNumber) {
+
+        ValidateAppUserStatus status = new ValidateAppUserStatus();
+
+        if(fullname.trim().isEmpty()) {
+            status.setFullnameError(true);    
+        }
+        try {
+            LocalDate dob = LocalDate.parse(dateOfBirth);
+
+            if(!dob.isBefore(LocalDate.now())) {
+                status.setDobError(true);
+            }
+        } catch (DateTimeParseException e) {
+            status.setDobError(true);
+        }
+        if(!phoneNumber.matches(PHONE_NUMBER_PATTERN)) {
+            status.setPhoneNumberError(true);
         }
 
         return status;

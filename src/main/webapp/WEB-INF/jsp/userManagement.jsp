@@ -27,6 +27,7 @@
         <!-- App User -->
         <section id="appUserManagement" class="container-fluid round-border py-3 mb-2">
             <table class="table">
+                <caption>Danh sách người dùng</caption>
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -68,25 +69,6 @@
             </table>
         </section>
     </main>
-    
-    <!-- Delete app user modal -->
-    <div class="modal fade" id="deleteAppUserModal" tabindex="-1" >
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Xác nhận xoá người dùng</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xoá người dùng <b id="appUserDeleteName">...</b> (id: <b id="appUserDeleteId">id</b>)</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                    <button type="button" class="btn btn-danger" onclick="deleteAppUserConfirm()">Xoá</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Edit app user modal -->
     <div class="modal fade" id="editAppUserModal" tabindex="-1" data-bs-backdrop="static">
@@ -112,41 +94,67 @@
                     <div class="mb-3 col-7">
                         <label for="appUserFullname" class="form-label">Tên đầy đủ</label>
                         <input type="text" class="form-control" value="" id="appUserFullname">
+                        <span id="fullnameError" class="form-text text-danger" hidden>Tên không được bỏ trống</span>
                     </div>
                     <div class="mb-3 col-5">
                         <label for="appUserDateOfBirth" class="form-label">Ngày sinh</label>
                         <input type="date" class="form-control" value="" id="appUserDateOfBirth">
+                        <span id="dobError" class="form-text text-danger" hidden>Ngày sinh không hợp lệ</span>
                     </div>
                     <div class="mb-3 col-3">
                         <label for="appUserDateOfBirth" class="form-label">Giới tính</label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="male" value="false">
+                            <input class="form-check-input" type="radio" name="gender" id="not_set" value="NOT_SET">
+                            <label class="form-check-label" for="not_set">Chưa đặt</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="MALE">
                             <label class="form-check-label" for="male">Nam</label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="female" value="true">
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="FEMALE">
                             <label class="form-check-label" for="female">Nữ</label>
-                          </div>
+                        </div>
                     </div>
                     <div class="mb-3 col-5">
                         <label for="appUserPhoneNumber" class="form-label">Số điện thoại</label>
                         <input type="number" class="form-control" value="" id="appUserPhoneNumber">
+                        <span id="phoneNumberError" class="form-text text-danger" hidden>Số điện thoại không hợp lệ</span>
                     </div>
                     <div class="mb-3 col-4">
                         <label for="role" class="form-label">Quyền hạn</label><br>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="role" id="user" value="USER">
                             <label class="form-check-label" for="user">USER</label>
-                          </div>
-                          <div class="form-check form-check-inline">
+                        </div>
+                        <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="role" id="admin" value="ADMIN">
                             <label class="form-check-label" for="admin">ADMIN</label>
-                          </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
                     <button type="text" class="btn btn-primary float-end" onclick="editAppUserConfirm()">Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete app user modal -->
+    <div class="modal fade" id="deleteAppUserModal" tabindex="-1" >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận xoá người dùng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xoá người dùng <strong id="appUserDeleteName">...</strong> (id: <strong id="appUserDeleteId">id</strong>)</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteAppUserConfirm()">Xoá</button>
                 </div>
             </div>
         </div>
