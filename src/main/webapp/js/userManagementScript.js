@@ -13,6 +13,7 @@ function editAppUser(id) {
             $("#appUserDateOfBirth").val(response.dateOfBirth);
             $("#appUserPhoneNumber").val(response.phoneNumber);
             $("input:radio[value="+response.gender+"]").prop("checked", true);
+            if(response.role == "ADMIN") $("input:radio[value='USER']").prop("disabled", true);
             $("input:radio[value="+response.role+"]").prop("checked", true);
         },
         error: function (error) {

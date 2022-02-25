@@ -88,7 +88,9 @@ public class AppUserService {
         appUser.setDateOfBirth(LocalDate.parse(dateOfBirth));
         appUser.setGender(gender);
         appUser.setPhoneNumber(phoneNumber);
-        appUser.setRole(role);
+        if(appUser.getRole() != Role.ADMIN) {
+            appUser.setRole(role);
+        }
 
         // Save app user
         appUserRepository.save(appUser);
