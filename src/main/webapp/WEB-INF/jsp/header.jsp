@@ -32,7 +32,7 @@
                     <!-- Nav items -->
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <c:if test="${isSignedIn}">
+                            <c:if test="${not empty appUser}">
                                 <li class="nav-item">
                                     <i class="d-md-none nav-link">Xin chào <b>${appUser.username}</b>!</i>
                                 </li>
@@ -66,7 +66,7 @@
                                     <a class="nav-link d-md-none" href="${signOutUrl}"><b>Đăng xuất</b></a>
                                 </li>
                             </c:if>
-                            <c:if test="${!isSignedIn}">
+                            <c:if test="${empty appUser}">
                                 <li class="nav-item">
                                     <a class="nav-link d-md-none" href="" data-bs-toggle="modal" data-bs-target="#loginModal"><b>Đăng nhập</b></a>
                                 </li>
@@ -88,11 +88,11 @@
                                 <img src="img/user-icon-white.png" alt="user icon"/>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="dropdownMenuButton1">
-                                <c:if test="${!isSignedIn}">
+                                <c:if test="${empty appUser}">
                                     <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a></li>
                                     <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng kí</a></li>
                                 </c:if>
-                                <c:if test="${isSignedIn}">
+                                <c:if test="${not empty appUser}">
                                     <li><p class="ms-2 mt-2"><i>Xin chào <b>${appUser.username}</b>!</i></p></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="${profileUrl}">Hồ sơ</a></li>

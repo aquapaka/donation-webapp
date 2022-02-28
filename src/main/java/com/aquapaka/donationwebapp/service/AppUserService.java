@@ -34,7 +34,6 @@ public class AppUserService {
     }
 
     public Optional<AppUser> getAppUserById(long id) {
-        
         return appUserRepository.findById(id);
     }
 

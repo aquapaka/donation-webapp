@@ -10,6 +10,7 @@ import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.state.Gender;
 import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.service.AppUserService;
+import com.aquapaka.donationwebapp.service.FilterService;
 import com.aquapaka.donationwebapp.util.PasswordEncrypt;
 import com.aquapaka.donationwebapp.validator.status.ChangePasswordStatus;
 import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
@@ -31,10 +32,15 @@ public class AppUserController {
     @Autowired
     private AppUserService appUserService;
 
-    @GetMapping("/{id}")
-    public @ResponseBody AppUser getAppUser(@PathVariable long id) {
-        Optional<AppUser> appUserOptional = appUserService.getAppUserById(id);
+    @Autowired
+    private FilterService filterService;
 
+    @GetMapping("/{id}")
+    public @ResponseBody AppUser getAppUser(@PathVariable long id, HttpServletRequest request) {
+
+        if(!filterService.canAccessUserData(request, id)) throw new IllegalStateException("Can't access this data!");
+
+        Optional<AppUser> appUserOptional = appUserService.getAppUserById(id);
         if(!appUserOptional.isPresent()) throw new IllegalStateException("AppUser id not found!");
 
         return appUserOptional.get();
@@ -46,7 +52,10 @@ public class AppUserController {
     @RequestParam String dateOfBirth,
     @RequestParam String gender,
     @RequestParam String phoneNumber,
-    @RequestParam String role) {
+    @RequestParam String role,
+    HttpServletRequest request) {
+
+        if(!filterService.canAccessUserData(request, id)) throw new IllegalStateException("Can't access this data!");
 
         Role userRole;
         if (role.equals(Role.USER.name())) {
@@ -72,13 +81,17 @@ public class AppUserController {
     }
 
     @DeleteMapping("/{id}")
-    public @ResponseBody boolean deleteAppUser(@PathVariable long id) {
+    public @ResponseBody boolean deleteAppUser(@PathVariable long id, HttpServletRequest request) {
+
+        if (!filterService.canAccessUserData(request, id)) throw new IllegalStateException("Can't access this data!");
 
         return appUserService.deleteAppUserById(id);
     }
 
     @PutMapping("/{id}/resetPassword")
-    public @ResponseBody boolean resetAppUserPassword(@PathVariable long id) {
+    public @ResponseBody boolean resetAppUserPassword(@PathVariable long id, HttpServletRequest request) {
+
+        if (!filterService.canAccessUserData(request, id)) throw new IllegalStateException("Can't access this data!");
         
         return appUserService.resetAppUserPassword(id);
     }

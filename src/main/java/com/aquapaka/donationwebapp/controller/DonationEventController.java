@@ -11,6 +11,7 @@ import com.aquapaka.donationwebapp.model.DonationEvent;
 import com.aquapaka.donationwebapp.model.state.EventState;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
+import com.aquapaka.donationwebapp.service.FilterService;
 import com.aquapaka.donationwebapp.validator.status.ValidateDonationEventStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,52 +29,34 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class DonationEventController {
-    
+
     @Autowired
     private DonationEventService donationEventService;
     @Autowired
     private AppUserService appUserService;
+    @Autowired
+    private FilterService filterService;
 
     @GetMapping("/donationEvent")
-    public String donationEvent(Model model, HttpServletRequest request, @RequestParam String id) {
+    public String donationEvent(Model model, HttpServletRequest request, @RequestParam Long id) {
         // Get donation event data
+        Optional<DonationEvent> donationEventOptional = donationEventService.getDonationEventById(id);
         DonationEvent donationEvent;
-        try {
-            Optional<DonationEvent> donationEventOptional = donationEventService.getDonationEventById(Long.parseLong(id));
-            if(donationEventOptional.isPresent()) donationEvent = donationEventOptional.get();
-            else return "redirect:/";
-            
-        } catch (Exception e) {
-            return "redirect:/";
-        }
-        
+        if (donationEventOptional.isPresent())
+            donationEvent = donationEventOptional.get();
+        else
+            throw new IllegalStateException("Donation event id not found!");
+
         model.addAttribute("donationEvent", donationEvent);
 
-        // Get account data from session
-        HttpSession session = request.getSession();
-        String email = (String)session.getAttribute("email");
-        String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateLogin(email, password);
-        boolean isSignedIn = false;
-
-        if(appUser != null) {
-            isSignedIn = true;
-        }
-        model.addAttribute("appUser", appUser);
-        model.addAttribute("isSignedIn", isSignedIn);
-        
         return "donationEvent";
     }
-    
-    /**
-     * RestAPI below
-     */
 
     @GetMapping("/DonationEvent/{id}")
     public @ResponseBody DonationEvent getDonationEvent(@PathVariable long id) {
         Optional<DonationEvent> donationEventOptional = donationEventService.getDonationEventById(id);
 
-        if(donationEventOptional.isPresent()) {
+        if (donationEventOptional.isPresent()) {
             return donationEventOptional.get();
         } else {
             return null;
@@ -90,8 +73,10 @@ public class DonationEventController {
     @RequestParam String startTime,
     @RequestParam String endTime,
     @RequestParam String eventState,
-    HttpServletRequest request
-    ) {
+    HttpServletRequest request) {
+        
+        if(!filterService.canAccessAdminData(request)) throw new IllegalStateException("Can't access is data!");
+
         // Get account data from session
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
@@ -100,13 +85,15 @@ public class DonationEventController {
 
         // Parse event state
         EventState state;
-        if(eventState.equals(EventState.ACTIVE.name())) 
+        if (eventState.equals(EventState.ACTIVE.name()))
             state = EventState.ACTIVE;
-        else if (eventState.equals(EventState.INACTIVE.name())) 
+        else if (eventState.equals(EventState.INACTIVE.name()))
             state = EventState.INACTIVE;
-        else throw new IllegalStateException("Event state not valid!");
+        else
+            throw new IllegalStateException("Event state not valid!");
 
-        return donationEventService.addDonationEvent(title, description, detail, image, total, startTime, endTime, appUser, state);
+        return donationEventService.addDonationEvent(title, description, detail, image, total, startTime, endTime,
+                appUser, state);
     }
 
     @PutMapping("/DonationEvent/{id}")
@@ -118,8 +105,11 @@ public class DonationEventController {
     @RequestParam String total,
     @RequestParam String startTime,
     @RequestParam String endTime,
-    @RequestParam String eventState
-    ) {
+    @RequestParam String eventState,
+    HttpServletRequest request) {
+
+        if(!filterService.canAccessAdminData(request)) throw new IllegalStateException("Can't access is data!");
+
         // Parse event state
         EventState state;
         if (eventState.equals(EventState.ACTIVE.name()))
@@ -129,11 +119,14 @@ public class DonationEventController {
         else
             throw new IllegalStateException("Event state not valid!");
 
-        return donationEventService.updateDonationEventInfoById(id, description, title, detail, image, total, startTime, endTime, state);
+        return donationEventService.updateDonationEventInfoById(id, description, title, detail, image, total, startTime,
+                endTime, state);
     }
 
     @DeleteMapping("/DonationEvent/{id}")
-    public ResponseEntity<Long> deleteDonationEvent(@PathVariable Long id) {
+    public ResponseEntity<Long> deleteDonationEvent(@PathVariable Long id, HttpServletRequest request) {
+
+        if(!filterService.canAccessAdminData(request)) throw new IllegalStateException("Can't access is data!");
 
         boolean isDeleted = donationEventService.deleteDonationEventById(id);
 
@@ -146,7 +139,10 @@ public class DonationEventController {
     }
 
     @DeleteMapping("/DonationEvent")
-    public ResponseEntity<Long> deleteDonationEvents(@RequestParam List<Long> ids) {
+    public ResponseEntity<Long> deleteDonationEvents(@RequestParam List<Long> ids, HttpServletRequest request) {
+
+        if(!filterService.canAccessAdminData(request)) throw new IllegalStateException("Can't access is data!");
+
         boolean deleteSuccess = donationEventService.deleteDonationEventsByIds(ids);
 
         if (!deleteSuccess) {

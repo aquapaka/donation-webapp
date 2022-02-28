@@ -63,7 +63,7 @@ public class AppUserValidator {
      */
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 
-    private static final String PHONE_NUMBER_PATTERN = "0[1-9]{9}";
+    private static final String PHONE_NUMBER_PATTERN = "0[0-9]{9}";
 
     private static AppUserRepository appUserRepository;
 

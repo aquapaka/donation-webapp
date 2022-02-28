@@ -19,6 +19,7 @@ public class DonationController {
 
     @GetMapping
     public List<Donation> getDonations() {
+
         return donationEventService.getDonations();
     }
 

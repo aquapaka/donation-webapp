@@ -13,6 +13,7 @@ import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
 import com.aquapaka.donationwebapp.service.DonationService;
+import com.aquapaka.donationwebapp.service.FilterService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,9 @@ public class MainController {
 
     @Autowired
     private DonationService donationService;
+
+    @Autowired
+    private FilterService filterService;
     
     @GetMapping("/")
     public String index(Model model, HttpServletRequest request) {
@@ -38,75 +42,23 @@ public class MainController {
         List<DonationEvent> donationEvents = donationEventService.getDonationEvents();
         model.addAttribute("donationEvents", donationEvents);
 
-        // Get account data from session
-        HttpSession session = request.getSession();
-        String email = (String)session.getAttribute("email");
-        String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateLogin(email, password);
-        boolean isSignedIn = false;
-
-        if(appUser != null) {
-            isSignedIn = true;
-            if (appUser.getState() == AppUserState.INACTIVE)
-                return "redirect:/validateEmail";
-        }
-
-        model.addAttribute("appUser", appUser);
-        model.addAttribute("isSignedIn", isSignedIn);
-        
-        return "index";
+        return filterService.filterGuest(request, model, "index");
     }
 
     @GetMapping("userManagement")
     public String userManagement(Model model, HttpServletRequest request) {
-        // Get account data from session
-        HttpSession session = request.getSession();
-        String email = (String)session.getAttribute("email");
-        String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateLogin(email, password);
-
-        if(appUser == null) {
-            return "redirect:/";
-        } else {
-            if (appUser.getState() == AppUserState.INACTIVE)
-                return "redirect:/validateEmail";
-
-            if(appUser.getRole() != Role.ADMIN) {
-                return "redirect:/";
-            }
-        }
-        model.addAttribute("appUser", appUser);
-        model.addAttribute("isSignedIn", true);
 
         // Get appUser datas
         List<AppUser> appUsers = appUserService.getAppUsers();
         model.addAttribute("appUsers", appUsers);
 
-        return "userManagement";
+        return filterService.filterAdmin(request, model, "userManagement");
     }
     
     @GetMapping("donationEventManagement")
     public String donationEventManagement(Model model, HttpServletRequest request,
     @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText,
     @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType) {
-        // Get account data from session
-        HttpSession session = request.getSession();
-        String email = (String)session.getAttribute("email");
-        String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateLogin(email, password);
-
-        if(appUser == null) {
-            return "redirect:/";
-        } else {
-            if (appUser.getState() == AppUserState.INACTIVE)
-                return "redirect:/validateEmail";
-
-            if(appUser.getRole() != Role.ADMIN) {
-                return "redirect:/";
-            }
-        }
-        model.addAttribute("appUser", appUser);
-        model.addAttribute("isSignedIn", true);
 
         // Get donation event datas
         List<DonationEvent> donationEvents;
@@ -118,59 +70,23 @@ public class MainController {
         
         model.addAttribute("donationEvents", donationEvents);
 
-        return "donationEventManagement";
+        return filterService.filterAdmin(request, model, "donationEventManagement");
     }
     
     @GetMapping("donationManagement")
     public String donationManagement(Model model, HttpServletRequest request) {
-        // Get account data from session
-        HttpSession session = request.getSession();
-        String email = (String)session.getAttribute("email");
-        String password = (String)session.getAttribute("password");
-        AppUser appUser = appUserService.validateLogin(email, password);
-
-        if(appUser == null) {
-            return "redirect:/";
-        } else {
-            if (appUser.getState() == AppUserState.INACTIVE)
-                return "redirect:/validateEmail";
-                
-            if(appUser.getRole() != Role.ADMIN) {
-                return "redirect:/";
-            }
-        }
-        model.addAttribute("appUser", appUser);
-        model.addAttribute("isSignedIn", true);
 
         // Get donation datas
         List<Donation> donations = donationService.getDonations();
         model.addAttribute("donations", donations);
 
-        return "donationManagement";
+        return filterService.filterAdmin(request, model, "donationManagement");
     }
     
     @GetMapping("profile")
     public String userProfile(Model model, HttpServletRequest request) {
-        
-        // Get account data from session
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        String password = (String) session.getAttribute("password");
-        AppUser appUser = appUserService.validateLogin(email, password);
-
-        if (appUser == null) {
-            return "redirect:/";
-        } else {
-            if (appUser.getState() == AppUserState.INACTIVE)
-                return "redirect:/validateEmail";
-
-            if (appUser.getRole() != Role.ADMIN) {
-                return "redirect:/";
-            }
-        }
-        model.addAttribute("appUser", appUser);
-        model.addAttribute("isSignedIn", true);
-
-        return "userProfile";
+      
+        return filterService.filterUser(request, model, "userProfile");
     }
+
 }
