@@ -149,4 +149,28 @@ public class MainController {
         return "donationManagement";
     }
     
+    @GetMapping("profile")
+    public String userProfile(Model model, HttpServletRequest request) {
+        
+        // Get account data from session
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        String password = (String) session.getAttribute("password");
+        AppUser appUser = appUserService.validateLogin(email, password);
+
+        if (appUser == null) {
+            return "redirect:/";
+        } else {
+            if (appUser.getState() == AppUserState.INACTIVE)
+                return "redirect:/validateEmail";
+
+            if (appUser.getRole() != Role.ADMIN) {
+                return "redirect:/";
+            }
+        }
+        model.addAttribute("appUser", appUser);
+        model.addAttribute("isSignedIn", true);
+
+        return "userProfile";
+    }
 }

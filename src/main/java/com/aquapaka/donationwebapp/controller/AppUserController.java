@@ -1,11 +1,17 @@
 package com.aquapaka.donationwebapp.controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.state.Gender;
 import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.service.AppUserService;
+import com.aquapaka.donationwebapp.util.PasswordEncrypt;
+import com.aquapaka.donationwebapp.validator.status.ChangePasswordStatus;
 import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,4 +77,35 @@ public class AppUserController {
         return appUserService.deleteAppUserById(id);
     }
 
+    @PutMapping("/{id}/resetPassword")
+    public @ResponseBody boolean resetAppUserPassword(@PathVariable long id) {
+        
+        return appUserService.resetAppUserPassword(id);
+    }
+
+    @PutMapping("/changePassword")
+    public @ResponseBody ChangePasswordStatus changeAppUserPassword(
+    @RequestParam String oldPassword,
+    @RequestParam String newPassword,
+    HttpServletRequest request) {
+
+        // Get account data from session
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+
+        String encryptedNewPassword;
+        try {
+            encryptedNewPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(newPassword));
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+
+        ChangePasswordStatus status = appUserService.changeAppUserPassword(email, oldPassword, newPassword);
+
+        if(status.isChangePasswordSuccess()) {
+            session.setAttribute("password", encryptedNewPassword);
+        }
+
+        return status;
+    }
 }

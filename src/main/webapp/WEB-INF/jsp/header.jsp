@@ -9,8 +9,8 @@
 <c:set var="signInUrl" value="${pageContext.request.contextPath}/signIn" />
 <c:set var="registerUrl" value="${pageContext.request.contextPath}/register" />
 <c:set var="profileUrl" value="${pageContext.request.contextPath}/profile" />
-<c:set var="myDonationsUrl" value="${pageContext.request.contextPath}/myDonations" />
-<c:set var="settingsUrl" value="${pageContext.request.contextPath}/settings" />
+<c:set var="myDonationsUrl" value="${pageContext.request.contextPath}/profile#myDonations" />
+<c:set var="settingsUrl" value="${pageContext.request.contextPath}/profile#settings" />
 <c:set var="signOutUrl" value="${pageContext.request.contextPath}/signOut" />
 
 <!--Header-->

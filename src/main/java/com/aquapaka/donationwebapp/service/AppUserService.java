@@ -1,5 +1,6 @@
 package com.aquapaka.donationwebapp.service;
 
+import java.io.Console;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +14,9 @@ import com.aquapaka.donationwebapp.model.state.Gender;
 import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.repository.AppUserRepository;
 import com.aquapaka.donationwebapp.util.PasswordEncrypt;
+import com.aquapaka.donationwebapp.util.PasswordGenerator;
 import com.aquapaka.donationwebapp.validator.AppUserValidator;
+import com.aquapaka.donationwebapp.validator.status.ChangePasswordStatus;
 import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
 import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
 
@@ -132,5 +135,48 @@ public class AppUserService {
         } else {
             return false;
         }
+    }
+
+    public boolean resetAppUserPassword(long id) {
+        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+
+        if(!appUserOptional.isPresent()) return false;
+
+        AppUser appUser = appUserOptional.get();
+
+        String newPassword = PasswordGenerator.generatePassword();
+
+        System.out.println(newPassword);
+
+        return true;
+    }
+
+    public ChangePasswordStatus changeAppUserPassword(String email, String oldPassword, String newPassword) {
+        ChangePasswordStatus status = new ChangePasswordStatus();
+        
+        String encryptedOldPassword;
+        String encryptedNewPassword;
+        try {
+            encryptedOldPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(oldPassword));
+            encryptedNewPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(newPassword));
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
+    
+        AppUser appUser = validateLogin(email, encryptedOldPassword);
+        
+        if (!AppUserValidator.isValidPassword(newPassword)) {
+            status.setNewPasswordError(true);
+        }
+        if(appUser == null) {
+            status.setOldPasswordError(true);
+        } else {
+            if (status.isChangePasswordSuccess()) {
+                appUser.setPassword(encryptedNewPassword);
+                appUserRepository.save(appUser);
+            }
+        }
+
+        return status;
     }
 }
