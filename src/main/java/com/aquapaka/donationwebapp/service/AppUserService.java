@@ -20,6 +20,8 @@ import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
 import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +29,9 @@ public class AppUserService {
     
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private JavaMailSender emailSender;
 
     public List<AppUser> getAppUsers() {
         return appUserRepository.findAll();
@@ -135,7 +140,6 @@ public class AppUserService {
         }
     }
 
-    // TODO: Fix this method
     public boolean resetAppUserPassword(String email) {
         Optional<AppUser> appUserOptional = appUserRepository.findAppUserByEmail(email);
 
@@ -143,7 +147,23 @@ public class AppUserService {
 
         AppUser appUser = appUserOptional.get();
         String newPassword = PasswordGenerator.generatePassword();
+        String encryptedNewPassword;
+        try {
+            encryptedNewPassword = PasswordEncrypt.encryptPassword(newPassword);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(e);
+        }
 
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Reset password - DONATION");
+        message.setText("Your new password is " + newPassword);
+
+        // Send Message!
+        emailSender.send(message);
+
+        appUser.setPassword(encryptedNewPassword);
+        appUserRepository.save(appUser);
 
         return true;
     }

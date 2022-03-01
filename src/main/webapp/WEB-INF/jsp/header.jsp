@@ -34,50 +34,50 @@
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <c:if test="${not empty appUser}">
                                 <li class="nav-item">
-                                    <i class="d-md-none nav-link">Xin chào <b>${appUser.username}</b>!</i>
+                                    <em class="d-md-none nav-link">Xin chào <strong>${appUser.username}</strong>!</em>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="${donationEventsUrl}"><b>Quyên góp</b></a>
+                                    <a class="nav-link" aria-current="page" href="${donationEventsUrl}"><strong>Quyên góp</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${contactUrl}"><b>Liên hệ</b></a>
+                                    <a class="nav-link" href="${contactUrl}"><strong>Liên hệ</strong></a>
                                 </li>
                                 <c:if test="${appUser.role == 'ADMIN'}">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="${userManagementUrl}"><b>QL Người dùng</b></a>
+                                        <a class="nav-link" href="${userManagementUrl}"><strong>QL Người dùng</strong></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="${donationEventManagementUrl}"><b>QL Sự kiện</b></a>
+                                        <a class="nav-link" href="${donationEventManagementUrl}"><strong>QL Sự kiện</strong></a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="${donationManagementUrl}"><b>QL quyên góp</b></a>
+                                        <a class="nav-link" href="${donationManagementUrl}"><strong>QL quyên góp</strong></a>
                                     </li>
                                 </c:if>
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="${profileUrl}"><b>Hồ sơ</b></a>
+                                    <a class="nav-link d-md-none" href="${profileUrl}"><strong>Hồ sơ</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="${myDonationsUrl}"><b>Lịch sử quyên góp</b></a>
+                                    <a class="nav-link d-md-none" href="${myDonationsUrl}"><strong>Lịch sử quyên góp</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="${settingsUrl}"><b>Thiết đặt</b></a>
+                                    <a class="nav-link d-md-none" href="${settingsUrl}"><strong>Thiết đặt</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="${signOutUrl}"><b>Đăng xuất</b></a>
+                                    <a class="nav-link d-md-none" href="${signOutUrl}"><strong>Đăng xuất</strong></a>
                                 </li>
                             </c:if>
                             <c:if test="${empty appUser}">
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="" data-bs-toggle="modal" data-bs-target="#loginModal"><b>Đăng nhập</b></a>
+                                    <a class="nav-link d-md-none" href="" data-bs-toggle="modal" data-bs-target="#loginModal"><strong>Đăng nhập</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="" data-bs-toggle="modal" data-bs-target="#registerModal"><b>Đăng kí</b></a>
+                                    <a class="nav-link d-md-none" href="" data-bs-toggle="modal" data-bs-target="#registerModal"><strong>Đăng kí</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" aria-current="page" href="${donationEventsUrl}"><b>Quyên góp</b></a>
+                                    <a class="nav-link" aria-current="page" href="${donationEventsUrl}"><strong>Quyên góp</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${contactUrl}"><b>Liên hệ</b></a>
+                                    <a class="nav-link" href="${contactUrl}"><strong>Liên hệ</strong></a>
                                 </li>
                             </c:if>
                         </ul>
@@ -93,7 +93,7 @@
                                     <li><a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng kí</a></li>
                                 </c:if>
                                 <c:if test="${not empty appUser}">
-                                    <li><p class="ms-2 mt-2"><i>Xin chào <b>${appUser.username}</b>!</i></p></li>
+                                    <li><p class="ms-2 mt-2"><em>Xin chào <strong>${appUser.username}</strong>!</em></p></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="${profileUrl}">Hồ sơ</a></li>
                                     <li><a class="dropdown-item" href="${myDonationsUrl}">Lịch sử quyên góp</a></li>
@@ -133,7 +133,8 @@
                         </div>
                         <span id="loginError" class="form-text text-danger " hidden>Email hoặc mật khẩu không khớp</span>
                         <hr>
-                        <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span>
+                        <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span><br>
+                        <span class="float-start">Quên mật khẩu? <a href="" data-bs-target="#forgotPasswordModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đặt lại mật khẩu</a></span>
                         <button type="submit" class="btn btn-primary float-end" >Đăng nhập</button>
                     </form>
                 </div>
@@ -176,6 +177,31 @@
                         <hr>
                         <span class="float-start">Bạn đã có tài khoản? <a href="" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">Đăng nhập</a></span>
                         <button type="submit" class="btn btn-primary float-end" >Đăng kí</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot password modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" data-bs-backdrop="static" data-show="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Quên mật khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="forgetPasswordForm">
+                        <div class="mb-3">
+                            <label for="resetPasswordEmail" class="form-label">Nhập email của bạn để nhận mật khẩu mới</label>
+                            <input type="email" class="form-control" id="resetPasswordEmail" name="resetPasswordEmail">
+                        </div>
+                        <span id="resetPasswordError" class="form-text text-danger " hidden>Không tìm thấy email</span>
+                        <hr>
+                        <span class="float-start">Bạn chưa có tài khoản? <a href="" data-bs-target="#registerModal"
+                                data-bs-toggle="modal" data-bs-dismiss="modal">Đăng kí</a></span>
+                        <button type="submit" class="btn btn-primary float-end">Xác nhận</button>
                     </form>
                 </div>
             </div>

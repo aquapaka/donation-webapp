@@ -16,15 +16,15 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 
-                if(response == true) {
+                if(response) {
                     window.location.replace("/");
                     alert("Login success!");
                 } else {
                     $("#loginError").attr("hidden", false);
                 }
             },
-            error : function(e) {
-                console.log("ERROR: ", e);
+            error : function(error) {
+                console.log("ERROR: ", error);
             }
         });
     });
@@ -74,8 +74,35 @@ $(document).ready(function () {
                 else $("#resPasswordError").attr("hidden", true);
     
             },
-            error : function(e) {
-                console.log("ERROR: ", e);
+            error : function(error) {
+                console.log("ERROR: ", error);
+            }
+        });
+    });
+
+    $("#forgetPasswordForm").submit(function doResetPassword(e) {
+        e.preventDefault();
+        var email = $("#resetPasswordEmail").val();
+
+        $.ajax({
+            type: "PUT",
+            url: "/AppUser/resetPassword",
+            data: {
+                email : email
+            },
+            dataType: "json",
+            success: function (response) {
+                $("#resetPasswordError").prop("hidden", true);
+                if(response) {
+                    window.location.replace("/");
+                    alert("Đã đặt lại mật khẩu, hãy kiểm tra email của bạn!");
+                    return;
+                } else {
+                    $("#resetPasswordError").prop("hidden", false);
+                }
+            },
+            error : function(error) {
+                console.log("ERROR: ", error);
             }
         });
     });
