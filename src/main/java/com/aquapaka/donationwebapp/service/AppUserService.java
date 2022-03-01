@@ -1,6 +1,5 @@
 package com.aquapaka.donationwebapp.service;
 
-import java.io.Console;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
@@ -136,6 +135,7 @@ public class AppUserService {
         }
     }
 
+    // TODO: Fix this method
     public boolean resetAppUserPassword(long id) {
         Optional<AppUser> appUserOptional = appUserRepository.findById(id);
 
@@ -145,7 +145,6 @@ public class AppUserService {
 
         String newPassword = PasswordGenerator.generatePassword();
 
-        System.out.println(newPassword);
 
         return true;
     }

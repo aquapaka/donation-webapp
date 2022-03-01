@@ -3,13 +3,10 @@ package com.aquapaka.donationwebapp.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.Donation;
 import com.aquapaka.donationwebapp.model.DonationEvent;
-import com.aquapaka.donationwebapp.model.state.AppUserState;
-import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
 import com.aquapaka.donationwebapp.service.DonationService;
