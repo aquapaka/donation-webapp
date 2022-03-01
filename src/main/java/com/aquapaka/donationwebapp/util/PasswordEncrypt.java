@@ -11,7 +11,7 @@ public class PasswordEncrypt {
         throw new IllegalStateException("Utility class");
     }
 
-    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
+    private static byte[] getSHA(String input) throws NoSuchAlgorithmException {
         /* MessageDigest instance for hashing using SHA256 */
         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
@@ -22,7 +22,7 @@ public class PasswordEncrypt {
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String toHexString(byte[] hash) {
+    private static String toHexString(byte[] hash) {
         /* Convert byte array of hash into digest */
         BigInteger number = new BigInteger(1, hash);
 
@@ -35,5 +35,9 @@ public class PasswordEncrypt {
         }
 
         return hexString.toString();
+    }
+
+    public static String encryptPassword(String input) throws NoSuchAlgorithmException {
+        return toHexString(getSHA(input));
     }
 }

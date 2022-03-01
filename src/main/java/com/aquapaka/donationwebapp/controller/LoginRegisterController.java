@@ -39,7 +39,7 @@ public class LoginRegisterController {
 
         String encryptedPassword;
         try {
-            encryptedPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(password));
+            encryptedPassword = PasswordEncrypt.encryptPassword(password);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }
@@ -69,7 +69,7 @@ public class LoginRegisterController {
         if (registerStatus.isRegisterSuccess()) {
             String encryptedPassword;
             try {
-                encryptedPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(password));
+                encryptedPassword = PasswordEncrypt.encryptPassword(password);
             } catch (NoSuchAlgorithmException e) {
                 throw new IllegalStateException(e);
             }

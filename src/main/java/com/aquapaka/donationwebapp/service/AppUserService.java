@@ -58,7 +58,7 @@ public class AppUserService {
             // Encrypt password
             String encryptedPassword;
             try {
-                encryptedPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(password));
+                encryptedPassword = PasswordEncrypt.encryptPassword(password);
             } catch (NoSuchAlgorithmException e) {
                 throw new IllegalStateException(e);
             }
@@ -136,13 +136,12 @@ public class AppUserService {
     }
 
     // TODO: Fix this method
-    public boolean resetAppUserPassword(long id) {
-        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+    public boolean resetAppUserPassword(String email) {
+        Optional<AppUser> appUserOptional = appUserRepository.findAppUserByEmail(email);
 
         if(!appUserOptional.isPresent()) return false;
 
         AppUser appUser = appUserOptional.get();
-
         String newPassword = PasswordGenerator.generatePassword();
 
 
@@ -155,8 +154,8 @@ public class AppUserService {
         String encryptedOldPassword;
         String encryptedNewPassword;
         try {
-            encryptedOldPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(oldPassword));
-            encryptedNewPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(newPassword));
+            encryptedOldPassword = PasswordEncrypt.encryptPassword(oldPassword);
+            encryptedNewPassword = PasswordEncrypt.encryptPassword(newPassword);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }

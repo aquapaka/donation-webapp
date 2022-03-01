@@ -3,7 +3,7 @@ package com.aquapaka.donationwebapp.util;
 import java.util.Random;
 
 public class PasswordGenerator {
-    private static final int PASSWORD_LENGTH = 10;
+    private static final int PASSWORD_LENGTH = 12;
     
     private PasswordGenerator() {
         throw new IllegalStateException("Utility class");

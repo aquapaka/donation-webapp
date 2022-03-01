@@ -88,12 +88,10 @@ public class AppUserController {
         return appUserService.deleteAppUserById(id);
     }
 
-    @PutMapping("/{id}/resetPassword")
-    public @ResponseBody boolean resetAppUserPassword(@PathVariable long id, HttpServletRequest request) {
-
-        if (!filterService.canAccessUserData(request, id)) throw new IllegalStateException("Can't access this data!");
+    @PutMapping("/resetPassword")
+    public @ResponseBody boolean resetAppUserPassword(HttpServletRequest request, @RequestParam String email) {
         
-        return appUserService.resetAppUserPassword(id);
+        return appUserService.resetAppUserPassword(email);
     }
 
     @PutMapping("/changePassword")
@@ -108,7 +106,7 @@ public class AppUserController {
 
         String encryptedNewPassword;
         try {
-            encryptedNewPassword = PasswordEncrypt.toHexString(PasswordEncrypt.getSHA(newPassword));
+            encryptedNewPassword = PasswordEncrypt.encryptPassword(newPassword);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
         }
