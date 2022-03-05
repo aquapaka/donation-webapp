@@ -1,3 +1,25 @@
+$(function () {
+    $(".page-link").on("click", function(e) {
+        e.preventDefault(); // cancel the link itself
+
+        $("#page").val($(this).prop("tabindex"));
+
+        var searchText = $("#searchText").val();
+        var searchType = $("#searchType").val();
+        var sortType = $("#sortType").val();
+        var page = $("#page").val();
+
+        console.log({
+            searchText : searchText,
+            searchType : searchType,
+            sortType : sortType,
+            page : page
+        });
+
+        $("#searchForm").submit();
+    });    
+});
+
 function addAppUser() {
     var addAppUserModal = new bootstrap.Modal(document.getElementById('addAppUserModal'), true);
     
@@ -181,17 +203,5 @@ function deleteAppUserConfirm() {
             console.log(error);
         }
     });
-}
-
-function showErrorToast(message) {
-    let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-    $("#errorToast .toast-body").html(message);
-    errorToast.show();
-}
-
-function showSuccessToast(message) {
-    let successToast = new bootstrap.Toast(document.getElementById('successToast'));
-    $("#successToast .toast-body").html(message);
-    successToast.show();
 }
 

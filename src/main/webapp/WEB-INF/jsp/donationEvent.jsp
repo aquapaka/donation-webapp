@@ -21,7 +21,10 @@
 
     <!-- Header -->
     <jsp:include page="header.jsp"/>
-    <main id="donationEvent" class="container-fluid py-3 py-md-4">
+    <main id="donationEvent" class="container-fluid py-3 py-md-4 position-relative">
+
+        <jsp:include page="toasts.jsp"/>
+
         <section class="container donationEventCard py-3">
             <h2><strong>${donationEvent.title}</strong></h2>
             <h3>${donationEvent.description}</h2>

@@ -44,29 +44,14 @@ public class MainController {
         return filterService.filterGuest(request, model, "index");
     }
 
-    @GetMapping("userManagement/{page}")
-    public String userManagement(Model model, HttpServletRequest request, @PathVariable int page) {
-
-        // Get appUser datas
-        Page<AppUser> appUserPage = appUserService.getAppUsers(page);
-        List<AppUser> appUsers = appUserPage.getContent();
-        int totalPage = appUserPage.getTotalPages();
-
-        model.addAttribute("appUsers", appUsers);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPage", totalPage);
-
-        return filterService.filterAdmin(request, model, "userManagement");
-    }
-
-    @GetMapping("userManagement/search/{page}")
+    @GetMapping("userManagement")
     public String userManagement(
     Model model, 
     HttpServletRequest request,
-    @PathVariable int page,
-    @RequestParam String searchText,
-    @RequestParam String searchType,
-    @RequestParam String sortType) {
+    @RequestParam(required = false, defaultValue = "1") int page,
+    @RequestParam(required = false, defaultValue = "") String searchText,
+    @RequestParam(required = false, defaultValue = "username") String searchType,
+    @RequestParam(required = false, defaultValue = "appUserId") String sortType) {
 
         // Get appUser datas
         Page<AppUser> appUserPage = appUserService.searchAppUsers(searchText, searchType, sortType, page);
@@ -76,33 +61,21 @@ public class MainController {
         model.addAttribute("appUsers", appUsers);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPage", totalPage);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("sortType", sortType);
 
         return filterService.filterAdmin(request, model, "userManagement");
     }
-
-    @GetMapping("donationEventManagement/{page}")
-    public String donationEventManagement(Model model, HttpServletRequest request, @PathVariable int page) {
-
-        // Get appUser datas
-        Page<DonationEvent> donationEventPage = donationEventService.getDonationEvents(page);
-        List<DonationEvent> donationEvents = donationEventPage.getContent();
-        int totalPage = donationEventPage.getTotalPages();
-
-        model.addAttribute("donationEvents", donationEvents);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPage", totalPage);
-
-        return filterService.filterAdmin(request, model, "donationEventManagement");
-    }
     
-    @GetMapping("donationEventManagement/search/{page}")
+    @GetMapping("donationEventManagement")
     public String donationEventManagement(
     Model model, 
     HttpServletRequest request,
-    @PathVariable int page,
-    @RequestParam String searchText,
-    @RequestParam String searchType,
-    @RequestParam String sortType) {
+    @RequestParam(required = false, defaultValue = "1") int page,
+    @RequestParam(required = false, defaultValue = "") String searchText,
+    @RequestParam(required = false, defaultValue = "title") String searchType,
+    @RequestParam(required = false, defaultValue = "donationEventId") String sortType) {
 
         // Get appUser datas
         Page<DonationEvent> donationEventPage = donationEventService.searchDonationEvents(searchText, searchType, sortType, page);
@@ -112,6 +85,9 @@ public class MainController {
         model.addAttribute("donationEvents", donationEvents);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPage", totalPage);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("sortType", sortType);
 
         return filterService.filterAdmin(request, model, "donationEventManagement");
     }

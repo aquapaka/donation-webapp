@@ -3,8 +3,8 @@
 
 <c:set var="donationEventsUrl" value="${pageContext.request.contextPath}/#donationEvents" />
 <c:set var="contactUrl" value="${pageContext.request.contextPath}/#contact" />
-<c:set var="userManagementUrl" value="${pageContext.request.contextPath}/userManagement/1" />
-<c:set var="donationEventManagementUrl" value="${pageContext.request.contextPath}/donationEventManagement/1" />
+<c:set var="userManagementUrl" value="${pageContext.request.contextPath}/userManagement" />
+<c:set var="donationEventManagementUrl" value="${pageContext.request.contextPath}/donationEventManagement" />
 <c:set var="donationManagementUrl" value="${pageContext.request.contextPath}/donationManagement" />
 <c:set var="signInUrl" value="${pageContext.request.contextPath}/signIn" />
 <c:set var="registerUrl" value="${pageContext.request.contextPath}/register" />
@@ -60,9 +60,6 @@
                                     <a class="nav-link d-md-none" href="${myDonationsUrl}"><strong>Lịch sử quyên góp</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-md-none" href="${settingsUrl}"><strong>Thiết đặt</strong></a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link d-md-none" href="${signOutUrl}"><strong>Đăng xuất</strong></a>
                                 </li>
                             </c:if>
@@ -97,7 +94,6 @@
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="${profileUrl}">Hồ sơ</a></li>
                                     <li><a class="dropdown-item" href="${myDonationsUrl}">Lịch sử quyên góp</a></li>
-                                    <li><a class="dropdown-item" href="${settingsUrl}">Thiết đặt</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="${signOutUrl}">Đăng xuất</a></li>
                                 </c:if>
@@ -208,3 +204,4 @@
         </div>
     </div>
 </header>
+

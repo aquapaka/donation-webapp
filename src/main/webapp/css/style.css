@@ -47,10 +47,6 @@ textarea {
     height: 200px;
 }
 
-.toast-container {
-    z-index: 10000;
-}
-
 .small-image {
     width: 100px;
 }

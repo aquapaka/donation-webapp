@@ -49,7 +49,7 @@ public class DonationEventController {
 
         model.addAttribute("donationEvent", donationEvent);
 
-        return "donationEvent";
+        return filterService.filterGuest(request, model, "donationEvent");
     }
 
     @GetMapping("/DonationEvent/{id}")

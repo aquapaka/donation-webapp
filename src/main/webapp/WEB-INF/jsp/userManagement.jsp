@@ -25,25 +25,7 @@
 
     <main class="container-fluid py-3 py-md-4 min-vh-100 position-relative">
 
-        <!-- Toasts -->
-        <div class="toast-container position-absolute top-0 end-0 m-2">          
-            <div id="errorToast" class="toast text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                  <div class="toast-body">
-                    ... message ...
-                  </div>
-                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-            <div id="successToast" class="toast text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                  <div class="toast-body">
-                    ... message ...
-                  </div>
-                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
+        <jsp:include page="toasts.jsp"/>
 
         <!-- App User -->
         <section id="appUserManagement" class="container-fluid round-border py-3 mb-2">
@@ -54,26 +36,27 @@
                 <button id="deleteAllButton" class="btn btn-danger float-start mx-1 " onclick="deleteAppUsers()"
                     disabled>Xoá tất cả đã chọn</button>
                 <form id="searchForm" class="float-end row me-1"
-                    action="${pageContext.request.contextPath}/userManagement/search/1">
+                    action="${pageContext.request.contextPath}/userManagement">
+                    <input id="page" name="page" value="" class="form-control" hidden>
                     <div class="col-5">
-                        <input id="searchBox" name="searchText" value="" class="form-control"
+                        <input id="searchBox" name="searchText" value="${searchText}" class="form-control"
                             type="search" placeholder="Tìm kiếm" aria-label="Search">
                     </div>
                     <div class="col-3">
                         <select id="searchType" name="searchType" class="form-select">
-                            <option value="email">Tìm theo email</option>
-                            <option value="username">Tìm theo username</option>
-                            <option value="fullname" selected>Tìm theo họ tên</option>
-                            <option value="phoneNumber">Tìm theo số điện thoại</option>
+                            <option value="email" <c:if test="${searchType == 'email'}">selected</c:if>>Tìm theo email</option>
+                            <option value="username" <c:if test="${searchType == 'username'}">selected</c:if>>Tìm theo username</option>
+                            <option value="fullname" <c:if test="${searchType == 'fullname'}">selected</c:if>>Tìm theo họ tên</option>
+                            <option value="phoneNumber" <c:if test="${searchType == 'phoneNumber'}">selected</c:if>>Tìm theo số điện thoại</option>
                         </select>
                     </div>
                     <div class="col-3">
                         <select id="sortType" name="sortType" class="form-select">
-                            <option value="appUserId" selected>Sắp xếp theo ID</option>
-                            <option value="email">Sắp xếp theo email</option>
-                            <option value="username">Sắp xếp theo username</option>
-                            <option value="fullname">Sắp xếp theo họ tên</option>
-                            <option value="phoneNumber">Sắp xếp theo số điện thoại</option>
+                            <option value="appUserId" <c:if test="${sortType == 'appUserId'}">selected</c:if>>Sắp xếp theo ID</option>
+                            <option value="email" <c:if test="${sortType == 'email'}">selected</c:if>>Sắp xếp theo email</option>
+                            <option value="username" <c:if test="${sortType == 'username'}">selected</c:if>>Sắp xếp theo username</option>
+                            <option value="fullname" <c:if test="${sortType == 'fullname'}">selected</c:if>>Sắp xếp theo họ tên</option>
+                            <option value="phoneNumber" <c:if test="${sortType == 'phoneNumber'}">selected</c:if>>Sắp xếp theo số điện thoại</option>
                         </select>
                     </div>
                     <div class="col-1">
@@ -126,39 +109,39 @@
             <!-- Pagination -->
             <div aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                  <li class="page-item <c:if test='${currentPage <= 1}'>disabled</c:if>">
-                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-1}" tabindex="-1">Previous</a>
-                  </li>
-                  <li class="page-item" <c:if test='${currentPage <= 3}'>hidden</c:if>>
-                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/1" tabindex="-1">1</a>
-                  </li>
-                  <li class="page-item disabled" <c:if test='${currentPage-3 <= 1}'>hidden</c:if>>
-                    <a class="page-link" href="" tabindex="-1">...</a>
-                  </li>
-                  <c:if test="${currentPage-2 >= 1}">
-                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-2}">${currentPage-2}</a></li>
-                  </c:if>
-                  <c:if test="${currentPage-1 >= 1}">
-                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-1}">${currentPage-1}</a></li>
-                  </c:if>  
-                  <li class="page-item active"><span class="page-link">${currentPage}</span></li>
-                  <c:if test="${currentPage+1 <= totalPage}">
-                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+1}">${currentPage+1}</a></li>
-                  </c:if>
-                  <c:if test="${currentPage+2 <= totalPage}">
-                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+2}">${currentPage+2}</a></li>
-                  </c:if>
-                  <li class="page-item disabled" <c:if test='${currentPage+3 >= totalPage}'>hidden</c:if>>
-                    <a class="page-link" href="" tabindex="-1">...</a>
-                  </li>
-                  <li class="page-item" <c:if test='${currentPage >= totalPage-2}'>hidden</c:if>>
-                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${totalPage}" tabindex="-1">${totalPage}</a>
-                  </li>
-                  <li class="page-item <c:if test='${currentPage >= totalPage}'>disabled</c:if>">
-                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+1}">Next</a>
-                  </li>
+                <li class="page-item <c:if test='${currentPage <= 1}'>disabled</c:if>">
+                    <a class="page-link" href="#" tabindex="${currentPage-1}">Previous</a>
+                </li>
+                <li class="page-item" <c:if test='${currentPage <= 3}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="1">1</a>
+                </li>
+                <li class="page-item disabled" <c:if test='${currentPage-3 <= 1}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="-1">...</a>
+                </li>
+                <c:if test="${currentPage-2 >= 1}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage-2}">${currentPage-2}</a></li>
+                </c:if>
+                <c:if test="${currentPage-1 >= 1}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage-1}">${currentPage-1}</a></li>
+                </c:if>  
+                <li class="page-item active"><span class="page-link" tabindex="${currentPage}">${currentPage}</span></li>
+                <c:if test="${currentPage+1 <= totalPage}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage+1}">${currentPage+1}</a></li>
+                </c:if>
+                <c:if test="${currentPage+2 <= totalPage}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage+2}">${currentPage+2}</a></li>
+                </c:if>
+                <li class="page-item disabled" <c:if test='${currentPage+3 >= totalPage}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="-1">...</a>
+                </li>
+                <li class="page-item" <c:if test='${currentPage >= totalPage-2}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="${totalPage}">${totalPage}</a>
+                </li>
+                <li class="page-item <c:if test='${currentPage >= totalPage}'>disabled</c:if>">
+                    <a class="page-link" href="#" tabindex="${currentPage+1}">Next</a>
+                </li>
                 </ul>
-              </div>
+            </div>
         </section>
     </main>
 

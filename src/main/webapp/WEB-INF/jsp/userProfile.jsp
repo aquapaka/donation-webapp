@@ -22,7 +22,9 @@
 
     <!-- Header -->
     <jsp:include page="header.jsp"/>
-    <main class="container-fluid py-3 py-md-4 min-vh-100">
+    <main class="container-fluid py-3 py-md-4 min-vh-100 position-relative">
+
+        <jsp:include page="toasts.jsp"/>
 
         <!-- User profile -->
         <section id="userProfile" class="container round-border py-3 mb-2">
@@ -71,7 +73,7 @@
                 <div class="col">
                     <div class="float-end">
                         <button class="btn btn-secondary" type="reset" disabled>Đặt lại</button>
-                        <button class="btn btn-success" type="submit" disabled>Cập nhật thông tin</button>
+                        <button id="submitBtn" class="btn btn-success" type="submit" disabled>Cập nhật thông tin</button>
                     </div>
                 </div>
             </form>
@@ -79,9 +81,8 @@
 
         <!-- Setting -->
         <section id="settings" class="container round-border py-3 mb-2">
-            <h3 class="text-center mb-3"><strong>Thiết đặt</strong></h3>
+            <h3 class="text-center mb-3"><strong>Đặt lại mật khẩu</strong></h3>
             <form id="changePasswordForm" class="row justify-content-center">        
-                <span>Đặt lại mật khẩu</span>
                 <div class="form-floating mb-3 col-md-3">
                     <input type="password" class="form-control" id="oldPassword" placeholder="name@example.com">
                     <label for="oldPassword" class="ms-2">Mật khẩu cũ</label>
@@ -101,12 +102,6 @@
                     <button class="btn btn-primary mt-2" type="submit">Đặt lại mật khẩu</button>
                 </div>
             </form>      
-        </section>
-
-        <!-- My donations -->
-        <section id="settings" class="container round-border py-3 mb-2">
-            <h3 class="text-center mb-3"><strong>Lịch sử quyên góp</strong></h3>
-            ...
         </section>
     </main>
 

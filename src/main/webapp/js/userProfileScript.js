@@ -14,6 +14,7 @@ $(document).ready(function () {
     $("#userProfileForm").submit(function(e) {
         e.preventDefault();
 
+        $("#submitBtn").prop("disabled", true);
         var appUserId = $("#appUserId").val();
         var fullname = $("#appUserFullname").val();
         var dateOfBirth = $("#appUserDateOfBirth").val();
@@ -41,12 +42,18 @@ $(document).ready(function () {
                 else $("#phoneNumberError").prop("hidden", true);
 
                 if(response.validAppUser) {
-                    alert("Updated profile!");
-                    window.location.replace("/profile");
+                    showSuccessToast("Đã cập nhật hồ sơ!");
+                    setTimeout(function() {
+                        window.location.replace("/profile");
+                    }, 3000);
+                } else {
+                    $("#submitBtn").prop("disabled", false);
                 }
             },
             error: function (error) {
-                alert("Error, can't update profile. Error: ", error);
+                showErrorToast("Đã xảy ra lỗi");
+                console.log(error);
+                $("#submitBtn").prop("disabled", false);
             }
         });
     });

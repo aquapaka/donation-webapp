@@ -31,6 +31,7 @@ public class FilterService {
         else if (appUser.getState() == AppUserState.INACTIVE) return VALIDATE_EMAIL_REDIRECT;
 
         model.addAttribute("appUser", appUser);
+        model.addAttribute("isSignedIn", true);
         
         return mapping;
     }

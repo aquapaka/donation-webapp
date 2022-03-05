@@ -22,11 +22,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 public class DonationEventService {
 
-    private static final int EVENT_PER_PAGE = 8;
+    private static final int EVENT_PER_PAGE = 5;
 
     @Autowired
     private DonationEventRepository donationEventRepository;

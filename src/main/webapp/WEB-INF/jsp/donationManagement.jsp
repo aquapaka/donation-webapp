@@ -21,7 +21,9 @@
 
     <!-- Header -->
     <jsp:include page="header.jsp"/>
-    <main class="container-fluid py-3 py-md-4 min-vh-100">
+    <main class="container-fluid py-3 py-md-4 min-vh-100 position-relative">
+
+        <jsp:include page="toasts.jsp"/>
 
         <!-- Donation -->
         <section id="donationManagement" class="container-fluid round-border py-3 mb-2">

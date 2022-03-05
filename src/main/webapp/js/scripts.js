@@ -17,14 +17,18 @@ $(document).ready(function () {
             success: function (response) {
                 
                 if(response) {
-                    window.location.replace("/");
-                    alert("Login success!");
+                    showSuccessToast("Đăng nhập thành công. Đang chuyển hướng...")
+                    bootstrap.Modal.getInstance(document.querySelector('#loginModal')).hide();
+                    setTimeout(function() {
+                        window.location.replace("/");
+                    }, 3000);
                 } else {
                     $("#loginError").attr("hidden", false);
                 }
             },
             error : function(error) {
-                console.log("ERROR: ", error);
+                showErrorToast("Đã xảy ra lỗi!");
+                console.log(error);
             }
         });
     });
@@ -54,11 +58,13 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (response) {
-                console.log(response);
     
                 if(response.registerSuccess) {
-                    window.location.replace("/");
-                    alert("Register success!");
+                    showSuccessToast("Đăng kí thành công, mã xác minh đã được gửi tới email của bạn")
+                    bootstrap.Modal.getInstance(document.querySelector('#registerModal')).hide();
+                    setTimeout(function() {
+                        window.location.replace("/");
+                    }, 3000);
                     return;
                 }
     
@@ -75,7 +81,8 @@ $(document).ready(function () {
     
             },
             error : function(error) {
-                console.log("ERROR: ", error);
+                showErrorToast("Đã xảy ra lỗi!");
+                console.log(error);
             }
         });
     });
@@ -94,20 +101,36 @@ $(document).ready(function () {
             success: function (response) {
                 $("#resetPasswordError").prop("hidden", true);
                 if(response) {
-                    window.location.replace("/");
-                    alert("Đã đặt lại mật khẩu, hãy kiểm tra email của bạn!");
+                    showSuccessToast("Đã đặt lại mật khẩu, hãy kiểm tra email của bạn!");
+                    bootstrap.Modal.getInstance(document.querySelector('#forgotPasswordModal')).hide();
+                    setTimeout(function() {
+                        window.location.replace("/");
+                    }, 3000);
                     return;
                 } else {
                     $("#resetPasswordError").prop("hidden", false);
                 }
             },
             error : function(error) {
-                console.log("ERROR: ", error);
+                showErrorToast("Đã xảy ra lỗi");
+                console.log(error);
             }
         });
     });
 
 });
+
+function showErrorToast(message) {
+    let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+    $("#errorToast .toast-body").html(message);
+    errorToast.show();
+}
+
+function showSuccessToast(message) {
+    let successToast = new bootstrap.Toast(document.getElementById('successToast'));
+    $("#successToast .toast-body").html(message);
+    successToast.show();
+}
 
 
 

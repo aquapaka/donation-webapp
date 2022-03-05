@@ -21,7 +21,9 @@
 
     <!-- Header -->
     <jsp:include page="header.jsp"/>
-    <main class="container-fluid p-0">
+    <main class="container-fluid p-0 position-relative">
+
+        <jsp:include page="toasts.jsp"/>
 
         <!-- Big banner -->
         <img class="img-fluid" src="img/banner.jpg" alt="main-image">

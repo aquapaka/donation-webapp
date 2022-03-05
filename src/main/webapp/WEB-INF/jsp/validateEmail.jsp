@@ -22,7 +22,10 @@
 
     <!-- Header -->
     <jsp:include page="header.jsp"/>
-    <main class="container-fluid py-3 py-md-4 min-vh-100">
+    <main class="container-fluid py-3 py-md-4 min-vh-100 position-relative">
+
+        <jsp:include page="toasts.jsp"/>
+
         <section id="appUserManagement" class="container round-border py-3 mb-2">
             <form id="validateForm" class="d-flex justify-content-center align-items-center px-5">
                 <span class="mx-1">Nhập mã xác minh được gửi tới email của bạn</span>
