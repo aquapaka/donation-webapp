@@ -42,7 +42,7 @@ public class AppUserService {
 
     public Page<AppUser> getAppUsers(int page) {
         page -= 1;
-        if(page < 0) page = 0;
+        if(page < 0) throw new IllegalStateException("Page not found!");
 
         Pageable pageable = PageRequest.of(page, USER_PER_PAGE);
 
@@ -61,9 +61,6 @@ public class AppUserService {
         Page<AppUser> appUserPage;
 
         switch(searchType) {
-            case "appUserId":
-                appUserPage = appUserRepository.findAllByAppUserIdContainsIgnoreCase(searchText, pageable);
-                break;
             case "email":
                 appUserPage = appUserRepository.findAllByEmailContainsIgnoreCase(searchText, pageable);
                 break;

@@ -16,7 +16,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
     Optional<AppUser> findAppUserByUsername(String username);
 
     // Search methods
-    Page<AppUser> findAllByAppUserIdContainsIgnoreCase(String idSeach, Pageable pageable);
     Page<AppUser> findAllByEmailContainsIgnoreCase(String emailSearch, Pageable pageable);
     Page<AppUser> findAllByUsernameContainsIgnoreCase(String emailSearch, Pageable pageable);
     Page<AppUser> findAllByFullnameContainsIgnoreCase(String emailSearch, Pageable pageable);
