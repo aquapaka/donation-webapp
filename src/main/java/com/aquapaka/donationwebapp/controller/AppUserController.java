@@ -12,7 +12,6 @@ import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.FilterService;
 import com.aquapaka.donationwebapp.util.PasswordEncrypt;
-import com.aquapaka.donationwebapp.validator.AppUserValidator;
 import com.aquapaka.donationwebapp.validator.status.AddAppUserStatus;
 import com.aquapaka.donationwebapp.validator.status.ChangePasswordStatus;
 import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
