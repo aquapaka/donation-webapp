@@ -3,8 +3,8 @@
 
 <c:set var="donationEventsUrl" value="${pageContext.request.contextPath}/#donationEvents" />
 <c:set var="contactUrl" value="${pageContext.request.contextPath}/#contact" />
-<c:set var="userManagementUrl" value="${pageContext.request.contextPath}/userManagement" />
-<c:set var="donationEventManagementUrl" value="${pageContext.request.contextPath}/donationEventManagement" />
+<c:set var="userManagementUrl" value="${pageContext.request.contextPath}/userManagement/1" />
+<c:set var="donationEventManagementUrl" value="${pageContext.request.contextPath}/donationEventManagement/1" />
 <c:set var="donationManagementUrl" value="${pageContext.request.contextPath}/donationManagement" />
 <c:set var="signInUrl" value="${pageContext.request.contextPath}/signIn" />
 <c:set var="registerUrl" value="${pageContext.request.contextPath}/register" />
@@ -22,7 +22,7 @@
                 <div class="container">
                     <!-- Brand logo -->
                     <a class="navbar-brand d-flex align-items-end" href="${pageContext.request.contextPath}/">
-                        <img id="brand-logo" class="img-fluid" src="img/brand-icon.png" alt="logo">
+                        <img id="brand-logo" class="img-fluid" src="${pageContext.request.contextPath}/img/brand-icon.png" alt="logo">
                         <strong class="ps-1">DONATION</strong>
                     </a>
                     <!-- Mobile nav toggle button -->
@@ -85,7 +85,7 @@
                         <!-- User button -->
                         <div class="dropdown d-none d-md-block">
                             <a href="" class="dropdown-toggle nav-link" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="img/user-icon-white.png" alt="user icon"/>
+                                <img src="${pageContext.request.contextPath}/img/user-icon-white.png" alt="user icon"/>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="dropdownMenuButton1">
                                 <c:if test="${empty appUser}">

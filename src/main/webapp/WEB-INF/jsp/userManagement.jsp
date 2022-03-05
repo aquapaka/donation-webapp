@@ -22,10 +22,67 @@
 
     <!-- Header -->
     <jsp:include page="header.jsp"/>
-    <main class="container-fluid py-3 py-md-4 min-vh-100">
+
+    <main class="container-fluid py-3 py-md-4 min-vh-100 position-relative">
+
+        <!-- Toasts -->
+        <div class="toast-container position-absolute top-0 end-0 m-2">          
+            <div id="errorToast" class="toast text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    ... message ...
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <div id="successToast" class="toast text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    ... message ...
+                  </div>
+                  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
 
         <!-- App User -->
         <section id="appUserManagement" class="container-fluid round-border py-3 mb-2">
+
+            <!-- Control buttons -->
+            <div class="container-fluid mb-5">
+                <button class="btn btn-primary float-start me-1" onclick="addAppUser()">Thêm người dùng mới</button>
+                <button id="deleteAllButton" class="btn btn-danger float-start mx-1 " onclick="deleteAppUsers()"
+                    disabled>Xoá tất cả đã chọn</button>
+                <form id="searchForm" class="float-end row me-1"
+                    action="${pageContext.request.contextPath}/userManagement/search/1">
+                    <div class="col-5">
+                        <input id="searchBox" name="searchText" value="" class="form-control"
+                            type="search" placeholder="Tìm kiếm" aria-label="Search">
+                    </div>
+                    <div class="col-3">
+                        <select id="searchType" name="searchType" class="form-select">
+                            <option value="appUserId">Tìm theo ID</option>
+                            <option value="email">Tìm theo email</option>
+                            <option value="username">Tìm theo username</option>
+                            <option value="fullname" selected>Tìm theo họ tên</option>
+                            <option value="phoneNumber">Tìm theo số điện thoại</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <select id="sortType" name="sortType" class="form-select">
+                            <option value="appUserId" selected>Sắp xếp theo ID</option>
+                            <option value="email">Sắp xếp theo email</option>
+                            <option value="username">Sắp xếp theo username</option>
+                            <option value="fullname">Sắp xếp theo họ tên</option>
+                            <option value="phoneNumber">Sắp xếp theo số điện thoại</option>
+                        </select>
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-primary">Tìm</button>
+                    </div>
+                </form>
+            </div>
+            
             <table class="table">
                 <caption>Danh sách người dùng</caption>
                 <thead>
@@ -59,16 +116,111 @@
                             <td>${appUser.role}</td>
                             <td>${appUser.state}</td>
                             <td>
-                                <button class="btn btn-warning mb-1" onclick="editAppUser(${appUser.appUserId})">Edit</button>
-                                <button class="btn btn-danger mb-1" onclick="deleteAppUser(${appUser.appUserId})">Delete</button>
+                                <button class="btn btn-warning mb-1" onclick="editAppUser(${appUser.appUserId})">Chỉnh sửa</button>
+                                <button class="btn btn-danger mb-1" onclick="deleteAppUser(${appUser.appUserId})">Xoá</button>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
-                
             </table>
+
+            <!-- Pagination -->
+            <div aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item <c:if test='${currentPage <= 1}'>disabled</c:if>">
+                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-1}" tabindex="-1">Previous</a>
+                  </li>
+                  <c:if test="${currentPage-2 >= 1}">
+                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-2}">${currentPage-2}</a></li>
+                  </c:if>
+                  <c:if test="${currentPage-1 >= 1}">
+                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-1}">${currentPage-1}</a></li>
+                  </c:if>  
+                  <li class="page-item active"><span class="page-link">${currentPage}</span></li>
+                  <c:if test="${currentPage+1 <= totalPage}">
+                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+1}">${currentPage+1}</a></li>
+                  </c:if>
+                  <c:if test="${currentPage+2 <= totalPage}">
+                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+2}">${currentPage+2}</a></li>
+                  </c:if>
+                  <li class="page-item <c:if test='${currentPage >= totalPage}'>disabled</c:if>">
+                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+1}">Next</a>
+                  </li>
+                </ul>
+              </div>
         </section>
     </main>
+
+    <!-- Add app user modal -->
+    <div class="modal fade" id="addAppUserModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm người dùng mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="mb-3 col-12">
+                        <label for="addUsername" class="form-label">Username</label>
+                        <input type="text" class="form-control" value="" id="addUsername">
+                        <span id="addUsernameExistError" class="form-text text-danger" hidden>Username đã tồn tại<br></span>
+                        <span id="addUsernameError" class="form-text text-danger" hidden>Username không chứa ký tự đặc biệt (độ dài từ 5-20)</span>
+                    </div>
+                    <div class="mb-3 col-12">
+                        <label for="addEmail" class="form-label">Email</label>
+                        <input type="text" class="form-control" value="" id="addEmail">
+                        <span id="addEmailExistError" class="form-text text-danger" hidden>Email đã tồn tại<br></span>
+                        <span id="addEmailError" class="form-text text-danger" hidden>Email không hợp lệ</span>
+                    </div>
+                    <div class="mb-3 col-7">
+                        <label for="addFullname" class="form-label">Tên đầy đủ</label>
+                        <input type="text" class="form-control" value="" id="addFullname">
+                        <span id="addFullnameError" class="form-text text-danger" hidden>Tên không được bỏ trống</span>
+                    </div>
+                    <div class="mb-3 col-5">
+                        <label for="addDateOfBirth" class="form-label">Ngày sinh</label>
+                        <input type="date" class="form-control" value="" id="addDateOfBirth">
+                        <span id="addDobError" class="form-text text-danger" hidden>Ngày sinh không hợp lệ</span>
+                    </div>
+                    <div class="mb-3 col-3">
+                        <label for="addDateOfBirth" class="form-label">Giới tính</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="addGender" id="not_set" value="NOT_SET" checked>
+                            <label class="form-check-label" for="not_set">Chưa đặt</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="addGender" id="male" value="MALE">
+                            <label class="form-check-label" for="male">Nam</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="addGender" id="female" value="FEMALE">
+                            <label class="form-check-label" for="female">Nữ</label>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-5">
+                        <label for="addPhoneNumber" class="form-label">Số điện thoại</label>
+                        <input type="number" class="form-control" value="" id="addPhoneNumber">
+                        <span id="addPhoneNumberError" class="form-text text-danger" hidden>Số điện thoại không hợp lệ</span>
+                    </div>
+                    <div class="mb-3 col-4">
+                        <label for="role" class="form-label">Quyền hạn</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="addRole" value="USER" checked>
+                            <label class="form-check-label" for="user">USER</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="addRole" value="ADMIN">
+                            <label class="form-check-label" for="admin">ADMIN</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                    <button id="addSubmitBtn" type="text" class="btn btn-primary float-end" onclick="addAppUserConfirm()">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Edit app user modal -->
     <div class="modal fade" id="editAppUserModal" tabindex="-1" data-bs-backdrop="static">

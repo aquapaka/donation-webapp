@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.repository.AppUserRepository;
+import com.aquapaka.donationwebapp.validator.status.AddAppUserStatus;
 import com.aquapaka.donationwebapp.validator.status.RegisterStatus;
 import com.aquapaka.donationwebapp.validator.status.ValidateAppUserStatus;
 
@@ -133,6 +134,56 @@ public class AppUserValidator {
         } catch (DateTimeParseException e) {
             status.setDobError(true);
         }
+        if(!phoneNumber.matches(PHONE_NUMBER_PATTERN)) {
+            status.setPhoneNumberError(true);
+        }
+
+        return status;
+    }
+
+    public static AddAppUserStatus validateAddAppUser(String username, String email, String fullname, String dateOfBirth, String phoneNumber) {
+
+        AddAppUserStatus status = new AddAppUserStatus();
+
+        // Check username
+        if (isValidUsername(username)) {
+            Optional<AppUser> appUserOptional = appUserRepository.findAppUserByUsername(username);
+
+            if (appUserOptional.isPresent()) {
+                status.setUsernameExistError(true);
+            }
+        } else {
+            status.setUsernameError(true);
+        }
+
+        // Check email
+        if (isValidEmail(email)) {
+            Optional<AppUser> appUserOptional = appUserRepository.findAppUserByEmail(email);
+
+            if (appUserOptional.isPresent()) {
+                status.setEmailExistError(true);
+            }
+        } else {
+            status.setEmailError(true);
+        }
+
+        // Check fullname
+        if(fullname.trim().isEmpty()) {
+            status.setFullnameError(true);    
+        }
+
+        // Check dete of birth
+        try {
+            LocalDate dob = LocalDate.parse(dateOfBirth);
+
+            if(!dob.isBefore(LocalDate.now())) {
+                status.setDobError(true);
+            }
+        } catch (DateTimeParseException e) {
+            status.setDobError(true);
+        }
+
+        // Check phoneNumber
         if(!phoneNumber.matches(PHONE_NUMBER_PATTERN)) {
             status.setPhoneNumberError(true);
         }

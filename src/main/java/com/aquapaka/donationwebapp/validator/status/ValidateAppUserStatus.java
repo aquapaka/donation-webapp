@@ -1,36 +1,36 @@
 package com.aquapaka.donationwebapp.validator.status;
 
 public class ValidateAppUserStatus {
-    private boolean isFullnameError;
-    private boolean isDobError;
-    private boolean isPhoneNumberError;
+    private boolean fullnameError;
+    private boolean dobError;
+    private boolean phoneNumberError;
 
     public ValidateAppUserStatus() {
 
     }
 
     public boolean isFullnameError() {
-        return isFullnameError;
+        return fullnameError;
     }
 
     public void setFullnameError(boolean isFullnameError) {
-        this.isFullnameError = isFullnameError;
+        this.fullnameError = isFullnameError;
     }
 
     public boolean isDobError() {
-        return isDobError;
+        return dobError;
     }
 
     public void setDobError(boolean isDobError) {
-        this.isDobError = isDobError;
+        this.dobError = isDobError;
     }
 
     public boolean isPhoneNumberError() {
-        return isPhoneNumberError;
+        return phoneNumberError;
     }
 
     public void setPhoneNumberError(boolean isPhoneNumberError) {
-        this.isPhoneNumberError = isPhoneNumberError;
+        this.phoneNumberError = isPhoneNumberError;
     }
 
     public boolean isValidAppUser() {
