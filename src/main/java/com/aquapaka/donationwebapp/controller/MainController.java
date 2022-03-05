@@ -38,8 +38,8 @@ public class MainController {
     @GetMapping("/")
     public String index(Model model, HttpServletRequest request) {
         // Get donation events data
-        List<DonationEvent> donationEvents = donationEventService.getDonationEvents();
-        model.addAttribute("donationEvents", donationEvents);
+        Page<DonationEvent> donationEvents = donationEventService.getDonationEvents(1);
+        model.addAttribute("donationEvents", donationEvents.getContent());
 
         return filterService.filterGuest(request, model, "index");
     }
@@ -51,6 +51,7 @@ public class MainController {
         Page<AppUser> appUserPage = appUserService.getAppUsers(page);
         List<AppUser> appUsers = appUserPage.getContent();
         int totalPage = appUserPage.getTotalPages();
+
         model.addAttribute("appUsers", appUsers);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPage", totalPage);
@@ -59,7 +60,7 @@ public class MainController {
     }
 
     @GetMapping("userManagement/search/{page}")
-    public String userManagement (
+    public String userManagement(
     Model model, 
     HttpServletRequest request,
     @PathVariable int page,
@@ -78,22 +79,39 @@ public class MainController {
 
         return filterService.filterAdmin(request, model, "userManagement");
     }
-    
-    @GetMapping("donationEventManagement/{page}")
-    public String donationEventManagement(Model model, HttpServletRequest request,
-    @RequestParam(value = "searchText", required = false, defaultValue = "") String searchText,
-    @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
-    @PathVariable int page) {
 
-        // Get donation event datas
-        List<DonationEvent> donationEvents;
-        if(searchText.trim().isEmpty()) {
-            donationEvents = donationEventService.getDonationEvents();
-        } else {
-            donationEvents = donationEventService.getDonationEventsSearchBy(searchText, searchType);
-        }
+    @GetMapping("donationEventManagement/{page}")
+    public String donationEventManagement(Model model, HttpServletRequest request, @PathVariable int page) {
+
+        // Get appUser datas
+        Page<DonationEvent> donationEventPage = donationEventService.getDonationEvents(page);
+        List<DonationEvent> donationEvents = donationEventPage.getContent();
+        int totalPage = donationEventPage.getTotalPages();
+
+        model.addAttribute("donationEvents", donationEvents);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalPage);
+
+        return filterService.filterAdmin(request, model, "donationEventManagement");
+    }
+    
+    @GetMapping("donationEventManagement/search/{page}")
+    public String donationEventManagement(
+    Model model, 
+    HttpServletRequest request,
+    @PathVariable int page,
+    @RequestParam String searchText,
+    @RequestParam String searchType,
+    @RequestParam String sortType) {
+
+        // Get appUser datas
+        Page<DonationEvent> donationEventPage = donationEventService.searchDonationEvents(searchText, searchType, sortType, page);
+        List<DonationEvent> donationEvents = donationEventPage.getContent();
+        int totalPage = donationEventPage.getTotalPages();
         
         model.addAttribute("donationEvents", donationEvents);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalPage);
 
         return filterService.filterAdmin(request, model, "donationEventManagement");
     }

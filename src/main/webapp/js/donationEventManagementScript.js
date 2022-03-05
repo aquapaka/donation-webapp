@@ -41,15 +41,21 @@ function deleteDonationEvent(id) {
         url: "/DonationEvent/" + id,
         dataType: "json",
         success: function (response) {
+            if(response.totalDonationCount > 0) {
+                showErrorToast("Không thể xoá, sự kiện đã có lượt quyên góp");
+                return;
+            }
             $("#donationEventDeleteInfo").html(response.title);
             $("#donationEventDeleteId").html(id);
+
+            deleteDonationEventModal.show();
         },
-        error: function () {
+        error: function (error) {
+            showErrorToast("Đã xảy ra lỗi!");
+            console.log(error);
             return;
         }
     });
-
-    deleteDonationEventModal.show();
 }
 
 function deleteDonationEventConfirm() {
@@ -60,11 +66,15 @@ function deleteDonationEventConfirm() {
         url: "/DonationEvent/" + id,
         dataType: "json",
         success: function (response) {
-            alert("Deleted donation event id " + id);
-            window.location.replace("/donationEventManagement");
+            showSuccessToast("Xoá sự kiện thành công");
+            bootstrap.Modal.getInstance(document.querySelector('#deleteDonationEventModal')).hide();
+            setTimeout(function() {
+                window.location.replace("/donationEventManagement/1");
+            }, 3000);
         },
         error: function (error) {
-            alert("Error, can't delete donation event " + id + ". Maybe the event is already have donation.");
+            showErrorToast("Đã xảy ra lỗi");
+            console.log(error);
         }
     });
 }
@@ -79,7 +89,7 @@ function deleteDonationEvents() {
 
     var deleteInfo = "<ul>";
     ids.forEach(function(id) {
-        deleteInfo += "<li>id = "+id+"</li>"
+        deleteInfo += "<li>id = "+id+"</li>";
     })
     deleteInfo += "</ul>";
     $("#donationEventDeleteAllInfo").html(deleteInfo);
@@ -103,11 +113,15 @@ function deleteDonationEventsConfirm() {
         },
         dataType: "json",
         success: function (response) {
-            alert("Deleted success!");
-            window.location.replace("/donationEventManagement");
+            showSuccessToast("Xoá các sự kiện thành công");
+            bootstrap.Modal.getInstance(document.querySelector('#deleteAllDonationEventModal')).hide();
+            setTimeout(function() {
+                window.location.replace("/donationEventManagement/1");
+            }, 3000);
         },
         error: function (error) {
-            alert("Error, can't delete donation events. Maybe there is event already have donation.");
+            showErrorToast("Đã xảy ra lỗi!");
+            console.log(error);
         }
     });
 }
@@ -134,8 +148,9 @@ function editDonationEvent(id) {
             $("#donationEventEndTime").val(response.endTime);
             $("input:radio[value="+response.eventState+"]").prop("checked", true);
         },
-        error: function (error, response) {
-            alert("Not found donation event id " + id); 
+        error: function (error) {
+            showErrorToast("Đã xảy ra lỗi!");
+            console.log(error); 
         }
     });
 
@@ -192,12 +207,16 @@ function editDonationEventConfirm() {
                 else $("#endDateSmallerThanStartDate").attr("hidden", true);
 
                 if(response.validDonationEvent) {
-                    window.location.replace("/donationEventManagement");
-                        alert("Edited donation event id " + donationEventId);
+                    showSuccessToast("Chỉnh sửa thành công");
+                    bootstrap.Modal.getInstance(document.querySelector('#editDonationEventModal')).hide();
+                    setTimeout(function() {
+                        window.location.replace("/donationEventManagement/1");
+                    }, 3000);
                 }
             },
             error: function (error) {
-                console.log("ERROR" + error);
+                showErrorToast("Đã xảy ra lỗi!");
+                console.log(error);
             }
         });
     });
@@ -212,6 +231,7 @@ function addDonationEvent() {
 }
 
 function addDonationEventConfirm() {
+    $("#addSubmitBtn").prop("disabled", true);
     var title = $("#addDonationEventTitle").val();
     var description = $("#addDonationEventDescription").val();
     var detail = addEditor.getData();
@@ -243,6 +263,7 @@ function addDonationEventConfirm() {
             },
             dataType: "json",
             success: function (response) {
+                console.log(response);
                 if(response.titleEmpty) $("#addTitleEmpty").attr("hidden", false);
                 else $("#addTitleEmpty").attr("hidden", true);
                 if(response.detailEmpty) $("#addDetailEmpty").attr("hidden", false);
@@ -261,11 +282,18 @@ function addDonationEventConfirm() {
                 else $("#addEndDateSmallerThanStartDate").attr("hidden", true);
 
                 if(response.validDonationEvent) {
-                    window.location.replace("/donationEventManagement");
-                        alert("Added new donation event " + title);
+                    showSuccessToast("Đã thêm sự kiện " + title);
+                    bootstrap.Modal.getInstance(document.querySelector('#addDonationEventModal')).hide();
+                    setTimeout(function() {
+                        window.location.replace("/donationEventManagement/1");
+                    }, 3000);
+                } else {
+                    $("#addSubmitBtn").prop("disabled", false);
                 }
             },
             error: function (error) {
+                $("#addSubmitBtn").prop("disabled", false);
+                showErrorToast("Đã xảy ra lỗi!");
                 console.log(error);
             }
         });
@@ -284,4 +312,16 @@ function getBase64(file) {
 function openBase64(base64URL){
     var win = window.open();
     win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+}
+
+function showErrorToast(message) {
+    let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
+    $("#errorToast .toast-body").html(message);
+    errorToast.show();
+}
+
+function showSuccessToast(message) {
+    let successToast = new bootstrap.Toast(document.getElementById('successToast'));
+    $("#successToast .toast-body").html(message);
+    successToast.show();
 }

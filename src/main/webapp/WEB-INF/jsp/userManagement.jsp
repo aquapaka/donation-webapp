@@ -61,7 +61,6 @@
                     </div>
                     <div class="col-3">
                         <select id="searchType" name="searchType" class="form-select">
-                            <option value="appUserId">Tìm theo ID</option>
                             <option value="email">Tìm theo email</option>
                             <option value="username">Tìm theo username</option>
                             <option value="fullname" selected>Tìm theo họ tên</option>
@@ -130,6 +129,12 @@
                   <li class="page-item <c:if test='${currentPage <= 1}'>disabled</c:if>">
                     <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-1}" tabindex="-1">Previous</a>
                   </li>
+                  <li class="page-item" <c:if test='${currentPage <= 3}'>hidden</c:if>>
+                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/1" tabindex="-1">1</a>
+                  </li>
+                  <li class="page-item disabled" <c:if test='${currentPage-3 <= 1}'>hidden</c:if>>
+                    <a class="page-link" href="" tabindex="-1">...</a>
+                  </li>
                   <c:if test="${currentPage-2 >= 1}">
                     <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage-2}">${currentPage-2}</a></li>
                   </c:if>
@@ -143,6 +148,12 @@
                   <c:if test="${currentPage+2 <= totalPage}">
                     <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+2}">${currentPage+2}</a></li>
                   </c:if>
+                  <li class="page-item disabled" <c:if test='${currentPage+3 >= totalPage}'>hidden</c:if>>
+                    <a class="page-link" href="" tabindex="-1">...</a>
+                  </li>
+                  <li class="page-item" <c:if test='${currentPage >= totalPage-2}'>hidden</c:if>>
+                    <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${totalPage}" tabindex="-1">${totalPage}</a>
+                  </li>
                   <li class="page-item <c:if test='${currentPage >= totalPage}'>disabled</c:if>">
                     <a class="page-link" href="${pageContext.request.contextPath}/userManagement/${currentPage+1}">Next</a>
                   </li>

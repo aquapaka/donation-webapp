@@ -1,11 +1,7 @@
 package com.aquapaka.donationwebapp.service;
 
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,18 +17,28 @@ import com.aquapaka.donationwebapp.validator.status.ValidateDonationEventStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DonationEventService {
+
+    private static final int EVENT_PER_PAGE = 8;
 
     @Autowired
     private DonationEventRepository donationEventRepository;
     @Autowired
     private DonationRepository donationRepository;
 
-    public List<DonationEvent> getDonationEvents() {
-        List<DonationEvent> donationEvents = donationEventRepository.findAll();
+    public Page<DonationEvent> getDonationEvents(int page) {
+        page -= 1;
+        if(page < 0) throw new IllegalStateException("Page not found!");
+        Pageable pageable = PageRequest.of(page, EVENT_PER_PAGE);
+
+        Page<DonationEvent> donationEvents = donationEventRepository.findAll(pageable);
 
         // Count total donation for each event
         for (DonationEvent donationEvent : donationEvents) {
@@ -45,69 +51,6 @@ public class DonationEventService {
                     .sumDonationAmountByDonationEventId(donationEvent.getDonationEventId());
             donationEvent.setCurrentDonationAmount(currentDonationAmount);
         }
-
-        // Sort event list by progress percent
-        donationEvents.sort(new Comparator<DonationEvent>() {
-            @Override
-            public int compare(DonationEvent d1, DonationEvent d2) {
-                if (d1.getProgressPercent() < d2.getProgressPercent()) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            }
-        });
-
-        return donationEvents;
-    }
-
-    public List<DonationEvent> getDonationEventsSearchBy(String searchText, String searchType) {
-        List<DonationEvent> allDonationEvents = donationEventRepository.findAll();
-        List<DonationEvent> donationEvents = new ArrayList<>();
-
-        if (searchType.equals("title")) {
-            for (DonationEvent donationEvent : allDonationEvents) {
-                String title = Normalizer.normalize(donationEvent.getTitle().trim().toLowerCase(), Form.NFD);
-                searchText = Normalizer.normalize(searchText.trim().toLowerCase(), Form.NFD);
-
-                if (title.contains(searchText)) {
-                    donationEvents.add(donationEvent);
-                }
-            }
-            
-        } else if (searchType.equals("id")) {
-            for (DonationEvent donationEvent : allDonationEvents) {
-                if (String.valueOf(donationEvent.getDonationEventId()).contains(searchText.trim())) {
-                    donationEvents.add(donationEvent);
-                }
-            }
-        } else {
-            throw new IllegalStateException("Search Type not valid!");
-        }
-
-        // Count total donation for each event
-        for (DonationEvent donationEvent : donationEvents) {
-            donationEvent.setTotalDonationCount(donationRepository.countByDonationEvent(donationEvent));
-        }
-
-        // Count current donation amount for each event
-        for (DonationEvent donationEvent : donationEvents) {
-            long currentDonationAmount = donationRepository
-                    .sumDonationAmountByDonationEventId(donationEvent.getDonationEventId());
-            donationEvent.setCurrentDonationAmount(currentDonationAmount);
-        }
-
-        // Sort event list by progress percent
-        donationEvents.sort(new Comparator<DonationEvent>() {
-            @Override
-            public int compare(DonationEvent d1, DonationEvent d2) {
-                if (d1.getProgressPercent() < d2.getProgressPercent()) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            }
-        });
 
         return donationEvents;
     }
@@ -121,6 +64,27 @@ public class DonationEventService {
         }
 
         return donationEventOptional;
+    }
+
+    public Page<DonationEvent> searchDonationEvents(String searchText, String searchType, String sortType, int page) {
+        page -= 1;
+        if(page < 0) throw new IllegalStateException("Page not found!");
+        
+        Pageable pageable = PageRequest.of(page, EVENT_PER_PAGE, Sort.by(sortType));
+        Page<DonationEvent> donationEventPage;
+
+        switch(searchType) {
+            case "title":
+                donationEventPage = donationEventRepository.findAllByTitleContainsIgnoreCase(searchText, pageable);
+                break;
+            case "description":
+                donationEventPage = donationEventRepository.findAllByDescriptionContainsIgnoreCase(searchText, pageable);
+                break;
+            default:
+                throw new IllegalStateException("Search type not valid!");
+        }
+
+        return donationEventPage;
     }
 
     public ValidateDonationEventStatus addDonationEvent(String title, String description, String detail, String image,
@@ -203,7 +167,6 @@ public class DonationEventService {
 
         for (long id : ids) {
             Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
-            System.out.println(id);
 
             if (donationEventOptional.isPresent()) {
                 // Not delete if there is already donation in event

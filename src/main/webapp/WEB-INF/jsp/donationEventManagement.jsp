@@ -33,30 +33,61 @@
                 <jsp:include page="header.jsp" />
                 <main class="container-fluid py-3 py-md-4 min-vh-100">
 
+                    <!-- Toasts -->
+                    <div class="toast-container position-absolute top-0 end-0 m-2">          
+                        <div id="errorToast" class="toast text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                            <div class="toast-body">
+                                ... message ...
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <div id="successToast" class="toast text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                            <div class="toast-body">
+                                ... message ...
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Donation event -->
                     <section id="donationEventManagement" class="container-fluid round-border py-3 mb-2">
+
                         <!-- Control buttons -->
-                        <div class="row">
-                            <div class="col-6">
-                                <button class="btn btn-primary" onclick="addDonationEvent()">Thêm sự kiện mới</button>
-                                <button id="deleteAllButton" class="btn btn-danger" onclick="deleteDonationEvents()"
-                                    disabled>Xoá sự kiện đã chọn</button>
-                            </div>
-                            <div class="col-6">
-                                <form id="searchForm" class="d-flex align-items-end"
-                                    action="${pageContext.request.contextPath}/donationEventManagement">
-                                    <label for="searchBox" class="form-label text-nowrap me-2">Tìm kiếm</label>
-                                    <input id="searchBox" name="searchText" value="" class="form-control me-2"
-                                        type="search" placeholder="Nhập nội dung tìm kiếm..." aria-label="Search">
-                                    <div class="d-flex w-50 align-items-end">
-                                        <label for="searchSelect" class="form-label text-nowrap me-2"> theo</label>
-                                        <select id="searchSelect" name="searchType" class="form-select">
-                                            <option value="title" selected>Tiêu đề</option>
-                                            <option value="id">Id</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="container-fluid mb-5">
+                            <button class="btn btn-primary float-start me-1" onclick="addDonationEvent()">Thêm sự kiện mới</button>
+                            <button id="deleteAllButton" class="btn btn-danger float-start mx-1 " onclick="deleteDonationEvents()"
+                                disabled>Xoá tất cả đã chọn</button>
+                            <form id="searchForm" class="float-end row me-1"
+                                action="${pageContext.request.contextPath}/donationEventManagement/search/1">
+                                <div class="col-5">
+                                    <input id="searchBox" name="searchText" value="" class="form-control"
+                                        type="search" placeholder="Tìm kiếm" aria-label="Search">
+                                </div>
+                                <div class="col-3">
+                                    <select id="searchType" name="searchType" class="form-select">
+                                        <option value="title">Tìm theo tiêu đề</option>
+                                        <option value="description">Tìm theo mô tả</option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <select id="sortType" name="sortType" class="form-select">
+                                        <option value="donationEventId" selected>Sắp xếp theo ID</option>
+                                        <option value="title">Sắp xếp theo email</option>
+                                        <option value="description">Sắp xếp theo username</option>
+                                        <option value="totalDonationAmount">Sắp xếp theo mục tiêu</option>
+                                        <option value="startTime">Sắp xếp theo thời gian bắt đầu</option>
+                                        <option value="endTime">Sắp xếp theo thời gian kết thúc</option>
+                                        <option value="createTime">Sắp xếp theo thời gian tạo</option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button type="submit" class="btn btn-primary">Tìm</button>
+                                </div>
+                            </form>
                         </div>
 
                         <div class="table-responsive">
@@ -115,6 +146,43 @@
                                     </c:forEach>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                            <li class="page-item <c:if test='${currentPage <= 1}'>disabled</c:if>">
+                                <a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/${currentPage-1}" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item" <c:if test='${currentPage <= 3}'>hidden</c:if>>
+                                <a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/1" tabindex="-1">1</a>
+                            </li>
+                            <li class="page-item disabled" <c:if test='${currentPage-3 <= 1}'>hidden</c:if>>
+                                <a class="page-link" href="" tabindex="-1">...</a>
+                            </li>
+                            <c:if test="${currentPage-2 >= 1}">
+                                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/${currentPage-2}">${currentPage-2}</a></li>
+                            </c:if>
+                            <c:if test="${currentPage-1 >= 1}">
+                                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/${currentPage-1}">${currentPage-1}</a></li>
+                            </c:if>  
+                            <li class="page-item active"><span class="page-link">${currentPage}</span></li>
+                            <c:if test="${currentPage+1 <= totalPage}">
+                                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/${currentPage+1}">${currentPage+1}</a></li>
+                            </c:if>
+                            <c:if test="${currentPage+2 <= totalPage}">
+                                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/${currentPage+2}">${currentPage+2}</a></li>
+                            </c:if>
+                            <li class="page-item disabled" <c:if test='${currentPage+3 >= totalPage}'>hidden</c:if>>
+                                <a class="page-link" href="" tabindex="-1">...</a>
+                            </li>
+                            <li class="page-item" <c:if test='${currentPage >= totalPage-2}'>hidden</c:if>>
+                                <a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/${totalPage}" tabindex="-1">${totalPage}</a>
+                            </li>
+                            <li class="page-item <c:if test='${currentPage >= totalPage}'>disabled</c:if>">
+                                <a class="page-link" href="${pageContext.request.contextPath}/donationEventManagement/${currentPage+1}">Next</a>
+                            </li>
+                            </ul>
                         </div>
                     </section>
                 </main>
@@ -329,7 +397,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                                <button type="text" class="btn btn-primary float-end"
+                                <button id="addSubmitBtn" type="text" class="btn btn-primary float-end"
                                     onclick="addDonationEventConfirm()">Thêm sự kiện</button>
                             </div>
                         </div>
