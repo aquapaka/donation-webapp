@@ -161,7 +161,7 @@
                         <div class="mb-3">
                             <label for="resEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="resEmail" name="resEmail">
-                            <span id="resEmailExistError" class="form-text text-danger" hidden>Email đã tồn tại<br></span>
+                            <span id="resEmailExistError" class="form-text text-danger" hidden>Email đã được đăng kí, bạn có muốn <a href="" data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">đăng nhập</a>?<br></span>
                             <span id="resEmailError" class="form-text text-danger" hidden>Email không hợp lệ</span>
                         </div>
                         <div class="mb-3">
