@@ -15,4 +15,5 @@ public interface DonationEventRepository extends JpaRepository<DonationEvent, Lo
 
     Page<DonationEvent> findAllByTitleContainsIgnoreCaseAndEventState(String searchTitle, EventState state, Pageable pageable);
     Page<DonationEvent> findAllByDescriptionContainsIgnoreCaseAndEventState(String searchDescription, EventState state, Pageable pageable);
+
 }

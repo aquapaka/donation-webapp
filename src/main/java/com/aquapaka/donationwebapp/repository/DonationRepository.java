@@ -1,5 +1,6 @@
 package com.aquapaka.donationwebapp.repository;
 
+import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.Donation;
 import com.aquapaka.donationwebapp.model.DonationEvent;
 
@@ -21,4 +22,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long>{
     Page<Donation> findAllByDonationEventDonationEventId(Long donationEventId, Pageable pageable);
     Page<Donation> findAllByAppUserUsernameContainsIgnoreCase(String username, Pageable pageable);
     Page<Donation> findAllByAppUserAppUserId(Long appUserId, Pageable pageable);
+
+    Page<Donation> findAllByDonationEventTitleContainsIgnoreCaseAndAppUser(String title, AppUser appUser, Pageable pageable);
+    Page<Donation> findAllByDonationEventDonationEventIdAndAppUser(Long donationEventId, AppUser appUser, Pageable pageable);
 }

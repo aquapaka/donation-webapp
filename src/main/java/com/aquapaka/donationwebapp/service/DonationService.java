@@ -75,6 +75,32 @@ public class DonationService {
         return DonationsPage;
     }
 
+    public Page<Donation> searchMyDonations(String searchText, String searchType, String sortType, int page, AppUser appUser) {
+        page -= 1;
+        if(page < 0) throw new IllegalStateException("Page not found!");
+        
+        Pageable pageable = PageRequest.of(page, DONATION_PER_PAGE, Sort.by(sortType));
+        Page<Donation> DonationsPage;
+
+        switch(searchType) {
+            case "donationEventTitle":
+                DonationsPage = donationRepository.findAllByDonationEventTitleContainsIgnoreCaseAndAppUser(searchText, appUser, pageable);
+                break;
+            case "donationEventId":
+                try {
+                    Long.parseLong(searchText);
+                } catch (Exception e) {
+                    searchText = "-1";
+                }
+                DonationsPage = donationRepository.findAllByDonationEventDonationEventIdAndAppUser(Long.parseLong(searchText), appUser, pageable);
+                break;
+            default:
+                throw new IllegalStateException("Search type not valid!");
+        }
+
+        return DonationsPage;
+    }
+
     public DonateStatus addDonation(AppUser appUser, Long eventId, String donationAmountString) {
         DonateStatus status = new DonateStatus();
 

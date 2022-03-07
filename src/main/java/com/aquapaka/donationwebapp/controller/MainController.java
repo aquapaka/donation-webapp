@@ -3,6 +3,7 @@ package com.aquapaka.donationwebapp.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.Donation;
@@ -163,8 +164,33 @@ public class MainController {
     }
 
     @GetMapping("my-donations")
-    public String myDonations(Model model, HttpServletRequest request) {
-      
+    public String myDonations(Model model, 
+    HttpServletRequest request,
+    @RequestParam(required = false, defaultValue = "1") int page,
+    @RequestParam(required = false, defaultValue = "") String searchText,
+    @RequestParam(required = false, defaultValue = "donationEventTitle") String searchType,
+    @RequestParam(required = false, defaultValue = "donationId") String sortType
+    ) {
+        // Get account data from session
+        HttpSession session = request.getSession();
+        String email = (String)session.getAttribute("email");
+        String password = (String)session.getAttribute("password");
+        AppUser appUser = appUserService.validateLogin(email, password);
+
+        if(appUser == null) throw new IllegalStateException("App user is null!");
+        
+        // Get donation datas
+        Page<Donation> donationsPage = donationService.searchMyDonations(searchText, searchType, sortType, page, appUser);
+        List<Donation> donations = donationsPage.getContent();
+        int totalPage = donationsPage.getTotalPages();
+  
+        model.addAttribute("donations", donations);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("sortType", sortType);
+
         return filterService.filterUser(request, model, "myDonations");
     }
 

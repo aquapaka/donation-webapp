@@ -14,7 +14,7 @@
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-    <title>Quản lý quyên góp</title>
+    <title>Lịch sử quyên góp</title>
 </head>
 <body>
     <fmt:setLocale value="vi_VN" scope="session"/>
@@ -27,6 +27,8 @@
 
         <!-- Donation -->
         <section id="donationManagement" class="container-fluid round-border py-3 mb-2">
+
+            <h3 class="text-center mb-3"><strong>Lịch sử quyên góp</strong></h3>
 
             <!-- Control buttons -->
             <div class="container-fluid">
@@ -41,8 +43,6 @@
                         <select id="searchType" name="searchType" class="form-select">
                             <option value="donationEventTitle" <c:if test="${searchType == 'donationEventTitle'}">selected</c:if>>Tìm theo tiêu đề sự kiện</option>
                             <option value="donationEventId" <c:if test="${searchType == 'donationEventId'}">selected</c:if>>Tìm theo ID sự kiện</option>
-                            <option value="appUserUsername" <c:if test="${searchType == 'appUserUsername'}">selected</c:if>>Tìm theo username</option>
-                            <option value="appUserId" <c:if test="${searchType == 'appUserId'}">selected</c:if>>Tìm theo ID người dùng</option>
                         </select>
                     </div>
                     <div class="col-6 col-lg-3 mb-2">
@@ -65,7 +65,6 @@
                     <tr>
                         <th>Id</th>
                         <th>Sự kiện quyên góp</th>
-                        <th>Người quyên góp</th>
                         <th>Thời gian</th>
                         <th>Số tiền</th>
                     </tr>
@@ -74,7 +73,6 @@
                     <c:forEach items="${donations}" var="donation">
                         <tr>
                             <td>${donation.donationId}</td>
-                            <td>${donation.donationEvent.title} (Id: ${donation.donationEvent.donationEventId})</td>
                             <td>${donation.appUser.fullname} (${donation.appUser.username})(Id: ${donation.appUser.appUserId})</td>
                             <td>${donation.donationTime}</td>
                             <td><fmt:formatNumber value="${donation.donationAmount}" type="number"/></td>
