@@ -60,6 +60,7 @@
         </div>
 
             <table class="table">
+                <caption>Danh sách các sự kiện quyên góp</caption>
                 <thead>
                     <tr>
                         <th>Id</th>
