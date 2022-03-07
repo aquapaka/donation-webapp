@@ -33,6 +33,10 @@ a {
     text-decoration: none;
 }
 
+a.disabled {
+    pointer-events: none;
+}
+
 /* Navbar */
 nav {
     background-color: #19A9FA;
@@ -49,6 +53,10 @@ textarea {
 
 .small-image {
     width: 100px;
+}
+
+.toast {
+    pointer-events: none;
 }
 
 /* Donation Event Card */
@@ -79,4 +87,8 @@ main, footer {
 
 #donationEvents, #donationEvent {
     background-color: #97dcff;
+}
+
+#searchText {
+    width: 100%;
 }

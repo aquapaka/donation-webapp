@@ -31,25 +31,6 @@ $(document).ready(function () {
         }
     });
 
-    $(".page-link").on("click", function(e) {
-        e.preventDefault(); // cancel the link itself
-
-        $("#page").val($(this).prop("tabindex"));
-
-        var searchText = $("#searchText").val();
-        var searchType = $("#searchType").val();
-        var sortType = $("#sortType").val();
-        var page = $("#page").val();
-
-        console.log({
-            searchText : searchText,
-            searchType : searchType,
-            sortType : sortType,
-            page : page
-        });
-
-        $("#searchForm").submit();
-    });
 });
 
 function deleteDonationEvent(id) {
@@ -88,7 +69,7 @@ function deleteDonationEventConfirm() {
             showSuccessToast("Xoá sự kiện thành công");
             bootstrap.Modal.getInstance(document.querySelector('#deleteDonationEventModal')).hide();
             setTimeout(function() {
-                window.location.replace("/donationEventManagement/1");
+                window.location.replace("/donation-event-management");
             }, 3000);
         },
         error: function (error) {
@@ -135,7 +116,7 @@ function deleteDonationEventsConfirm() {
             showSuccessToast("Xoá các sự kiện thành công");
             bootstrap.Modal.getInstance(document.querySelector('#deleteAllDonationEventModal')).hide();
             setTimeout(function() {
-                window.location.replace("/donationEventManagement/1");
+                window.location.replace("/donation-event-management");
             }, 3000);
         },
         error: function (error) {
@@ -229,7 +210,7 @@ function editDonationEventConfirm() {
                     showSuccessToast("Chỉnh sửa thành công");
                     bootstrap.Modal.getInstance(document.querySelector('#editDonationEventModal')).hide();
                     setTimeout(function() {
-                        window.location.replace("/donationEventManagement/1");
+                        window.location.replace("/donation-event-management");
                     }, 3000);
                 }
             },
@@ -304,7 +285,7 @@ function addDonationEventConfirm() {
                     showSuccessToast("Đã thêm sự kiện " + title);
                     bootstrap.Modal.getInstance(document.querySelector('#addDonationEventModal')).hide();
                     setTimeout(function() {
-                        window.location.replace("/donationEventManagement/1");
+                        window.location.replace("/donation-event-management");
                     }, 3000);
                 } else {
                     $("#addSubmitBtn").prop("disabled", false);
@@ -331,16 +312,4 @@ function getBase64(file) {
 function openBase64(base64URL){
     var win = window.open();
     win.document.write('<iframe src="' + base64URL  + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-}
-
-function showErrorToast(message) {
-    let errorToast = new bootstrap.Toast(document.getElementById('errorToast'));
-    $("#errorToast .toast-body").html(message);
-    errorToast.show();
-}
-
-function showSuccessToast(message) {
-    let successToast = new bootstrap.Toast(document.getElementById('successToast'));
-    $("#successToast .toast-body").html(message);
-    successToast.show();
 }

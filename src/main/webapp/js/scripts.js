@@ -8,7 +8,7 @@ $(document).ready(function () {
     
         $.ajax({
             type: "POST",
-            url: "/doLogin",
+            url: "/do-login",
             data: {
                 email : email,
                 password : password
@@ -50,7 +50,7 @@ $(document).ready(function () {
     
         $.ajax({
             type: "POST",
-            url: "/doRegister",
+            url: "/do-register",
             data: {
                 username : username,
                 email : email,
@@ -118,6 +118,25 @@ $(document).ready(function () {
         });
     });
 
+    $(".page-link").on("click", function(e) {
+        e.preventDefault(); // cancel the link itself
+
+        $("#page").val($(this).prop("tabindex"));
+
+        var searchText = $("#searchText").val();
+        var searchType = $("#searchType").val();
+        var sortType = $("#sortType").val();
+        var page = $("#page").val();
+
+        console.log({
+            searchText : searchText,
+            searchType : searchType,
+            sortType : sortType,
+            page : page
+        });
+
+        $("#searchForm").submit();
+    });
 });
 
 function showErrorToast(message) {

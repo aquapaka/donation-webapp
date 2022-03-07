@@ -21,11 +21,11 @@
     <fmt:setLocale value="vi_VN" scope="session"/>
 
     <!-- Header -->
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="components/header.jsp"/>
 
     <main class="container-fluid py-3 py-md-4 min-vh-100 position-relative">
 
-        <jsp:include page="toasts.jsp"/>
+        <jsp:include page="components/toasts.jsp"/>
 
         <!-- App User -->
         <section id="appUserManagement" class="container-fluid round-border py-3 mb-2">
@@ -36,7 +36,7 @@
                 <button id="deleteAllButton" class="btn btn-danger float-start mx-1 " onclick="deleteAppUsers()"
                     disabled>Xoá tất cả đã chọn</button>
                 <form id="searchForm" class="float-end row me-1"
-                    action="${pageContext.request.contextPath}/userManagement">
+                    action="${pageContext.request.contextPath}/user-management">
                     <input id="page" name="page" value="" class="form-control" hidden>
                     <div class="col-5">
                         <input id="searchBox" name="searchText" value="${searchText}" class="form-control"
@@ -307,6 +307,6 @@
     </div>
 
     <!-- Footer -->
-    <jsp:include page="footer.jsp"/>
+    <jsp:include page="components/footer.jsp"/>
 </body>
 </html>

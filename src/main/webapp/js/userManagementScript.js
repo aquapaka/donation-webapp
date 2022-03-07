@@ -1,24 +1,3 @@
-$(function () {
-    $(".page-link").on("click", function(e) {
-        e.preventDefault(); // cancel the link itself
-
-        $("#page").val($(this).prop("tabindex"));
-
-        var searchText = $("#searchText").val();
-        var searchType = $("#searchType").val();
-        var sortType = $("#sortType").val();
-        var page = $("#page").val();
-
-        console.log({
-            searchText : searchText,
-            searchType : searchType,
-            sortType : sortType,
-            page : page
-        });
-
-        $("#searchForm").submit();
-    });    
-});
 
 function addAppUser() {
     var addAppUserModal = new bootstrap.Modal(document.getElementById('addAppUserModal'), true);
@@ -70,7 +49,7 @@ function addAppUserConfirm() {
                 showSuccessToast("Đã thêm người dùng " + username + ". Mật khẩu đã được gửi về email " + email);
                 bootstrap.Modal.getInstance(document.querySelector('#addAppUserModal')).hide();
                 setTimeout(function() {
-                    window.location.replace("/userManagement/1");
+                    window.location.replace("/user-management");
                 }, 5000);
             } else {
                 $("#addSubmitBtn").prop("disabled", false);
@@ -143,7 +122,7 @@ function editAppUserConfirm() {
                 showSuccessToast("Đã cập nhật người dùng id " + appUserId);
                 bootstrap.Modal.getInstance(document.querySelector('#editAppUserModal')).hide();
                 setTimeout(function() {
-                    window.location.replace("/userManagement/1");
+                    window.location.replace("/user-management");
                 }, 3000);
             }
         },
@@ -192,7 +171,7 @@ function deleteAppUserConfirm() {
                 showSuccessToast("Đã xoá người dùng id " + id);
                 bootstrap.Modal.getInstance(document.querySelector('#deleteAppUserModal')).hide();
                 setTimeout(function() {
-                    window.location.replace("/userManagement/1");
+                    window.location.replace("/user-management");
                 }, 3000);
             } else {
                 showErrorToast("Lỗi, không thể xoá người dùng id " + id);

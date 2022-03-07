@@ -32,7 +32,7 @@ public class LoginRegisterController {
     @Autowired
     private JavaMailSender emailSender;
 
-    @PostMapping("/doLogin")
+    @PostMapping("/do-login")
     public @ResponseBody String doLogin(HttpServletRequest request,
             @RequestParam String email,
             @RequestParam String password) {
@@ -57,7 +57,7 @@ public class LoginRegisterController {
         return "true";
     }
 
-    @PostMapping("/doRegister")
+    @PostMapping("/do-register")
     public @ResponseBody RegisterStatus doRegister(HttpServletRequest request,
             @RequestParam String username,
             @RequestParam String email,
@@ -82,7 +82,7 @@ public class LoginRegisterController {
         return registerStatus;
     }
 
-    @GetMapping("/signOut")
+    @GetMapping("/sign-out")
     public String signOut(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.setAttribute("email", null);
@@ -91,7 +91,7 @@ public class LoginRegisterController {
         return "redirect:/";
     }
 
-    @GetMapping("/validateEmail")
+    @GetMapping("/validate-email")
     public String validateEmail(HttpServletRequest request, HttpServletResponse response, Model model) {
         // Get account data from session
         HttpSession session = request.getSession();
@@ -122,7 +122,7 @@ public class LoginRegisterController {
         return "validateEmail";
     }
 
-    @PostMapping("/validateCode")
+    @PostMapping("/validate-code")
     public @ResponseBody boolean validateCode(HttpServletRequest request, @RequestParam int code) {
         // Get account data from session
         HttpSession session = request.getSession();

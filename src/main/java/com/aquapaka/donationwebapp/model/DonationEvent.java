@@ -162,7 +162,7 @@ public class DonationEvent {
     }
 
     public long getDaysLeft() {
-        daysLeft = ChronoUnit.DAYS.between(startTime, endTime);
+        daysLeft = ChronoUnit.DAYS.between(LocalDateTime.now(), endTime);
         if (daysLeft <= 0) {
             daysLeft = 0;
         }

@@ -20,10 +20,10 @@
     <fmt:setLocale value="vi_VN" scope="session"/>
 
     <!-- Header -->
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="components/header.jsp"/>
     <main class="container-fluid py-3 py-md-4 min-vh-100 position-relative">
 
-        <jsp:include page="toasts.jsp"/>
+        <jsp:include page="components/toasts.jsp"/>
 
         <!-- Donation -->
         <section id="donationManagement" class="container-fluid round-border py-3 mb-2">
@@ -72,6 +72,6 @@
     </div>
 
     <!-- Footer -->
-    <jsp:include page="footer.jsp"/>
+    <jsp:include page="components/footer.jsp"/>
 </body>
 </html>

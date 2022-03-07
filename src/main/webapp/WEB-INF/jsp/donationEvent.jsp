@@ -20,10 +20,10 @@
     <fmt:setLocale value="vi_VN" scope="session"/>
 
     <!-- Header -->
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="components/header.jsp"/>
     <main id="donationEvent" class="container-fluid py-3 py-md-4 position-relative">
 
-        <jsp:include page="toasts.jsp"/>
+        <jsp:include page="components/toasts.jsp"/>
 
         <section class="container donationEventCard py-3">
             <h2><strong>${donationEvent.title}</strong></h2>
@@ -71,42 +71,24 @@
                                 <strong>${donationEvent.progressPercent}%</strong>
                             </div> 
                             <div>
-                                <a href="${pageContext.request.contextPath}/donationEvent?id=${donationEvent.donationEventId}"><button type="button" class="btn 
+                                <button type="button" class="btn 
                                     <c:choose>
-                                        <c:when test="${donationEvent.isCompleted}">
-                                            btn-outline-success
-                                        </c:when>
-                                        <c:when test="${donationEvent.isEnded}">
-                                            btn-outline-secondary
-                                        </c:when>
-                                        <c:otherwise>
-                                            btn-outline-primary     
-                                        </c:otherwise>
+                                        <c:when test="${donationEvent.isCompleted}">btn-outline-success</c:when>
+                                        <c:when test="${donationEvent.isEnded}">btn-outline-secondary</c:when>
+                                        <c:otherwise>btn-outline-primary</c:otherwise>
                                     </c:choose>
-                                "
                                     <c:choose>
-                                        <c:when test="${donationEvent.isCompleted}">
-                                            disabled
-                                        </c:when>
-                                        <c:when test="${donationEvent.isEnded}">
-                                            disabled
-                                        </c:when>
-                                        <c:otherwise>      
-                                        </c:otherwise>
+                                        <c:when test="${donationEvent.isCompleted}">disabled</c:when>
+                                        <c:when test="${donationEvent.isEnded}">disabled</c:when>
+                                        <c:otherwise></c:otherwise>
                                     </c:choose>
-                                >
+                                ">
                                     <c:choose>
-                                        <c:when test="${donationEvent.isCompleted}">
-                                            Đã hoàn thành
-                                        </c:when>
-                                        <c:when test="${donationEvent.isEnded}">
-                                            Đã kết thúc
-                                        </c:when>
-                                        <c:otherwise>
-                                            Quyên góp
-                                        </c:otherwise>
+                                        <c:when test="${donationEvent.isCompleted}">Đã hoàn thành</c:when>
+                                        <c:when test="${donationEvent.isEnded}">Đã kết thúc</c:when>
+                                        <c:otherwise>Quyên góp</c:otherwise>
                                     </c:choose>
-                                </button></a>
+                                </button>
                             </div>  
                         </div>
                     </div>
@@ -115,6 +97,6 @@
         </section>
     </main>
     <!-- Footer -->
-    <jsp:include page="footer.jsp"/>
+    <jsp:include page="components/footer.jsp"/>
 </body>
 </html>

@@ -22,12 +22,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 @Service
 public class DonationEventService {
 
-    private static final int EVENT_PER_PAGE = 5;
+    private static final int EVENT_PER_PAGE = 6;
 
     @Autowired
     private DonationEventRepository donationEventRepository;
@@ -80,6 +79,27 @@ public class DonationEventService {
                 break;
             case "description":
                 donationEventPage = donationEventRepository.findAllByDescriptionContainsIgnoreCase(searchText, pageable);
+                break;
+            default:
+                throw new IllegalStateException("Search type not valid!");
+        }
+
+        return donationEventPage;
+    }
+
+    public Page<DonationEvent> searchDonationEvents(String searchText, String searchType, String sortType, int page, EventState state) {
+        page -= 1;
+        if(page < 0) throw new IllegalStateException("Page not found!");
+        
+        Pageable pageable = PageRequest.of(page, EVENT_PER_PAGE, Sort.by(sortType));
+        Page<DonationEvent> donationEventPage;
+
+        switch(searchType) {
+            case "title":
+                donationEventPage = donationEventRepository.findAllByTitleContainsIgnoreCaseAndEventState(searchText, state, pageable);
+                break;
+            case "description":
+                donationEventPage = donationEventRepository.findAllByDescriptionContainsIgnoreCaseAndEventState(searchText, state, pageable);
                 break;
             default:
                 throw new IllegalStateException("Search type not valid!");

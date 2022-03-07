@@ -1,17 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
-<c:set var="donationEventsUrl" value="${pageContext.request.contextPath}/#donationEvents" />
-<c:set var="contactUrl" value="${pageContext.request.contextPath}/#contact" />
-<c:set var="userManagementUrl" value="${pageContext.request.contextPath}/userManagement" />
-<c:set var="donationEventManagementUrl" value="${pageContext.request.contextPath}/donationEventManagement" />
-<c:set var="donationManagementUrl" value="${pageContext.request.contextPath}/donationManagement" />
-<c:set var="signInUrl" value="${pageContext.request.contextPath}/signIn" />
+<c:set var="donationEventsUrl" value="${pageContext.request.contextPath}/donation-events" />
+<c:set var="contactUrl" value="#contact" />
+<c:set var="userManagementUrl" value="${pageContext.request.contextPath}/user-management" />
+<c:set var="donationEventManagementUrl" value="${pageContext.request.contextPath}/donation-event-management" />
+<c:set var="donationManagementUrl" value="${pageContext.request.contextPath}/donation-management" />
+<c:set var="signInUrl" value="${pageContext.request.contextPath}/sign-in" />
 <c:set var="registerUrl" value="${pageContext.request.contextPath}/register" />
 <c:set var="profileUrl" value="${pageContext.request.contextPath}/profile" />
-<c:set var="myDonationsUrl" value="${pageContext.request.contextPath}/profile#myDonations" />
-<c:set var="settingsUrl" value="${pageContext.request.contextPath}/profile#settings" />
-<c:set var="signOutUrl" value="${pageContext.request.contextPath}/signOut" />
+<c:set var="myDonationsUrl" value="${pageContext.request.contextPath}/my-donations" />
+<c:set var="signOutUrl" value="${pageContext.request.contextPath}/sign-out" />
 
 <!--Header-->
 <header>

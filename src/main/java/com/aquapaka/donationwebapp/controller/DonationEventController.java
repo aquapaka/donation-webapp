@@ -37,7 +37,7 @@ public class DonationEventController {
     @Autowired
     private FilterService filterService;
 
-    @GetMapping("/donationEvent")
+    @GetMapping("/donation-event")
     public String donationEvent(Model model, HttpServletRequest request, @RequestParam Long id) {
         // Get donation event data
         Optional<DonationEvent> donationEventOptional = donationEventService.getDonationEventById(id);

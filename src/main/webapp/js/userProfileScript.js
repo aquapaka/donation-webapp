@@ -87,12 +87,15 @@ $(document).ready(function () {
                 else $("#newPasswordError").prop("hidden", true);
 
                 if(response.changePasswordSuccess) {
-                    alert("Updated Password!");
-                    window.location.replace("/profile");
+                    showSuccessToast("Đã cập nhật mật khẩu mới!");
+                    setTimeout(function() {
+                        window.location.replace("/profile");
+                    }, 3000);
                 }
             },
             error: function (error) {
-                alert("Error, can't update Password. Error: ", error);
+                showErrorToast("Đã xảy ra lỗi!");
+                console.log(error);
             }
         });
         }       
