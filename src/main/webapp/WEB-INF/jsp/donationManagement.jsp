@@ -27,6 +27,38 @@
 
         <!-- Donation -->
         <section id="donationManagement" class="container-fluid round-border py-3 mb-2">
+
+            <!-- Control buttons -->
+            <div class="container-fluid mb-5">
+                <form id="searchForm" class="row me-1"
+                    action="${pageContext.request.contextPath}/donation-management">
+                    <input id="page" name="page" value="" class="form-control" hidden>
+                    <div class="col-12 col-lg-5 mb-1">
+                        <input id="searchText" name="searchText" value="${searchText}" class="form-control"
+                            type="search" placeholder="Tìm kiếm" aria-label="Search">
+                    </div>
+                    <div class="col-6 col-lg-3 mb-1">
+                        <select id="searchType" name="searchType" class="form-select">
+                            <option value="donationEventTitle" <c:if test="${searchType == 'donationEventTitle'}">selected</c:if>>Tìm theo tiêu đề sự kiện</option>
+                            <option value="donationEventId" <c:if test="${searchType == 'donationEventId'}">selected</c:if>>Tìm theo ID sự kiện</option>
+                            <option value="appUserUsername" <c:if test="${searchType == 'appUserUsername'}">selected</c:if>>Tìm theo username</option>
+                            <option value="appUserId" <c:if test="${searchType == 'appUserId'}">selected</c:if>>Tìm theo ID người dùng</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-lg-3 mb-2">
+                        <select id="sortType" name="sortType" class="form-select">
+                            <option value="donationId" <c:if test="${sortType == 'donationId'}">selected</c:if>>Sắp xếp theo ID</option>
+                            <option value="donationTime" <c:if test="${sortType == 'donationTime'}">selected</c:if>>Sắp xếp theo thời gian tạo</option>
+                            <option value="donationAmount" <c:if test="${sortType == 'donationAmount'}">selected</c:if>>Sắp xếp theo số tiền quyên góp</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <button type="submit" class="btn btn-primary w-100">Tìm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -49,6 +81,43 @@
                     </c:forEach>
                 </tbody>           
             </table>
+
+            <!-- Pagination -->
+            <div aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                <li class="page-item <c:if test='${currentPage <= 1}'>disabled</c:if>">
+                    <a class="page-link" href="#" tabindex="${currentPage-1}">Previous</a>
+                </li>
+                <li class="page-item" <c:if test='${currentPage <= 3}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="1">1</a>
+                </li>
+                <li class="page-item disabled" <c:if test='${currentPage-3 <= 1}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="-1">...</a>
+                </li>
+                <c:if test="${currentPage-2 >= 1}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage-2}">${currentPage-2}</a></li>
+                </c:if>
+                <c:if test="${currentPage-1 >= 1}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage-1}">${currentPage-1}</a></li>
+                </c:if>  
+                <li class="page-item active"><span class="page-link" tabindex="${currentPage}">${currentPage}</span></li>
+                <c:if test="${currentPage+1 <= totalPage}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage+1}">${currentPage+1}</a></li>
+                </c:if>
+                <c:if test="${currentPage+2 <= totalPage}">
+                    <li class="page-item"><a class="page-link" href="#" tabindex="${currentPage+2}">${currentPage+2}</a></li>
+                </c:if>
+                <li class="page-item disabled" <c:if test='${currentPage+3 >= totalPage}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="-1">...</a>
+                </li>
+                <li class="page-item" <c:if test='${currentPage >= totalPage-2}'>hidden</c:if>>
+                    <a class="page-link" href="#" tabindex="${totalPage}">${totalPage}</a>
+                </li>
+                <li class="page-item <c:if test='${currentPage >= totalPage}'>disabled</c:if>">
+                    <a class="page-link" href="#" tabindex="${currentPage+1}">Next</a>
+                </li>
+                </ul>
+            </div>
         </section>
     </main>
 

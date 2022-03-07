@@ -132,11 +132,26 @@ public class MainController {
     }
     
     @GetMapping("donation-management")
-    public String donationManagement(Model model, HttpServletRequest request) {
+    public String donationManagement(
+    Model model, 
+    HttpServletRequest request,
+    @RequestParam(required = false, defaultValue = "1") int page,
+    @RequestParam(required = false, defaultValue = "") String searchText,
+    @RequestParam(required = false, defaultValue = "donationEventTitle") String searchType,
+    @RequestParam(required = false, defaultValue = "donationId") String sortType
+    ) {
 
         // Get donation datas
-        List<Donation> donations = donationService.getDonations();
+        Page<Donation> donationsPage = donationService.searchDonations(searchText, searchType, sortType, page);
+        List<Donation> donations = donationsPage.getContent();
+        int totalPage = donationsPage.getTotalPages();
+  
         model.addAttribute("donations", donations);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("sortType", sortType);
 
         return filterService.filterAdmin(request, model, "donationManagement");
     }
