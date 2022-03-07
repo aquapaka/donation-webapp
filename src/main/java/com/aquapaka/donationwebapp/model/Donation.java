@@ -25,7 +25,7 @@ public class Donation {
         strategy = GenerationType.SEQUENCE,
         generator = "donation_sequence"
     )
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long donationId;
     @OneToOne
     @JoinColumn(name = "app_user_id", referencedColumnName = "app_user_id")

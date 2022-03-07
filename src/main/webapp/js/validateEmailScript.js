@@ -5,21 +5,22 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/validateCode",
+            url: "/validate-code",
             data: {
                 code : code
             },
             dataType: "json",
             success: function (response) {
                 if(response == true) {
-                    alert("Validate email success!");
+                    showSuccessToast("Xác minh email thành công!");
                     window.location.replace("/");
                 } else {
                     $("#wrongActiveCode").prop("hidden", false);
                 }
             },
             error: function (error) {
-                alert("Error submit code: " + error); 
+                showErrorToast("Đã xảy ra lỗi!");
+                console.log(+ error); 
             }
         });
     });

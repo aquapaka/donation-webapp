@@ -30,7 +30,7 @@ public class DonationEvent {
         strategy = GenerationType.SEQUENCE,
         generator = "donation_event_sequence"
     )
-    @Column(name = "donation_event_id", nullable = false, unique = true)
+    @Column(name = "donation_event_id", nullable = false)
     private Long donationEventId;
     @Column(nullable = false, length = 200)
     private String title;

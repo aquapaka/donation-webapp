@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 @Service
 public class FilterService {
     private final String INDEX_REDIRECT = "redirect:/";
-    private final String VALIDATE_EMAIL_REDIRECT = "redirect:/validateEmail";
+    private final String VALIDATE_EMAIL_REDIRECT = "redirect:/validate-email";
 
     @Autowired
     private AppUserService appUserService;

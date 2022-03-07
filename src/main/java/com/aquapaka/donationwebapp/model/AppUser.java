@@ -27,7 +27,7 @@ public class AppUser {
         strategy = GenerationType.SEQUENCE,
         generator = "app_user_sequence"
     )
-    @Column(name = "app_user_id", nullable = false, unique = true)
+    @Column(name = "app_user_id", nullable = false)
     private Long appUserId;
     @Column(nullable = false, unique = true, length = 100)
     private String email;
