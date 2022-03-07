@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -20,24 +21,41 @@ import com.aquapaka.donationwebapp.model.state.EventState;
 @Table
 public class DonationEvent {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "donation_event_id")
+    @SequenceGenerator(
+        name = "donation_event_sequence",
+        sequenceName = "donation_event_sequence",
+        allocationSize = 1
+    )
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "donation_event_sequence"
+    )
+    @Column(name = "donation_event_id", nullable = false, unique = true)
     private Long donationEventId;
+    @Column(nullable = false, length = 200)
     private String title;
+    @Column(nullable = false, length = 255)
     private String description;
     @Lob
+    @Column(nullable = false)
     private String detail;
     @Lob
+    @Column(nullable = false)
     private String image;
+    @Column(nullable = false)
     private long totalDonationAmount;
     @Transient
     private long currentDonationAmount;
+    @Column(nullable = false)
     private LocalDateTime startTime;
+    @Column(nullable = false)
     private LocalDateTime endTime;
     @OneToOne
-    @JoinColumn(name = "app_user_id", referencedColumnName = "app_user_id")
+    @JoinColumn(name = "app_user_id", referencedColumnName = "app_user_id", nullable = false)
     private AppUser createAppUser;
+    @Column(nullable = false)
     private LocalDateTime createTime;
+    @Column(nullable = false)
     private EventState eventState;
     @Transient
     private long daysLeft;

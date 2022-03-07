@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.aquapaka.donationwebapp.model.state.AppUserState;
@@ -17,20 +18,36 @@ import com.aquapaka.donationwebapp.model.state.Role;
 @Table
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "app_user_id")
+    @SequenceGenerator(
+        name = "app_user_sequence",
+        sequenceName = "app_user_sequence",
+        allocationSize = 1
+    )
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "app_user_sequence"
+    )
+    @Column(name = "app_user_id", nullable = false, unique = true)
     private Long appUserId;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
+    @Column(nullable = false, length = 100)
     private String password;
-    @Column(unique = true)
+    @Column(nullable = false, unique = true, length = 100)
     private String username;
+    @Column(nullable = false, length = 100)
     private String fullname;
+    @Column(nullable = false)
     private LocalDate dateOfBirth;
+    @Column(nullable = false)
     private Gender gender;
+    @Column(nullable = false, length = 30)
     private String phoneNumber;
+    @Column(nullable = false)
     private Role role;
+    @Column(nullable = false)
     private AppUserState state;
+    @Column(nullable = false)
     private int activeCode;
 
     public AppUser() {
