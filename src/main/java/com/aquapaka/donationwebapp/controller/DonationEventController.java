@@ -11,6 +11,7 @@ import com.aquapaka.donationwebapp.model.DonationEvent;
 import com.aquapaka.donationwebapp.model.state.EventState;
 import com.aquapaka.donationwebapp.service.AppUserService;
 import com.aquapaka.donationwebapp.service.DonationEventService;
+import com.aquapaka.donationwebapp.service.DonationService;
 import com.aquapaka.donationwebapp.service.FilterService;
 import com.aquapaka.donationwebapp.validator.status.ValidateDonationEventStatus;
 
@@ -48,6 +49,8 @@ public class DonationEventController {
             throw new IllegalStateException("Donation event id not found!");
 
         model.addAttribute("donationEvent", donationEvent);
+        model.addAttribute("eventId", id);
+        model.addAttribute("minAmount", DonationService.MIN_DONATION_AMOUNT);
 
         return filterService.filterGuest(request, model, "donationEvent");
     }

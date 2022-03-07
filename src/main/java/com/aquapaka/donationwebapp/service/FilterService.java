@@ -77,7 +77,7 @@ public class FilterService {
         return mapping;
     }
 
-    public boolean canAccessUserData(HttpServletRequest request, Long userId) {
+    public boolean canAccessUserData(HttpServletRequest request) {
 
         // Get account data from session
         HttpSession session = request.getSession();
@@ -87,6 +87,21 @@ public class FilterService {
 
         if(appUser == null) return false;
 
+        if(appUser.getState() != AppUserState.ACTIVE) return false;
+
+        return true;
+    }
+
+    public boolean canAccessUserData(HttpServletRequest request, Long userId) {
+
+        // Get account data from session
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        String password = (String) session.getAttribute("password");
+        AppUser appUser = appUserService.validateLogin(email, password);
+
+        if(appUser == null) return false;
+        if(appUser.getState() != AppUserState.ACTIVE) return false;
         if(appUser.getRole() == Role.ADMIN) return true;
 
         return (appUser.getAppUserId() == userId);

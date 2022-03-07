@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/js/donationEventScripts.js"></script>
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
     <title>Donation</title>
@@ -71,7 +72,8 @@
                                 <strong>${donationEvent.progressPercent}%</strong>
                             </div> 
                             <div>
-                                <button type="button" class="btn 
+                                <input id="isSignedIn" type="text" value="${isSignedIn}" hidden>
+                                <button id="donateBtn" type="button" class="btn 
                                     <c:choose>
                                         <c:when test="${donationEvent.isCompleted}">btn-outline-success</c:when>
                                         <c:when test="${donationEvent.isEnded}">btn-outline-secondary</c:when>
@@ -96,6 +98,35 @@
             </div>
         </section>
     </main>
+
+    <!-- donation modal -->
+    <div class="modal fade" id="donateModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <form id="donateForm" action="/asdasd">
+                    <input id="eventId" type="text" value="${eventId}" hidden>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Quyên góp</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row">
+                        <div class="mb-3 col-12">
+                            <label for="donateAmount" class="form-label">Nhập số tiền bạn muốn quyên góp</label>
+                            <input type="number" class="form-control" class="form-control" value="0" id="donateAmount">
+                            <span id="donateAmountEmpty" class="form-text text-danger" hidden>Số tiền không được bỏ trống<br></span>
+                            <span id="donateAmountError" class="form-text text-danger" hidden>Số tiền không hợp lệ</span>
+                            <span id="donateAmountTooSmall" class="form-text text-danger" hidden>Số tiền quyên góp cho mỗi đợt phải từ <fmt:formatNumber value="${minAmount}" type="number"/> trở lên</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                        <button type="submit" class="btn btn-primary float-end">Quyên góp</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <jsp:include page="components/footer.jsp"/>
 </body>

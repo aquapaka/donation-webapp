@@ -59,8 +59,10 @@ public class DonationEventService {
         Optional<DonationEvent> donationEventOptional = donationEventRepository.findById(id);
 
         if (donationEventOptional.isPresent()) {
-            donationEventOptional.get()
-                    .setTotalDonationCount(donationRepository.countByDonationEvent(donationEventOptional.get()));
+            donationEventOptional.get().setTotalDonationCount(donationRepository.countByDonationEvent(donationEventOptional.get()));
+            long currentDonationAmount = donationRepository
+                    .sumDonationAmountByDonationEventId(donationEventOptional.get().getDonationEventId());
+            donationEventOptional.get().setCurrentDonationAmount(currentDonationAmount);
         }
 
         return donationEventOptional;
@@ -84,6 +86,18 @@ public class DonationEventService {
                 throw new IllegalStateException("Search type not valid!");
         }
 
+        // Count total donation for each event
+        for (DonationEvent donationEvent : donationEventPage) {
+            donationEvent.setTotalDonationCount(donationRepository.countByDonationEvent(donationEvent));
+        }
+
+        // Count current donation amount for each event
+        for (DonationEvent donationEvent : donationEventPage) {
+            long currentDonationAmount = donationRepository
+                    .sumDonationAmountByDonationEventId(donationEvent.getDonationEventId());
+            donationEvent.setCurrentDonationAmount(currentDonationAmount);
+        }
+
         return donationEventPage;
     }
 
@@ -103,6 +117,18 @@ public class DonationEventService {
                 break;
             default:
                 throw new IllegalStateException("Search type not valid!");
+        }
+
+        // Count total donation for each event
+        for (DonationEvent donationEvent : donationEventPage) {
+            donationEvent.setTotalDonationCount(donationRepository.countByDonationEvent(donationEvent));
+        }
+
+        // Count current donation amount for each event
+        for (DonationEvent donationEvent : donationEventPage) {
+            long currentDonationAmount = donationRepository
+                    .sumDonationAmountByDonationEventId(donationEvent.getDonationEventId());
+            donationEvent.setCurrentDonationAmount(currentDonationAmount);
         }
 
         return donationEventPage;

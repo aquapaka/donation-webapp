@@ -147,4 +147,10 @@ public class MainController {
         return filterService.filterUser(request, model, "userProfile");
     }
 
+    @GetMapping("my-donations")
+    public String myDonations(Model model, HttpServletRequest request) {
+      
+        return filterService.filterUser(request, model, "myDonations");
+    }
+
 }

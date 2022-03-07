@@ -319,7 +319,7 @@
                     </div>
                     <div class="mb-3 col-3">
                         <label for="addDonationEventTotal" class="form-label">Số tiền mục tiêu</label>
-                        <input type="number" class="form-control" value="" id="addDonationEventTotal">
+                        <input type="number" class="form-control" value="0" id="addDonationEventTotal">
                         <span id="addTotalDonationAmountEmpty" class="form-text text-danger" hidden>Số tiền
                             không được để trống</span>
                         <span id="addTotalDonationAmountError" class="form-text text-danger" hidden>Số tiền
