@@ -33,7 +33,7 @@
             <!-- Control buttons -->
             <div class="container-fluid">
                 <form id="searchForm" class="row me-1"
-                    action="${pageContext.request.contextPath}/donation-management">
+                    action="${pageContext.request.contextPath}/my-donations">
                     <input id="page" name="page" value="" class="form-control" hidden>
                     <div class="col-12 col-lg-5 mb-1">
                         <input id="searchText" name="searchText" value="${searchText}" class="form-control"
@@ -73,7 +73,7 @@
                     <c:forEach items="${donations}" var="donation">
                         <tr>
                             <td>${donation.donationId}</td>
-                            <td>${donation.appUser.fullname} (${donation.appUser.username})(Id: ${donation.appUser.appUserId})</td>
+                            <td>${donation.donationEvent.title} (Id: ${donation.donationEvent.donationEventId})</td>
                             <td>${donation.donationTime}</td>
                             <td><fmt:formatNumber value="${donation.donationAmount}" type="number"/></td>
                         </tr>

@@ -33,8 +33,8 @@
             <!-- Control buttons -->
             <div class="container-fluid mb-5">
                 <button class="btn btn-primary float-start me-1" onclick="addAppUser()">Thêm người dùng mới</button>
-                <button id="deleteAllButton" class="btn btn-danger float-start mx-1 " onclick="deleteAppUsers()"
-                    disabled>Xoá tất cả đã chọn</button>
+                <!-- <button id="deleteAllButton" class="btn btn-danger float-start mx-1 " onclick="deleteAppUsers()"
+                    disabled>Xoá tất cả đã chọn</button> -->
                 <form id="searchForm" class="float-end row me-1"
                     action="${pageContext.request.contextPath}/user-management">
                     <input id="page" name="page" value="" class="form-control" hidden>
