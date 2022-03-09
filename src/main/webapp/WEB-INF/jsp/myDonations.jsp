@@ -129,7 +129,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xoá người dùng <b id="appUserDeleteName">...</b></p>
+                    <p>Bạn có chắc chắn muốn xoá người dùng <strong id="appUserDeleteName">...</strong></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thoát</button>
