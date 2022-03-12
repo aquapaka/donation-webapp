@@ -1,4 +1,6 @@
+
 $(document).ready(function () {
+
     $("#checkBoxAll").change(function() {
         // Change all other checkbox depend on checkBoxAll state
         if($(this).is(":checked")) {
@@ -38,7 +40,7 @@ function deleteDonationEvent(id) {
 
     $.ajax({
         type: "GET",
-        url: "/DonationEvent/" + id,
+        url: contextPath + "/DonationEvent/" + id,
         dataType: "json",
         success: function (response) {
             if(response.totalDonationCount > 0) {
@@ -63,13 +65,13 @@ function deleteDonationEventConfirm() {
 
     $.ajax({
         type: "DELETE",
-        url: "/DonationEvent/" + id,
+        url: contextPath + "/DonationEvent/" + id,
         dataType: "json",
         success: function (response) {
             showSuccessToast("Xoá sự kiện thành công");
             bootstrap.Modal.getInstance(document.querySelector('#deleteDonationEventModal')).hide();
             setTimeout(function() {
-                window.location.replace("/donation-event-management");
+                window.location.replace(contextPath + "/donation-event-management");
             }, 3000);
         },
         error: function (error) {
@@ -107,7 +109,7 @@ function deleteDonationEventsConfirm() {
     $.ajax({
         traditional: true,
         type: "DELETE",
-        url: "/DonationEvent",
+        url: contextPath + "/DonationEvent",
         data: {
             ids : ids
         },
@@ -116,7 +118,7 @@ function deleteDonationEventsConfirm() {
             showSuccessToast("Xoá các sự kiện thành công");
             bootstrap.Modal.getInstance(document.querySelector('#deleteAllDonationEventModal')).hide();
             setTimeout(function() {
-                window.location.replace("/donation-event-management");
+                window.location.replace(contextPath + "/donation-event-management");
             }, 3000);
         },
         error: function (error) {
@@ -135,7 +137,7 @@ function editDonationEvent(id) {
 
     $.ajax({
         type: "GET",
-        url: "/DonationEvent/" + id,
+        url: contextPath + "/DonationEvent/" + id,
         dataType: "json",
         success: function (response) {
             $("#donationEventId").val(response.donationEventId);
@@ -176,7 +178,7 @@ function editDonationEventConfirm() {
 
         $.ajax({
             type: "PUT",
-            url: "/DonationEvent/" + donationEventId,
+            url: contextPath + "/DonationEvent/" + donationEventId,
             data: {
                 title : title,
                 description : description,
@@ -210,7 +212,7 @@ function editDonationEventConfirm() {
                     showSuccessToast("Chỉnh sửa thành công");
                     bootstrap.Modal.getInstance(document.querySelector('#editDonationEventModal')).hide();
                     setTimeout(function() {
-                        window.location.replace("/donation-event-management");
+                        window.location.replace(contextPath + "/donation-event-management");
                     }, 3000);
                 }
             },
@@ -250,7 +252,7 @@ function addDonationEventConfirm() {
     .finally( () => {
         $.ajax({
             type: "POST",
-            url: "/DonationEvent/",
+            url: contextPath + "/DonationEvent/",
             data: {
                 title : title,
                 description : description,
@@ -285,7 +287,7 @@ function addDonationEventConfirm() {
                     showSuccessToast("Đã thêm sự kiện " + title);
                     bootstrap.Modal.getInstance(document.querySelector('#addDonationEventModal')).hide();
                     setTimeout(function() {
-                        window.location.replace("/donation-event-management");
+                        window.location.replace(contextPath + "/donation-event-management");
                     }, 3000);
                 } else {
                     $("#addSubmitBtn").prop("disabled", false);

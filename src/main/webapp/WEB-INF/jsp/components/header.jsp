@@ -202,5 +202,8 @@
             </div>
         </div>
     </div>
+
+    <input name="rootUrl" id="rootUrl" type="hidden" value="${pageContext.request.contextPath}"/>
 </header>
+
 

@@ -1,4 +1,31 @@
+var contextPath = "";
+
 $(document).ready(function () {
+    contextPath = $("#rootUrl").val();
+
+    if (localStorage.chkbx && localStorage.chkbx != '') {
+        $('#rememberCheck').prop('checked', true);
+        $('#email').val(localStorage.email);
+        $('#password').val(localStorage.password);
+    } else {
+        $('#rememberCheck').prop('checked', false);
+        $('#email').val('');
+        $('#password').val('');
+    }
+
+    $('#rememberCheck').click(function() {
+
+        if ($('#rememberCheck').is(':checked')) {
+            // save email and password
+            localStorage.email = $('#email').val();
+            localStorage.password = $('#password').val();
+            localStorage.chkbx = $('#rememberCheck').val();
+        } else {
+            localStorage.email = '';
+            localStorage.password = '';
+            localStorage.chkbx = '';
+        }
+    });
 
     $("#loginForm").submit(function doLogin(e) {
         e.preventDefault();
@@ -8,7 +35,7 @@ $(document).ready(function () {
     
         $.ajax({
             type: "POST",
-            url: "/do-login",
+            url: contextPath + "/do-login",
             data: {
                 email : email,
                 password : password
@@ -20,7 +47,7 @@ $(document).ready(function () {
                     showSuccessToast("Đăng nhập thành công. Đang chuyển hướng...")
                     bootstrap.Modal.getInstance(document.querySelector('#loginModal')).hide();
                     setTimeout(function() {
-                        window.location.replace("/");
+                        window.location.replace(contextPath + "/");
                     }, 3000);
                 } else {
                     $("#loginError").attr("hidden", false);
@@ -50,7 +77,7 @@ $(document).ready(function () {
     
         $.ajax({
             type: "POST",
-            url: "/do-register",
+            url: contextPath + "/do-register",
             data: {
                 username : username,
                 email : email,
@@ -63,7 +90,7 @@ $(document).ready(function () {
                     showSuccessToast("Đăng kí thành công, mã xác minh đã được gửi tới email của bạn")
                     bootstrap.Modal.getInstance(document.querySelector('#registerModal')).hide();
                     setTimeout(function() {
-                        window.location.replace("/");
+                        window.location.replace(contextPath + "/");
                     }, 3000);
                     return;
                 }
@@ -83,6 +110,7 @@ $(document).ready(function () {
             error : function(error) {
                 showErrorToast("Đã xảy ra lỗi!");
                 console.log(error);
+                console.log("ctp: " + contextPath);
             }
         });
     });
@@ -93,7 +121,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "PUT",
-            url: "/AppUser/resetPassword",
+            url: contextPath + "/AppUser/resetPassword",
             data: {
                 email : email
             },
@@ -104,7 +132,7 @@ $(document).ready(function () {
                     showSuccessToast("Đã đặt lại mật khẩu, hãy kiểm tra email của bạn!");
                     bootstrap.Modal.getInstance(document.querySelector('#forgotPasswordModal')).hide();
                     setTimeout(function() {
-                        window.location.replace("/");
+                        window.location.replace(contextPath + "/");
                     }, 3000);
                     return;
                 } else {

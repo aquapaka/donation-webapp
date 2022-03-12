@@ -24,7 +24,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "PUT",
-            url: "/AppUser/" + appUserId,
+            url: contextPath + "/AppUser/" + appUserId,
             data: {
                 fullname : fullname,
                 dateOfBirth : dateOfBirth,
@@ -44,7 +44,7 @@ $(document).ready(function () {
                 if(response.validAppUser) {
                     showSuccessToast("Đã cập nhật hồ sơ!");
                     setTimeout(function() {
-                        window.location.replace("/profile");
+                        window.location.replace(contextPath + "/profile");
                     }, 3000);
                 } else {
                     $("#submitBtn").prop("disabled", false);
@@ -74,7 +74,7 @@ $(document).ready(function () {
 
             $.ajax({
             type: "PUT",
-            url: "/AppUser/changePassword",
+            url: contextPath + "/AppUser/changePassword",
             data: {
                 oldPassword : oldPassword,
                 newPassword : newPassword
@@ -89,7 +89,7 @@ $(document).ready(function () {
                 if(response.changePasswordSuccess) {
                     showSuccessToast("Đã cập nhật mật khẩu mới!");
                     setTimeout(function() {
-                        window.location.replace("/profile");
+                        window.location.replace(contextPath + "/profile");
                     }, 3000);
                 }
             },

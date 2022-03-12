@@ -1,4 +1,6 @@
+
 $(document).ready(function () {
+    
     $("#donateBtn").click(function () {
         var donateModal = new bootstrap.Modal(document.getElementById("donateModal"), true);
         var loginModal = new bootstrap.Modal(document.getElementById("loginModal"), true);
@@ -18,7 +20,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/donation/donate",
+            url: contextPath + "/donation/donate",
             data: {
                 eventId: eventId,
                 donateAmount: donateAmount
@@ -36,7 +38,7 @@ $(document).ready(function () {
                     showSuccessToast("Quyên góp thành công số tiền " + donateAmount.toLocaleString());
                     bootstrap.Modal.getInstance(document.querySelector('#donateModal')).hide();
                     setTimeout(function () {
-                        window.location.replace("/donation-event?id=" + eventId);
+                        window.location.replace(contextPath + "/donation-event?id=" + eventId);
                     }, 3000);
                 }
             },

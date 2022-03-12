@@ -5,7 +5,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/validate-code",
+            url: contextPath + "/validate-code",
             data: {
                 code : code
             },
@@ -13,7 +13,7 @@ $(document).ready(function () {
             success: function (response) {
                 if(response == true) {
                     showSuccessToast("Xác minh email thành công!");
-                    window.location.replace("/");
+                    window.location.replace(contextPath + "/");
                 } else {
                     $("#wrongActiveCode").prop("hidden", false);
                 }

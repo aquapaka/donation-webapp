@@ -17,7 +17,7 @@ function addAppUserConfirm() {
     
     $.ajax({
         type: "POST",
-        url: "/AppUser",
+        url: contextPath + "/AppUser",
         data: {
             username : username,
             email : email,
@@ -49,7 +49,7 @@ function addAppUserConfirm() {
                 showSuccessToast("Đã thêm người dùng " + username + ". Mật khẩu đã được gửi về email " + email);
                 bootstrap.Modal.getInstance(document.querySelector('#addAppUserModal')).hide();
                 setTimeout(function() {
-                    window.location.replace("/user-management");
+                    window.location.replace(contextPath + "/user-management");
                 }, 5000);
             } else {
                 $("#addSubmitBtn").prop("disabled", false);
@@ -68,7 +68,7 @@ function editAppUser(id) {
 
     $.ajax({
         type: "GET",
-        url: "/AppUser/" + id,
+        url: contextPath + "/AppUser/" + id,
         dataType: "json",
         success: function (response) {
             $("#appUserId").val(response.appUserId);
@@ -101,7 +101,7 @@ function editAppUserConfirm() {
     
     $.ajax({
         type: "PUT",
-        url: "/AppUser/" + appUserId,
+        url: contextPath + "/AppUser/" + appUserId,
         data: {
             fullname : fullname,
             dateOfBirth : dateOfBirth,
@@ -122,7 +122,7 @@ function editAppUserConfirm() {
                 showSuccessToast("Đã cập nhật người dùng id " + appUserId);
                 bootstrap.Modal.getInstance(document.querySelector('#editAppUserModal')).hide();
                 setTimeout(function() {
-                    window.location.replace("/user-management");
+                    window.location.replace(contextPath + "/user-management");
                 }, 3000);
             }
         },
@@ -138,7 +138,7 @@ function deleteAppUser(id) {
 
     $.ajax({
         type: "GET",
-        url: "/AppUser/" + id,
+        url: contextPath + "/AppUser/" + id,
         dataType: "json",
         success: function (response) {
             if(response.role == 'ADMIN') {
@@ -164,14 +164,14 @@ function deleteAppUserConfirm() {
 
     $.ajax({
         type: "DELETE",
-        url: "/AppUser/" + id,
+        url: contextPath + "/AppUser/" + id,
         dataType: "json",
         success: function (response) {
             if(response) {
                 showSuccessToast("Đã xoá người dùng id " + id);
                 bootstrap.Modal.getInstance(document.querySelector('#deleteAppUserModal')).hide();
                 setTimeout(function() {
-                    window.location.replace("/user-management");
+                    window.location.replace(contextPath + "/user-management");
                 }, 3000);
             } else {
                 showErrorToast("Lỗi, không thể xoá người dùng id " + id);
