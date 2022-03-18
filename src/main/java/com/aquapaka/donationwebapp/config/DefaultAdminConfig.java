@@ -24,7 +24,7 @@ public class DefaultAdminConfig {
     private AppUserRepository appUserRepository;
 
     @EventListener(ApplicationReadyEvent.class)
-    public void doSomethingAfterStartup() throws NoSuchAlgorithmException {
+    public void setupAdminAccount() throws NoSuchAlgorithmException {
         String encryptedPassword = PasswordEncrypt.encryptPassword(ADMIN_PASSWORD);
         if(appUserRepository.findAppUserByEmail(ADMIN_EMAIL).isPresent()) return;
 

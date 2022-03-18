@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.aquapaka.donationwebapp.model.state.AppUserState;
 import com.aquapaka.donationwebapp.model.state.Gender;
@@ -49,6 +50,8 @@ public class AppUser {
     private AppUserState state;
     @Column(nullable = false)
     private int activeCode;
+    @Transient
+    private boolean donated;
 
     public AppUser() {
         
@@ -150,6 +153,14 @@ public class AppUser {
 
     public void setActiveCode(int activeCode) {
         this.activeCode = activeCode;
+    }
+
+    public boolean isDonated() {
+        return donated;
+    }
+
+    public void setDonated(boolean donated) {
+        this.donated = donated;
     }
 
 }

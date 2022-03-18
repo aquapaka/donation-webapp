@@ -12,6 +12,7 @@ import com.aquapaka.donationwebapp.model.state.AppUserState;
 import com.aquapaka.donationwebapp.model.state.Gender;
 import com.aquapaka.donationwebapp.model.state.Role;
 import com.aquapaka.donationwebapp.repository.AppUserRepository;
+import com.aquapaka.donationwebapp.repository.DonationRepository;
 import com.aquapaka.donationwebapp.util.PasswordEncrypt;
 import com.aquapaka.donationwebapp.util.PasswordGenerator;
 import com.aquapaka.donationwebapp.validator.AppUserValidator;
@@ -38,6 +39,9 @@ public class AppUserService {
     private AppUserRepository appUserRepository;
 
     @Autowired
+    private DonationRepository donationRepository;
+
+    @Autowired
     private JavaMailSender emailSender;
 
     public Page<AppUser> getAppUsers(int page) {
@@ -49,8 +53,16 @@ public class AppUserService {
         return appUserRepository.findAll(pageable);
     }
 
-    public Optional<AppUser> getAppUserById(long id) {
-        return appUserRepository.findById(id);
+    public AppUser getAppUserById(long id) {
+
+        Optional<AppUser> appUserOptional = appUserRepository.findById(id);
+        if(!appUserOptional.isPresent()) throw new IllegalStateException("AppUser id not found!");
+
+        AppUser appUser = appUserOptional.get();
+
+        if(donationRepository.findTopByAppUser(appUser).isPresent()) appUser.setDonated(true);
+
+        return appUser;
     }
 
     public Page<AppUser> searchAppUsers(String searchText, String searchType, String sortType, int page) {

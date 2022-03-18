@@ -1,5 +1,7 @@
 package com.aquapaka.donationwebapp.repository;
 
+import java.util.Optional;
+
 import com.aquapaka.donationwebapp.model.AppUser;
 import com.aquapaka.donationwebapp.model.Donation;
 import com.aquapaka.donationwebapp.model.DonationEvent;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DonationRepository extends JpaRepository<Donation, Long>{
     int countByDonationEvent(DonationEvent donationEvent);
+    Optional<Donation> findTopByAppUser(AppUser appUser);
 
     @Query(value = "SELECT ISNULL(SUM(d.donation_amount), 0) FROM donation d WHERE d.donation_event_id = :donationEventId", nativeQuery = true)
     long sumDonationAmountByDonationEventId(@Param("donationEventId") Long donationEventId);

@@ -42,10 +42,7 @@ public class AppUserController {
 
         if(!filterService.canAccessUserData(request, id)) throw new IllegalStateException("Can't access this data!");
 
-        Optional<AppUser> appUserOptional = appUserService.getAppUserById(id);
-        if(!appUserOptional.isPresent()) throw new IllegalStateException("AppUser id not found!");
-
-        return appUserOptional.get();
+        return appUserService.getAppUserById(id);
     }
 
     @PostMapping

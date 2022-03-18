@@ -146,6 +146,11 @@ function deleteAppUser(id) {
                 return;
             }
 
+            if(response.donated) {
+                showErrorToast("Người dùng đã từng quyên góp, không thể xoá");
+                return;
+            }
+
             $("#appUserDeleteName").html(response.username + " (" + response.fullname + ")");
             $("#appUserDeleteId").html(id);
 
