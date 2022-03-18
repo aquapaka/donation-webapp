@@ -1,7 +1,6 @@
 package com.aquapaka.donationwebapp.controller;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
